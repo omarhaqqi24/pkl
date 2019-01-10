@@ -43,6 +43,15 @@ Hasil ekspor : [laporan-pkl.pdf](/uploads/eacd588cbbdad4da910a7c3deaf07554/lapor
 
 Silahkan melihat wiki [Laporan yang dibuat dari template pkl base](https://gitlab.com/template-tugasakhir-latex/template-pkl-base/wikis/Laporan-yang-dibuat-dari-template-pkl-base)
 
+## Bug yang dikenal (*known bug*)
+
+Nomer ('No') tampil dua kali pada beberapa kolom kode. Bug tidak
+bersifat idempoten sehingga sulit dilacak (kadang kala muncul kadang
+kala tidak). Kami sedang memperbaikinya. Untuk sementara waktu, solusi
+sementara kami adalah dengan menghapusnya secara manual menggunakan
+fitur highlight berwarna putih dari pdf tool.
+
+
 ## Pengembang
 
 Lihat [AUTHORS](AUTHORS)
