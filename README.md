@@ -5,7 +5,7 @@ diubah sedemikian rupa untuk menyesuaikan template universitas tertentu.
 
 ## Daftar Template
 
-- [Fakultas Ilmu Komputer (FILKOM) - Universitas Brawijaya](https://gitlab.com/template-tugasakhir-latex/template-pkl-filkom)
+- [Fakultas Ilmu Komputer (FILKOM) - Universitas Brawijaya](https://gitlab.com/template-tugasakhir-latex/template-pkl-filkom) (unofficial)
 
 ## Panduan
 
