@@ -7,7 +7,7 @@
 % ------------------------------------------------------------
 
 % \RequirePackage can used before \documentclass. \usepackage is not.
-\RequirePackage[english,bahasa]{babel}
+\RequirePackage[english,indonesian]{babel}
 \RequirePackage{indentfirst}
 \RequirePackage{setspace}
 \RequirePackage[T1]{fontenc}
@@ -270,7 +270,7 @@
       \vfill
       {\normalfont
         \MakeUppercase{\normalfont PROGRAM STUDI \@dept}\\
-        \MakeUppercase{\normalfont JURUSAN \@dept}\\
+        \MakeUppercase{\normalfont DEPARTEMEN \@dept}\\
         \MakeUppercase{\normalfont\@faculty} \\
         \MakeUppercase{\normalfont\@university}\\
         \MakeUppercase{\normalfont\@city}\\
@@ -416,7 +416,7 @@
 % ------------------------------------------------------------
 \AtBeginDocument{%
   \if@langindo%
-  \selectlanguage{bahasa}%
+  \selectlanguage{indonesian}%
   \else
   \selectlanguage{english}%
   \fi

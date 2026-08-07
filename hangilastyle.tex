@@ -5,7 +5,7 @@
 
 \usepackage[
   backend=biber,
-  style=ext-authoryear-comp, giveninits, uniquename=init, maxbibnames=999,
+  style=ext-authoryear-comp, giveninits, uniquename=init, maxbibnames=4,
   urldate=long,
   innamebeforetitle, articlein=false,
 ]{biblatex}
@@ -55,12 +55,13 @@
   bathesis  = {BA},
   mathesis  = {MA},
   phdthesis = {PhD},
+  andothers = {et\addabbrvspace al\adddot}
 }
 \newcommand*{\mkbiburlangle}[1]{<#1>}
 % or {<#1>}
 % or {\ensuremath{\langle}#1\ensuremath{\rangle}}
 % or {guilsinglleft#1\guilsingleright}
-\DeclareFieldFormat{url}{\bibstring{urlfrom}\addcolon\space \mkbiburlangle{\url{#1}}}
+\DeclareFieldFormat{url}{\bibstring{urlfrom}\addcolon\space\url{#1}}
 \DeclareFieldFormat{urldate}{\mkbibbrackets{\bibcpstring{urlseen}\space#1}}
 
 % 4.9

@@ -3,19 +3,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass{pkl}
 
-% -----------------------------------------------------------------
-% Font style
-% -----------------------------------------------------------------
-\usepackage{fontspec} % use custom font
-
-\setmainfont{Calibri}[
-    Path = /home/omar/.local/share/fonts/,
-    Extension = .ttf,
-    UprightFont = calibri-regular,
-    BoldFont = calibri-bold,
-    ItalicFont = calibri-italic
-]
-
 % ------------------------------------------------------------
 % Add your own needed package here
 % ------------------------------------------------------------
@@ -24,19 +11,6 @@
 \renewcommand\cfttabpresnum{Tabel\   }
 
 \usepackage{hyperref} % add hyperlink to the document
-\usepackage{xurl}
-\usepackage{tabularx}
-\makeatletter
-\def\UrlBreaks{%
-  \do\/%
-  \do\-%
-  \do\_%
-  \do\?%
-  \do\&%
-  \do\=%
-  \do\.%
-}
-\makeatother
 \newlength{\mylenf}
 \settowidth{\mylenf}{\cftfigpresnum}
 \setlength{\cftfignumwidth}{\dimexpr\mylenf+2em}
@@ -45,15 +19,15 @@
 \usepackage[labelfont=bf]{caption} % Bold Face for image description
 
 \usepackage{caption} % add ability to customize caption
-\captionsetup{
-  labelsep=space
-}
-
 \usepackage{subcaption} % add ability to customize subcaption
 % - \usepackage{showframe} % show frame margin
 
-\usepackage{graphicx}
-% \setmainfont{Carlito} % carlito is calibri replacement
+\usepackage{subcaption}
+% -----------------------------------------------------------------
+% Font style
+% -----------------------------------------------------------------
+\usepackage{fontspec} % use custom font
+\setmainfont{Carlito} % carlito is calibri replacement
 
 % -----------------------------------------------------------------
 % Bibliography style
@@ -79,13 +53,13 @@
 % Fill your data here
 % -----------------------------------------------------------------
 % title
-\titlepkl{Implementasi Laravel Sebagai Framework Backend pada Aplikas Web SIPANTAU: Aplikasi Web Digital Model untuk Prediksi Harga Komoditas Fluktuatif}
+\titlepkl{Pembuatan Aplikasi Web Digital Twin untuk Prediksi Harga Komoditas Fluktuatif dengan Laravel Sebagai Framework Backend}
 % personal data
 \fullname{Muhammad Omar Haqqi}
 \idnum{235150219111001}
 \approvaldate{11}
 \degree{N/A}
-\yearsubmit{2026}
+\yearsubmit{2018}
 \laboratory{Rekayasa Perangkat Lunak}
 \pklplacetype{PT}
 \pklstartdate{1 Juli}
@@ -117,54 +91,54 @@
 % -----------------------------------------------------------------
 % Approval Page
 % -----------------------------------------------------------------
-% \approvalpage
+\approvalpage
 
 % -----------------------------------------------------------------
 % Approval Page Lapangan
 % -----------------------------------------------------------------
-% \approvalpagelapangan
+\approvalpagelapangan
 
 
 %-----------------------------------------------------------------
 %Disini awal masukan untuk Prakata
 %-----------------------------------------------------------------
-% \preface
+\preface
 
-% Puji syukur kehadirat Allah SWT yang telah melimpahkan
-% rahmat, taufik dan hidayah-Nya sehingga laporan PKL yang berjudul
-% “Pembuatan Aplikasi Web Digital Twin untuk Prediksi Harga Komoditas
-% Fluktuatif dengan Laravel Sebagai Framework Backend” ini dapat terselesaikan.
+Puji syukur kehadirat Allah SWT yang telah melimpahkan
+rahmat, taufik dan hidayah-Nya sehingga laporan PKL yang berjudul
+“Pembuatan Aplikasi Web Digital Twin untuk Prediksi Harga Komoditas
+Fluktuatif dengan Laravel Sebagai Framework Backend” ini dapat terselesaikan.
 
-% \begin{enumerate}
-% \item{Bapak Nama Pembimbing, S.Si., M.Sc. selaku dosen pembimbing PKL
-%     yang telah dengan sabar membimbing dan mengarahkan penulis
-%     sehingga dapat menyelesaikan laporan ini.}
-% \item{Bapak Drs. Ketua Program Studi, M.Kom. selaku ketua Program
-%     Studi Teknik Informatika.}
-% \item{Bapak Nama Ketua Jurusan, S.T., M.T., Ph.D. selaku selaku ketua
-%     Jurusan Teknik Informatika.}
-% \item{Ayahanda dan Ibunda dan seluruh keluarga besar atas segala
-%     nasehat, kasih sayang, perhatian dan kesabarannya di dalam
-%     membesarkan dan mendidik penulis, serta yang senantiasa tiada
-%     henti-hentinya memberikan doa dan semangat demi terselesaikannya
-%     laporan ini.}
-% \item{Seluruh civitas akademika Teknik Informatika Universitas
-%     Brawijaya yang telah banyak memberi bantuan dan dukungan selama
-%     penyelesaian laporan PKL ini.}
-% \end{enumerate}
+\begin{enumerate}
+\item{Bapak Nama Pembimbing, S.Si., M.Sc. selaku dosen pembimbing PKL
+    yang telah dengan sabar membimbing dan mengarahkan penulis
+    sehingga dapat menyelesaikan laporan ini.}
+\item{Bapak Drs. Ketua Program Studi, M.Kom. selaku ketua Program
+    Studi Teknik Informatika.}
+\item{Bapak Nama Ketua Jurusan, S.T., M.T., Ph.D. selaku selaku ketua
+    Jurusan Teknik Informatika.}
+\item{Ayahanda dan Ibunda dan seluruh keluarga besar atas segala
+    nasehat, kasih sayang, perhatian dan kesabarannya di dalam
+    membesarkan dan mendidik penulis, serta yang senantiasa tiada
+    henti-hentinya memberikan doa dan semangat demi terselesaikannya
+    laporan ini.}
+\item{Seluruh civitas akademika Teknik Informatika Universitas
+    Brawijaya yang telah banyak memberi bantuan dan dukungan selama
+    penyelesaian laporan PKL ini.}
+\end{enumerate}
 
-% Penulis menyadari bahwa dalam penyusunan laporan ini masih banyak kekurangan,
-% sehingga saran dan kritik yang membangun sangat penulis harapkan. Akhir kata penulis
-% berharap PKL ini dapat membawa manfaat bagi semua pihak yang menggunakannya.
+Penulis menyadari bahwa dalam penyusunan laporan ini masih banyak kekurangan,
+sehingga saran dan kritik yang membangun sangat penulis harapkan. Akhir kata penulis
+berharap PKL ini dapat membawa manfaat bagi semua pihak yang menggunakannya.
 
-% \vspace{1.5cm}
+\vspace{1.5cm}
 
-% \begin{tabular}{p{7.5cm}c}
-% &Malang, 1 Juli 2017\\
-% &\\
-% &\\
-% &{Penulis}
-% \end{tabular}
+\begin{tabular}{p{7.5cm}c}
+&Malang, 1 Juli 2017\\
+&\\
+&\\
+&{Penulis}
+\end{tabular}
 
 % -----------------------------------------------------------------
 % TOCS
@@ -187,17 +161,12 @@
 \include{bab1}
 \include{bab2}
 \include{bab3}
-\include{bab4}
 
 % -----------------------------------------------------------------
 % Bibliography
 % -----------------------------------------------------------------
 % -- \addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
-\begingroup
-\emergencystretch=3em
-\sloppy
 \printbibliography[title={DAFTAR PUSTAKA}]
-\endgroup
 
 
 \end{document}
