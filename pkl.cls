@@ -254,8 +254,10 @@
   \setcounter{page}{1}
   \begin{center}
     \begin{singlespace}
-      \fontsize{14pt}{16pt}\selectfont \MakeUppercase{
-        \normalfont\bfseries LAPORAN PRAKTIK KERJA LAPANGAN (PKL)}\par\nobreak
+      \fontsize{14pt}{16pt}\selectfont \MakeUppercase{\normalfont\bfseries LAPORAN PRAKTIK KERJA LAPANGAN (PKL)}\par\nobreak
+      \vspace{0.5cm}
+      \fontsize{14pt}{16pt}\selectfont \MakeUppercase{\normalfont\bfseries \@pklplacetype\ \@pklplace}
+      \par\nobreak
       \vspace{1.5cm}
       \MakeUppercase{\normalfont\bfseries \@titlepkl}\\
       \vspace{0.5cm}
