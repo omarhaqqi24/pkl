@@ -1,0 +1,1079 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{Alboaneen2022}{article}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=429c48878ce39e601c326aad1a33932c}{%
+           family={Alboaneen},
+           familyi={A\bibinitperiod},
+           given={Dabiah},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1e50e7c7084ad308a334a5efd1c4e027}{%
+           family={Almelihi},
+           familyi={A\bibinitperiod},
+           given={Modhe},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=39c24165c5a51cc1e6ea871fa703f242}{%
+           family={Alsubaie},
+           familyi={A\bibinitperiod},
+           given={Rawan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ac8a20340ec7f767ec99c165e4a15deb}{%
+           family={Alghamdi},
+           familyi={A\bibinitperiod},
+           given={Raneem},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=26c984cba2fa7652caf286f3d6faf638}{%
+           family={Alshehri},
+           familyi={A\bibinitperiod},
+           given={Lama},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a0df984eb4434fa35b05af7b68270ccc}{%
+           family={Alharthi},
+           familyi={A\bibinitperiod},
+           given={Renad},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8cc27313e90a1080cd11adb3a02b7783}
+      \strng{fullhash}{46c7097bdb364c7ee131ca0098810a9e}
+      \strng{fullhashraw}{46c7097bdb364c7ee131ca0098810a9e}
+      \strng{bibnamehash}{8cc27313e90a1080cd11adb3a02b7783}
+      \strng{authorbibnamehash}{8cc27313e90a1080cd11adb3a02b7783}
+      \strng{authornamehash}{8cc27313e90a1080cd11adb3a02b7783}
+      \strng{authorfullhash}{46c7097bdb364c7ee131ca0098810a9e}
+      \strng{authorfullhashraw}{46c7097bdb364c7ee131ca0098810a9e}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Educational Data Mining (EDM) is used to extract and discover interesting patterns from educational institution datasets using Machine Learning (ML) algorithms. There is much academic information related to students available. Therefore, it is helpful to apply data mining to extract factors affecting students’ academic performance. In this paper, a web-based system for predicting academic performance and identifying students at risk of failure through academic and demographic factors is developed. The ML model is developed to predict the total score of a course at the early stages. Several ML algorithms are applied, namely: Support Vector Machine (SVM), Random Forest (RF), K-Nearest Neighbors (KNN), Artificial Neural Network (ANN), and Linear Regression (LR). This model applies to the data of female students of the Computer Science Department at Imam Abdulrahman bin Faisal University (IAU). The dataset contains 842 instances for 168 students. Moreover, the results showed that the prediction’s Mean Absolute Percentage Error (MAPE) reached 6.34%, and the academic factors had a higher impact on students’ academic performance than the demographic factors, the midterm exam score in the top. The developed web-based prediction system is available on an online server and can be used by tutors.}
+      \field{issn}{2306-5729}
+      \field{issue}{2}
+      \field{journaltitle}{Data}
+      \field{month}{1}
+      \field{title}{Development of a Web-Based Prediction System for Students’ Academic Performance}
+      \field{volume}{7}
+      \field{year}{2022}
+      \field{pages}{21}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/data7020021
+      \endverb
+      \verb{urlraw}
+      \verb https://www.mdpi.com/2306-5729/7/2/21
+      \endverb
+      \verb{url}
+      \verb https://www.mdpi.com/2306-5729/7/2/21
+      \endverb
+    \endentry
+    \entry{bps-sukabumi-2026}{report}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=217ddd80de0ca8b8f12be4ee75de2243}{%
+           family={{Badan Pusat Statistik Kabupaten Sukabumi}},
+           familyi={B\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Badan Pusat Statistik Kabupaten Sukabumi}%
+      }
+      \strng{namehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{fullhash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{fullhashraw}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{bibnamehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authorbibnamehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authornamehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authorfullhash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authorfullhashraw}{217ddd80de0ca8b8f12be4ee75de2243}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{6}
+      \field{issn}{2798-9674}
+      \field{month}{4}
+      \field{number}{32020.26003}
+      \field{title}{Produk Domestik Regional Bruto Kabupaten Sukabumi Menurut Lapangan Usaha 2021--2025}
+      \field{type}{Publikasi Statistik}
+      \field{urlday}{1}
+      \field{urlmonth}{7}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://sukabumikab.bps.go.id/id/publication/2026/04/06/bd127ac6cc13a55f3d306265/produk-domestik-regional-bruto-kabupaten-sukabumi-menurut-lapangan-usaha-2021-2025.html
+      \endverb
+      \verb{url}
+      \verb https://sukabumikab.bps.go.id/id/publication/2026/04/06/bd127ac6cc13a55f3d306265/produk-domestik-regional-bruto-kabupaten-sukabumi-menurut-lapangan-usaha-2021-2025.html
+      \endverb
+    \endentry
+    \entry{bps-penduduk-2025}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=28ee565fd4648482145c29774c55e41c}{%
+           family={{Badan Pusat Statistika Kabupaten Sukabumi}},
+           familyi={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{28ee565fd4648482145c29774c55e41c}
+      \strng{fullhash}{28ee565fd4648482145c29774c55e41c}
+      \strng{fullhashraw}{28ee565fd4648482145c29774c55e41c}
+      \strng{bibnamehash}{28ee565fd4648482145c29774c55e41c}
+      \strng{authorbibnamehash}{28ee565fd4648482145c29774c55e41c}
+      \strng{authornamehash}{28ee565fd4648482145c29774c55e41c}
+      \strng{authorfullhash}{28ee565fd4648482145c29774c55e41c}
+      \strng{authorfullhashraw}{28ee565fd4648482145c29774c55e41c}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kabupaten Sukabumi, 2025}
+      \field{urlday}{1}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{bps-luas-2025}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7546d20b01c73e46735ff066ec6bb6f8}{%
+           family={{Badan Pusat Statistika Provinsi Jawa Barat}},
+           familyi={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{fullhash}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{fullhashraw}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{bibnamehash}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{authorbibnamehash}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{authornamehash}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{authorfullhash}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{authorfullhashraw}{7546d20b01c73e46735ff066ec6bb6f8}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Luas Daerah dan Jumlah Pulau Menurut Kabupaten/Kota di Provinsi Jawa Barat, 2025}
+      \field{urlday}{1}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{bhardwaj2023innovativedeeplearningbased}{misc}{}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=178608c0ecf4848ba3f934294eb6bc22}{%
+           family={Bhardwaj},
+           familyi={B\bibinitperiod},
+           given={Mayank\bibnamedelima Ratan},
+           giveni={M\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d0881132c12116b2aeef0aac05dd7a38}{%
+           family={Pawar},
+           familyi={P\bibinitperiod},
+           given={Jaydeep},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=66260dc19f78b2d4e087ddb93763a807}{%
+           family={Bhat},
+           familyi={B\bibinitperiod},
+           given={Abhijnya},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8c670859e3f8fefdf14614f3dd129301}{%
+           family={Deepanshu},
+           familyi={D\bibinitperiod}}}%
+        {{un=0,uniquepart=base,hash=91b567c7f95c76e2e760058cf2f5a5a6}{%
+           family={Enaganti},
+           familyi={E\bibinitperiod},
+           given={Inavamsi},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b4c468b9a2befd80635143cb037dd529}{%
+           family={Sagar},
+           familyi={S\bibinitperiod},
+           given={Kartik},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2011d914180723d57cbc377df3cdd349}{%
+           family={Narahari},
+           familyi={N\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1c74c419ccd4b01840ee83e6d5700209}
+      \strng{fullhash}{9188f105e8fe9d7cc5dcd21732489fb5}
+      \strng{fullhashraw}{9188f105e8fe9d7cc5dcd21732489fb5}
+      \strng{bibnamehash}{1c74c419ccd4b01840ee83e6d5700209}
+      \strng{authorbibnamehash}{1c74c419ccd4b01840ee83e6d5700209}
+      \strng{authornamehash}{1c74c419ccd4b01840ee83e6d5700209}
+      \strng{authorfullhash}{9188f105e8fe9d7cc5dcd21732489fb5}
+      \strng{authorfullhashraw}{9188f105e8fe9d7cc5dcd21732489fb5}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.LG}
+      \field{eprinttype}{arXiv}
+      \field{title}{An innovative Deep Learning Based Approach for Accurate Agricultural Crop Price Prediction}
+      \field{year}{2023}
+      \verb{eprint}
+      \verb 2304.09761
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2304.09761
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2304.09761
+      \endverb
+    \endentry
+    \entry{Bonteanu2024}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=f71de699226c1e124d73ef08005274d9}{%
+           family={Bonteanu},
+           familyi={B\bibinitperiod},
+           given={Alexandru\bibnamedelima Marius},
+           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a464d5c7c84cc1e495406ad17c3c7fd4}{%
+           family={Tudose},
+           familyi={T\bibinitperiod},
+           given={Cătălin},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \strng{fullhash}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \strng{fullhashraw}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \strng{bibnamehash}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \strng{authorbibnamehash}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \strng{authornamehash}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \strng{authorfullhash}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \strng{authorfullhashraw}{dd45a06f7e259c7dbfeaf7ad97c5acdc}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The role of databases is to allow for the persistence of data, no matter if they are of the SQL or NoSQL type. In SQL databases, data are structured in a set of tables in the relational database model, grouped in rows and columns. CRUD operations (create, read, update, and delete) are used to manage the information contained in relational databases. Several dialects of the SQL language exist, as well as frameworks for mapping Java classes (models) to a relational database. The question is what we should choose for our Java application, and why? A comparison of the most frequently used relational database management systems, mixed with the most frequently used frameworks should give us some guidance about when to use what. The evaluation is conducted based on the time taken for each CRUD operation to run, from thousands to hundreds of thousands of entries, using the possible combinations in the relational database system and the framework. Aiming to assess and improve the performance, the experiments included the possibility of warming-up the Java Virtual Machine before the execution of queries. Also, the research investigated the time spent using different methods of code to determine the critical regions (bottlenecks). Thus, the conclusions provide a comprehensive overview of the performances of Java applications accessing databases depending on the suite decisions considering the database type, the framework in use, and the type of operation, with clear comparisons between the alternatives, the key findings of the advantages and drawbacks of each of them, and supporting architects and developers in their technological decisions and improving the speed of their programs.}
+      \field{issn}{2076-3417}
+      \field{issue}{7}
+      \field{journaltitle}{Applied Sciences}
+      \field{month}{3}
+      \field{title}{Performance Analysis and Improvement for CRUD Operations in Relational Databases from Java Programs Using JPA, Hibernate, Spring Data JPA}
+      \field{volume}{14}
+      \field{year}{2024}
+      \field{pages}{2743}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/app14072743
+      \endverb
+    \endentry
+    \entry{Bucko2023}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=cce8ea2692f1113d3e7e697588046134}{%
+           family={Bucko},
+           familyi={B\bibinitperiod},
+           given={Ahmet},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d126a156c346e6c41ed4e022c2312881}{%
+           family={Vishi},
+           familyi={V\bibinitperiod},
+           given={Kamer},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8f058963bb7532119b8ac86fc6d3bb91}{%
+           family={Krasniqi},
+           familyi={K\bibinitperiod},
+           given={Bujar},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=299afaa1ae1b69ab459a4fbdd2bb291a}{%
+           family={Rexha},
+           familyi={R\bibinitperiod},
+           given={Blerim},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{88a303dbbf94c209456fc1506a868268}
+      \strng{fullhash}{ecc0bb077c1e05527b95e5680266ca31}
+      \strng{fullhashraw}{ecc0bb077c1e05527b95e5680266ca31}
+      \strng{bibnamehash}{ecc0bb077c1e05527b95e5680266ca31}
+      \strng{authorbibnamehash}{ecc0bb077c1e05527b95e5680266ca31}
+      \strng{authornamehash}{88a303dbbf94c209456fc1506a868268}
+      \strng{authorfullhash}{ecc0bb077c1e05527b95e5680266ca31}
+      \strng{authorfullhashraw}{ecc0bb077c1e05527b95e5680266ca31}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2073-431X}
+      \field{issue}{4}
+      \field{journaltitle}{Computers}
+      \field{month}{4}
+      \field{title}{Enhancing JWT Authentication and Authorization in Web Applications Based on User Behavior History}
+      \field{volume}{12}
+      \field{year}{2023}
+      \field{pages}{78}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/computers12040078
+      \endverb
+    \endentry
+    \entry{disdukcapil2026}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1abffb00bf175bb9e90c02b72a38d7f3}{%
+           family={{Dinas Kependudukan dan Pencatatan Sipil Kabupaten Sukabumi}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \strng{fullhash}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \strng{fullhashraw}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \strng{bibnamehash}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \strng{authorbibnamehash}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \strng{authornamehash}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \strng{authorfullhash}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \strng{authorfullhashraw}{1abffb00bf175bb9e90c02b72a38d7f3}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Disusun pada Maret 2026}
+      \field{title}{Profil Perkembangan Kependudukan Kabupaten Sukabumi Tahun 2025}
+      \field{urlday}{16}
+      \field{urlmonth}{8}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{Goh2023}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=6848b93bdd9893cc1cdb23bf90b101bb}{%
+           family={Goh},
+           familyi={G\bibinitperiod},
+           given={Hock-Ann},
+           giveni={H\bibinithyphendelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d3c8b98e3bd2a54ec02b8b8122075c20}{%
+           family={Ho},
+           familyi={H\bibinitperiod},
+           given={Chin-Kuan},
+           giveni={C\bibinithyphendelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ba7319ea6f5a8dde9891bcbdb7cb935e}{%
+           family={Abas},
+           familyi={A\bibinitperiod},
+           given={Fazly\bibnamedelima Salleh},
+           giveni={F\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{43b431f99640d37266312521c06ee50f}
+      \strng{fullhash}{43b431f99640d37266312521c06ee50f}
+      \strng{fullhashraw}{43b431f99640d37266312521c06ee50f}
+      \strng{bibnamehash}{43b431f99640d37266312521c06ee50f}
+      \strng{authorbibnamehash}{43b431f99640d37266312521c06ee50f}
+      \strng{authornamehash}{43b431f99640d37266312521c06ee50f}
+      \strng{authorfullhash}{43b431f99640d37266312521c06ee50f}
+      \strng{authorfullhashraw}{43b431f99640d37266312521c06ee50f}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0924-669X}
+      \field{issue}{12}
+      \field{journaltitle}{Applied Intelligence}
+      \field{month}{6}
+      \field{title}{Front-end deep learning web apps development and deployment: a review}
+      \field{volume}{53}
+      \field{year}{2023}
+      \field{pages}{15923\bibrangedash 15945}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1007/s10489-022-04278-6
+      \endverb
+      \verb{urlraw}
+      \verb https://link.springer.com/article/10.1007/s10489-022-04278-6
+      \endverb
+      \verb{url}
+      \verb https://link.springer.com/article/10.1007/s10489-022-04278-6
+      \endverb
+    \endentry
+    \entry{Gyrdi2021}{article}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=52fbc5880ff0f5bd6d4bf6cecc933f6f}{%
+           family={Győrödi},
+           familyi={G\bibinitperiod},
+           given={Cornelia\bibnamedelima A.},
+           giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d6c20a2e3fd75a6ad4d037c7494e245b}{%
+           family={Dumşe-Burescu},
+           familyi={D\bibinithyphendelim B\bibinitperiod},
+           given={Diana\bibnamedelima V.},
+           giveni={D\bibinitperiod\bibinitdelim V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=805b2f0eab019fd0f295960ecdbbad7f}{%
+           family={Győrödi},
+           familyi={G\bibinitperiod},
+           given={Robert\bibnamedelima Ş.},
+           giveni={R\bibinitperiod\bibinitdelim Ş\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e17765df6c1bac7dae9196b66283cb7c}{%
+           family={Zmaranda},
+           familyi={Z\bibinitperiod},
+           given={Doina\bibnamedelima R.},
+           giveni={D\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c8e31c8a35af1330014a041b4a05ce9a}{%
+           family={Bandici},
+           familyi={B\bibinitperiod},
+           given={Livia},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f7b6a6f49539818794e82a09e7912fcc}{%
+           family={Popescu},
+           familyi={P\bibinitperiod},
+           given={Daniela\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{89f1e24a51133ec725eba00dcc171ef8}
+      \strng{fullhash}{4d9a85bd6a425eb4edf14a4d7faa78bd}
+      \strng{fullhashraw}{4d9a85bd6a425eb4edf14a4d7faa78bd}
+      \strng{bibnamehash}{89f1e24a51133ec725eba00dcc171ef8}
+      \strng{authorbibnamehash}{89f1e24a51133ec725eba00dcc171ef8}
+      \strng{authornamehash}{89f1e24a51133ec725eba00dcc171ef8}
+      \strng{authorfullhash}{4d9a85bd6a425eb4edf14a4d7faa78bd}
+      \strng{authorfullhashraw}{4d9a85bd6a425eb4edf14a4d7faa78bd}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Databases are an important part of today’s applications where large amounts of data need to be stored, processed, and accessed quickly. One of the important criteria when choosing to use a database technology is its data processing performance. In this paper, some methods for optimizing the database structure and queries were applied on two popular open-source database management systems: MySQL as a relational DBMS, and document-based MySQL as a non-relational DBMS. The main objective of this paper was to conduct a comparative analysis of the impact that the proposed optimization methods have on each specific DBMS when carrying out CRUD (CREATE, READ, UPDATE, DELETE) requests. To perform the analysis and performance evaluation of CRUD operations for different amounts of data, a case study testing architecture based on Java was developed and used to show how the databases’ proposed optimization methods can influence the performance of the application, and to highlight the differences in response time and complexity. The results obtained show the degree to which the proposed optimization methods contributed to the application’s performance improvement in the case of both databases; based on these, a detailed analysis and several conclusions are presented to support a decision for choosing a specific approach.}
+      \field{issn}{2076-3417}
+      \field{issue}{15}
+      \field{journaltitle}{Applied Sciences}
+      \field{month}{7}
+      \field{title}{Performance Impact of Optimization Methods on MySQL Document-Based and Relational Databases}
+      \field{volume}{11}
+      \field{year}{2021}
+      \field{pages}{6794}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/app11156794
+      \endverb
+    \endentry
+    \entry{Helbawanti_Saputro_Ulfa_2021}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=1da1ca3e879b59f777c59b5b3c7e3eab}{%
+           family={Helbawanti},
+           familyi={H\bibinitperiod},
+           given={Octaviana},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=42e66d3cacde7ec90eb00170502a7731}{%
+           family={Saputro},
+           familyi={S\bibinitperiod},
+           given={Wahyu\bibnamedelima Adhi},
+           giveni={W\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7f2f47a561fa5d78b839264d1d1eabe8}{%
+           family={Ulfa},
+           familyi={U\bibinitperiod},
+           given={Amalia\bibnamedelima Nadifta},
+           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{aa2122db3da66aae188745688ad4e67a}
+      \strng{fullhash}{aa2122db3da66aae188745688ad4e67a}
+      \strng{fullhashraw}{aa2122db3da66aae188745688ad4e67a}
+      \strng{bibnamehash}{aa2122db3da66aae188745688ad4e67a}
+      \strng{authorbibnamehash}{aa2122db3da66aae188745688ad4e67a}
+      \strng{authornamehash}{aa2122db3da66aae188745688ad4e67a}
+      \strng{authorfullhash}{aa2122db3da66aae188745688ad4e67a}
+      \strng{authorfullhashraw}{aa2122db3da66aae188745688ad4e67a}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Agrisaintifika: Jurnal Ilmu-Ilmu Pertanian}
+      \field{month}{12}
+      \field{number}{2}
+      \field{title}{Pengaruh Harga Bahan Pangan Terhadap Inflasi Di Indonesia}
+      \field{volume}{5}
+      \field{year}{2021}
+      \field{pages}{107\bibrangedash 116}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.32585/ags.v5i2.1859
+      \endverb
+      \verb{urlraw}
+      \verb https://journal.univetbantara.ac.id/index.php/agrisaintifika/article/view/1859
+      \endverb
+      \verb{url}
+      \verb https://journal.univetbantara.ac.id/index.php/agrisaintifika/article/view/1859
+      \endverb
+    \endentry
+    \entry{Jeng2021}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=f84218ce0bcb3686455b99b386ac56ae}{%
+           family={Jeng},
+           familyi={J\bibinitperiod},
+           given={Shyr-Long},
+           giveni={S\bibinithyphendelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1ddf2fdd05be63abd5a49f86370e6a59}{%
+           family={Chieng},
+           familyi={C\bibinitperiod},
+           given={Wei-Hua},
+           giveni={W\bibinithyphendelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=426a0c83bf824d0896deb25b742107f7}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Yi},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{21f52850c4a17793ac87e15e83282590}
+      \strng{fullhash}{21f52850c4a17793ac87e15e83282590}
+      \strng{fullhashraw}{21f52850c4a17793ac87e15e83282590}
+      \strng{bibnamehash}{21f52850c4a17793ac87e15e83282590}
+      \strng{authorbibnamehash}{21f52850c4a17793ac87e15e83282590}
+      \strng{authornamehash}{21f52850c4a17793ac87e15e83282590}
+      \strng{authorfullhash}{21f52850c4a17793ac87e15e83282590}
+      \strng{authorfullhashraw}{21f52850c4a17793ac87e15e83282590}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Advances in conventional industrial controllers have led to new technologies such as multilanguage use, cross-platform applications, and remote monitoring and control. However, the human-machine interfaces (HMIs) of conventional industrial controllers and mobile devices cannot directly transmit instant messages to each other. This study describes a simple method of upgrading the HMIs of conventional industrial controllers into controllers capable of Web-based remote access. The study began with the development of a model-view-controller architecture consisting of Hypertext Markup Language, Cascading Style Sheets, and JavaScript and proceeded to the implementation of a single-page application (SPA) method through AJAX and WebSocket, which communicates with the back-end Node.js server to transfer data. Future advancements will enable information to flow through cross-platform devices across various operating systems and Web browsers, allowing users to remotely monitor and control machines from mobile smart devices. We demonstrated the simplicity of the SPA method by transforming a conventional personal computer-based industrial controller, WINPC32, to an all-purpose Web-based HMI for industrial use with the graphic user interface software, GPX.}
+      \field{issn}{1574-017X}
+      \field{issue}{1}
+      \field{journaltitle}{Mobile Information Systems}
+      \field{month}{4}
+      \field{title}{Web-Based Human-Machine Interfaces of Industrial Controllers in Single-Page Applications}
+      \field{volume}{2021}
+      \field{year}{2021}
+      \field{pages}{1\bibrangedash 13}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1155/2021/6668843
+      \endverb
+    \endentry
+    \entry{Kamboj2021}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=fd503da60eeb1454f8d1eb468fe2b3e1}{%
+           family={Kamboj},
+           familyi={K\bibinitperiod},
+           given={Priyanka},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2d9ebeb7db71ab644893c7d88dde9dcf}{%
+           family={Khare},
+           familyi={K\bibinitperiod},
+           given={Shivang},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9b853118af4531022100f3f0ff48c78e}{%
+           family={Pal},
+           familyi={P\bibinitperiod},
+           given={Sujata},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7bd4ef8881d9a9285f88f91999fd009c}
+      \strng{fullhash}{7bd4ef8881d9a9285f88f91999fd009c}
+      \strng{fullhashraw}{7bd4ef8881d9a9285f88f91999fd009c}
+      \strng{bibnamehash}{7bd4ef8881d9a9285f88f91999fd009c}
+      \strng{authorbibnamehash}{7bd4ef8881d9a9285f88f91999fd009c}
+      \strng{authornamehash}{7bd4ef8881d9a9285f88f91999fd009c}
+      \strng{authorfullhash}{7bd4ef8881d9a9285f88f91999fd009c}
+      \strng{authorfullhashraw}{7bd4ef8881d9a9285f88f91999fd009c}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1936-6442}
+      \field{issue}{5}
+      \field{journaltitle}{Peer-to-Peer Networking and Applications}
+      \field{month}{9}
+      \field{title}{User authentication using Blockchain based smart contract in role-based access control}
+      \field{volume}{14}
+      \field{year}{2021}
+      \field{pages}{2961\bibrangedash 2976}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1007/s12083-021-01150-1
+      \endverb
+    \endentry
+    \entry{Kulakat2021}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=4c389b67d127a0718c756bfe55da7b3b}{%
+           family={Kulakat},
+           familyi={K\bibinitperiod},
+           given={Aldy\bibnamedelima A},
+           giveni={A\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=18793f7144af40f2769d66bf5997909b}{%
+           family={Utami},
+           familyi={U\bibinitperiod},
+           given={Ema},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ddcbb3e8b1291e70dc8ecea198004d8a}{%
+           family={Wibowo},
+           familyi={W\bibinitperiod},
+           given={Ferry\bibnamedelima Wahyu},
+           giveni={F\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{161f1493532ba47c3ef96c4af356993f}
+      \strng{fullhash}{161f1493532ba47c3ef96c4af356993f}
+      \strng{fullhashraw}{161f1493532ba47c3ef96c4af356993f}
+      \strng{bibnamehash}{161f1493532ba47c3ef96c4af356993f}
+      \strng{authorbibnamehash}{161f1493532ba47c3ef96c4af356993f}
+      \strng{authornamehash}{161f1493532ba47c3ef96c4af356993f}
+      \strng{authorfullhash}{161f1493532ba47c3ef96c4af356993f}
+      \strng{authorfullhashraw}{161f1493532ba47c3ef96c4af356993f}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Website is a collection of online documents containing Web pages that are moored in a domain as a unique name. It can be accessed via the Internet so that existing information can be displayed and accessed by Web visitors. Web visitors tends to need websites with user interface which is easy to use, to interact (usability), or communicate in sharing information. There are basically some benchmarks that can be used to measure website usability, including (1) Learnability, easiness to learn; (2) Efficiency, user speed level; (3) memorability, easiness to remember; (4) Error and safety, low fault rate; and (6) Satisfaction, satisfied user. Moreover, there are several methods of evaluation of the website in this research, such as: (1) Thinking Aloud Method, (2) User Perfomance test, (3) Remote Usability Test, (4) Cooperative Evaluation, (5) Expert Review, (6) Heuristic Evaluation, (7) Cognitive Walkthrough, (8) Plurastic Walkthrough, (9) Field Observation, and (10) Interview and Focus group.   In addition, the selection of a questionnaire or sampling deployment method and designing interface method may also affect the outcome of the evaluation of the website.}
+      \field{issn}{2548-4028}
+      \field{issue}{1}
+      \field{journaltitle}{Jurnal Ilmiah SINUS}
+      \field{month}{1}
+      \field{title}{Literatur Review Metode Evaluasi Kualitas Usability Website}
+      \field{volume}{19}
+      \field{year}{2021}
+      \field{pages}{1\bibrangedash 12}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.30646/sinus.v19i1.458
+      \endverb
+    \endentry
+    \entry{Laksono2021}{inproceedings}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=d6d7eee3b08a8e7fff7b475a8bdd9a6b}{%
+           family={Laksono},
+           familyi={L\bibinitperiod},
+           given={Kisyani},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d14e17c8d3f103c75a2add300286f906}{%
+           family={Rahaju},
+           familyi={R\bibinitperiod},
+           given={Endah\bibnamedelima Budi},
+           giveni={E\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=db4cb2ebd263f04bc04a9234c5c2649c}{%
+           family={Kurniawan},
+           familyi={K\bibinitperiod},
+           given={Ari},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5ec4d295477aae5971fb9edea4851ccb}{%
+           family={Abdullah},
+           familyi={A\bibinitperiod},
+           given={Zulaikhah},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8168384421845f941014ac080ddbbb94}{%
+           family={Tyasnurita},
+           familyi={T\bibinitperiod},
+           given={Raras},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=53078fb581305c193414c7f1d84afa1e}{%
+           family={Prastyo},
+           familyi={P\bibinitperiod},
+           given={Ahmad\bibnamedelima Bayu},
+           giveni={A\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{96e265bdcf53c2292107f0fb9d9d3e8b}
+      \strng{fullhash}{592b689b873b380c7dd63406f2d456d5}
+      \strng{fullhashraw}{592b689b873b380c7dd63406f2d456d5}
+      \strng{bibnamehash}{96e265bdcf53c2292107f0fb9d9d3e8b}
+      \strng{authorbibnamehash}{96e265bdcf53c2292107f0fb9d9d3e8b}
+      \strng{authornamehash}{96e265bdcf53c2292107f0fb9d9d3e8b}
+      \strng{authorfullhash}{592b689b873b380c7dd63406f2d456d5}
+      \strng{authorfullhashraw}{592b689b873b380c7dd63406f2d456d5}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2021 3rd International Conference on Research and Academic Community Services (ICRACOS)}
+      \field{isbn}{978-1-6654-4334-0}
+      \field{month}{10}
+      \field{title}{The Instrument For Evaluating Websites: A Review}
+      \field{year}{2021}
+      \field{pages}{144\bibrangedash 147}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1109/ICRACOS53680.2021.9702019
+      \endverb
+    \endentry
+    \entry{Le2022}{article}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=65b6af8f5bb7b62b3d6a8f4cc3793504}{%
+           family={Le},
+           familyi={L\bibinitperiod},
+           given={Ha\bibnamedelima Thanh},
+           giveni={H\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=304fc6486babdb2eb3b2654e6e3ef374}{%
+           family={Shar},
+           familyi={S\bibinitperiod},
+           given={Lwin\bibnamedelima Khin},
+           giveni={L\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=dc08d74d69b4382abc776c553633e273}{%
+           family={Bianculli},
+           familyi={B\bibinitperiod},
+           given={Domenico},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3e48d8d89b3c804aa37acce6bce014a5}{%
+           family={Briand},
+           familyi={B\bibinitperiod},
+           given={Lionel\bibnamedelima Claude},
+           giveni={L\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=83c7842ee06cf15b9251c6f588146ae7}{%
+           family={Nguyen},
+           familyi={N\bibinitperiod},
+           given={Cu\bibnamedelima Duy},
+           giveni={C\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1bb46bda6b4aa983ab346cfe171e69bd}
+      \strng{fullhash}{1f8bf8ef3d08f6539fd41c30283d8bdd}
+      \strng{fullhashraw}{1f8bf8ef3d08f6539fd41c30283d8bdd}
+      \strng{bibnamehash}{1bb46bda6b4aa983ab346cfe171e69bd}
+      \strng{authorbibnamehash}{1bb46bda6b4aa983ab346cfe171e69bd}
+      \strng{authornamehash}{1bb46bda6b4aa983ab346cfe171e69bd}
+      \strng{authorfullhash}{1f8bf8ef3d08f6539fd41c30283d8bdd}
+      \strng{authorfullhashraw}{1f8bf8ef3d08f6539fd41c30283d8bdd}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{01641212}
+      \field{journaltitle}{Journal of Systems and Software}
+      \field{month}{2}
+      \field{title}{Automated reverse engineering of role-based access control policies of web applications}
+      \field{volume}{184}
+      \field{year}{2022}
+      \field{pages}{111109}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.jss.2021.111109
+      \endverb
+    \endentry
+    \entry{Nurhayati2023}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=f89e7b630a28683fbf9d4905bad2ff93}{%
+           family={Nurhayati},
+           familyi={N\bibinitperiod},
+           given={Eli},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=02291d7611dc646cf00b81559f0d0a0d}{%
+           family={Agussalim},
+           familyi={A\bibinitperiod},
+           given={Agussalim},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{44dbcc20e5fe46f09233c834268dae84}
+      \strng{fullhash}{44dbcc20e5fe46f09233c834268dae84}
+      \strng{fullhashraw}{44dbcc20e5fe46f09233c834268dae84}
+      \strng{bibnamehash}{44dbcc20e5fe46f09233c834268dae84}
+      \strng{authorbibnamehash}{44dbcc20e5fe46f09233c834268dae84}
+      \strng{authornamehash}{44dbcc20e5fe46f09233c834268dae84}
+      \strng{authorfullhash}{44dbcc20e5fe46f09233c834268dae84}
+      \strng{authorfullhashraw}{44dbcc20e5fe46f09233c834268dae84}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Back-end adalah bagian aplikasi yang beroperasi di sisi server dan bertanggung jawab dalam interaksi dengan database dan logika fungsional sebuah program. Back-end berkomunikasi dengan client melalui sebuah antarmuka Application Programming Interface (API). Salah satu arsitektur back-end yang paling populer yaitu Representational State Transfer (REST) dimana interaksi yang dilakukan menggunakan pola request-response. AyamHub adalah sebuah aplikasi mobile inovatif yang berfungsi sebagai penghubung antara peternakan dan UMKM/penjual ayam broiler di Indonesia. Dalam proses pengembangannya, AyamHub membutuhkan sebuah back-end yang akan menjadi fondasi sistem kedepannya. Untuk itu, peneliti mencoba melakukan perancangan arsitektur back-end untuk aplikasi mobile AyamHub menggunakan arsitektur REST dan framework Node.js Express. Pemilihan Node.js sebagai platform pengembangan didasarkan pada kelebihan yang dimiliki, terutama pada portabilitas dan teknik non-blocking yang memungkinkan sistem bekerja secara simultan tanpa harus menunggu penyelesaian operasi sebelumnya. Adapun pengembangan dilakukan dengan menggunakan metode waterfall dimana implementasi sistem dibuat dengan menggunakan layanan Google Cloud Platform (GCP) seperti App Engine, Cloud SQL, dan Cloud Storage. Setelah dilakukan pengujian menggunakan black box testing, diperoleh hasil bahwa keseluruhan API yang telah dibuat telah berhasil dan berjalan sesuai dengan harapan. Selain itu, dalam setiap tahap pengembangan back-end, penulis selalu berkoordinasi dengan mobile developer AyamHub untuk memastikan consume API berjalan lancar dan endpoint yang dibuat selaras  dengan setiap kebutuhan fiturnya.}
+      \field{issn}{2620-8989}
+      \field{issue}{3}
+      \field{journaltitle}{Jurnal Sistem dan Teknologi Informasi (JustIN)}
+      \field{month}{7}
+      \field{title}{Rancang Bangun Back-end API pada Aplikasi Mobile AyamHub Menggunakan Framework Node JS Express}
+      \field{volume}{11}
+      \field{year}{2023}
+      \field{pages}{524}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.26418/justin.v11i3.66823
+      \endverb
+    \endentry
+    \entry{perda14_2018}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=5fb729e8cb281e72550bc3031ca62ca4}{%
+           family={{Pemerintah Kabupaten Sukabumi}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{bibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorbibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authornamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \field{extraname}{1}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Peraturan Daerah Kabupaten Sukabumi Nomor 14 Tahun 2018 tentang Hari Jadi Kabupaten Sukabumi}
+      \field{urlday}{16}
+      \field{urlmonth}{8}
+      \field{urlyear}{2026}
+      \field{year}{2018}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{perbup1002021}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=5fb729e8cb281e72550bc3031ca62ca4}{%
+           family={{Pemerintah Kabupaten Sukabumi}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{bibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorbibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authornamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \field{extraname}{2}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Diakses 7 Agustus 2026}
+      \field{title}{Peraturan Bupati Sukabumi Nomor 100 Tahun 2021 tentang Struktur Organisasi dan Tata Kerja Sekretariat Daerah Kabupaten Sukabumi}
+      \field{urlday}{7}
+      \field{urlmonth}{8}
+      \field{urlyear}{2026}
+      \field{year}{2021}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://jdih.sukabumikab.go.id/v1/peraturan/detail/459/peraturan-bupati-sukabumi-100-2021/
+      \endverb
+      \verb{url}
+      \verb https://jdih.sukabumikab.go.id/v1/peraturan/detail/459/peraturan-bupati-sukabumi-100-2021/
+      \endverb
+    \endentry
+    \entry{perda7_2021}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=5fb729e8cb281e72550bc3031ca62ca4}{%
+           family={{Pemerintah Kabupaten Sukabumi}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{bibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorbibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authornamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \field{extraname}{3}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Diakses 16 Agustus}
+      \field{title}{Peraturan Daerah Kabupaten Sukabumi Nomor 7 Tahun 2021 tentang Perubahan Kedua Atas Peraturan Daerah Nomor 7 Tahun 2016 tentang Pembentukan dan Susunan Perangkat Daerah Pemerintah Kabupaten Sukabumi}
+      \field{urlday}{16}
+      \field{urlmonth}{8}
+      \field{urlyear}{2026}
+      \field{year}{2021}
+      \field{urldateera}{ce}
+    \endentry
+    \entry{data-pemerintah}{misc}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=5fb729e8cb281e72550bc3031ca62ca4}{%
+           family={{Pemerintah Kabupaten Sukabumi}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{fullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{bibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorbibnamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authornamehash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhash}{5fb729e8cb281e72550bc3031ca62ca4}
+      \strng{authorfullhashraw}{5fb729e8cb281e72550bc3031ca62ca4}
+      \field{extraname}{4}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Dataset internal dalam format Microsoft Excel yang diperoleh selama kegiatan Praktik Kerja Lapangan}
+      \field{title}{Data Harga Harian Komoditas Kabupaten Sukabumi}
+      \field{year}{2026}
+    \endentry
+    \entry{Purbo2021}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d4b213df2de3cad824544da1e9e05237}{%
+           family={Purbo},
+           familyi={P\bibinitperiod},
+           given={Onno\bibnamedelima Widodo},
+           giveni={O\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d4b213df2de3cad824544da1e9e05237}
+      \strng{fullhash}{d4b213df2de3cad824544da1e9e05237}
+      \strng{fullhashraw}{d4b213df2de3cad824544da1e9e05237}
+      \strng{bibnamehash}{d4b213df2de3cad824544da1e9e05237}
+      \strng{authorbibnamehash}{d4b213df2de3cad824544da1e9e05237}
+      \strng{authornamehash}{d4b213df2de3cad824544da1e9e05237}
+      \strng{authorfullhash}{d4b213df2de3cad824544da1e9e05237}
+      \strng{authorfullhashraw}{d4b213df2de3cad824544da1e9e05237}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issue}{1}
+      \field{journaltitle}{The Enrichment : Journal of Management}
+      \field{month}{12}
+      \field{title}{A Systematic Analysis: Website Development using Codeigniter and Laravel Framework}
+      \field{volume}{12}
+      \field{year}{2021}
+      \field{pages}{1008\bibrangedash 1014}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.35335/enrichment.v12i1.346
+      \endverb
+    \endentry
+    \entry{Taipalus2021}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=0e25ec6249f5d1a010fa5faa26a828d8}{%
+           family={Taipalus},
+           familyi={T\bibinitperiod},
+           given={Toni},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0a359e9fb4ca1dd389cb731d957e509d}{%
+           family={Grahn},
+           familyi={G\bibinitperiod},
+           given={Hilkka},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=85e2524e43341f28b7053dda8ee51bd2}{%
+           family={Ghanbari},
+           familyi={G\bibinitperiod},
+           given={Hadi},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{218d52bffc3f6ba82e9df54ef9902d69}
+      \strng{fullhash}{218d52bffc3f6ba82e9df54ef9902d69}
+      \strng{fullhashraw}{218d52bffc3f6ba82e9df54ef9902d69}
+      \strng{bibnamehash}{218d52bffc3f6ba82e9df54ef9902d69}
+      \strng{authorbibnamehash}{218d52bffc3f6ba82e9df54ef9902d69}
+      \strng{authornamehash}{218d52bffc3f6ba82e9df54ef9902d69}
+      \strng{authorfullhash}{218d52bffc3f6ba82e9df54ef9902d69}
+      \strng{authorfullhashraw}{218d52bffc3f6ba82e9df54ef9902d69}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{01641212}
+      \field{journaltitle}{Journal of Systems and Software}
+      \field{month}{11}
+      \field{title}{Error messages in relational database management systems: A comparison of effectiveness, usefulness, and user confidence}
+      \field{volume}{181}
+      \field{year}{2021}
+      \field{pages}{111034}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.jss.2021.111034
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
