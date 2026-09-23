@@ -221,4 +221,166 @@ Activity Diagram prediksi harga pada Gambar \ref{fig:activity-prediksi} menggamb
 
 Keempat Activity Diagram tersebut memperlihatkan alur utama yang perlu didukung oleh SIPANTAU berdasarkan kebutuhan yang telah diidentifikasi. Alur autentikasi memastikan pengguna dapat mengakses sistem sesuai dengan identitas dan perannya, sedangkan alur registrasi akun mendukung Admin dalam menyediakan akun bagi pengguna. Alur pengelolaan data mendukung pembaruan data komoditas oleh Dinas, sementara alur prediksi menghubungkan data historis dengan layanan model prediksi untuk menghasilkan prediksi harga. Hasil analisis tersebut menjadi dasar dalam menentukan rancangan basis data, arsitektur backend, mekanisme hak akses, integrasi layanan model prediksi, dan deployment aplikasi.
 
+\subsection{Perancangan, Implementasi, dan Pengujian Backend dan Basis Data}
+
+Bagian ini membahas hasil perancangan, implementasi, dan pengujian backend serta basis data SIPANTAU. Perancangan mencakup struktur basis data, arsitektur backend, dan penyediaan API untuk mendukung fungsi sistem yang telah ditetapkan. Implementasi kemudian merealisasikan rancangan tersebut menggunakan teknologi yang telah ditentukan, sedangkan pengujian dilakukan untuk memastikan fungsi backend dan basis data berjalan sesuai kebutuhan sistem.
+
+\subsubsection{Perancangan}
+
+Perancangan backend dan basis data dilakukan berdasarkan kebutuhan fungsional dan non-fungsional yang telah diidentifikasi pada tahap analisis. Perancangan tersebut mencakup struktur basis data, arsitektur backend, dan rancangan API yang digunakan untuk menyediakan dan mengelola data SIPANTAU.
+
+Perancangan basis data menentukan struktur data dan hubungan antarentitas yang digunakan oleh SIPANTAU. Rancangan tersebut mencakup entitas pengguna, pasar, komoditas, harga pasar harian, harga petani harian, ketersediaan harian, dan panen. Hasil perancangan basis data SIPANTAU ditunjukkan pada Gambar \ref{fig:erd-sipantau}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/erd-sipantau.png}
+    \captionof{figure}{Entity Relationship Diagram SIPANTAU}
+    \label{fig:erd-sipantau}
+\end{center}
+
+Struktur basis data pada Gambar \ref{fig:erd-sipantau} menghubungkan data operasional dengan data referensi yang digunakan oleh SIPANTAU. Entitas \textit{komoditas} menjadi acuan bagi data harga pasar, harga petani, ketersediaan, dan panen, sedangkan entitas \textit{pasars} menjadi acuan bagi pencatatan harga pasar. Entitas \textit{users} terhubung dengan data yang dimasukkan oleh pengguna sehingga sistem dapat mencatat pengguna yang melakukan pengelolaan data.
+
+\begin{longtable}{|c|p{4.1cm}|p{2.8cm}|p{2.3cm}|p{1.8cm}|}
+
+    \caption{Relasi antartabel basis data SIPANTAU}
+    \label{tab:relasi-database} \\
+
+    \hline
+
+    \multicolumn{1}{|c|}{\textbf{No.}} &
+    \multicolumn{1}{c|}{\textbf{Tabel}} &
+    \multicolumn{1}{c|}{\textbf{Kolom FK}} &
+    \multicolumn{1}{c|}{
+        \makecell[c]{\vspace{3pt}\textbf{Tabel}\\\textbf{Referensi}}
+    } &
+    \multicolumn{1}{c|}{
+        \makecell[c]{\vspace{3pt}\textbf{Kolom}\\\textbf{Referensi}}
+    } \\
+
+    \hline
+    \endfirsthead
+
+    \hline
+
+    \multicolumn{1}{|c|}{\textbf{No.}} &
+    \multicolumn{1}{c|}{\textbf{Tabel}} &
+    \multicolumn{1}{c|}{\textbf{Kolom FK}} &
+    \multicolumn{1}{c|}{
+        \makecell[c]{\vspace{3pt}\textbf{Tabel}\\\textbf{Referensi}}
+    } &
+    \multicolumn{1}{c|}{
+        \makecell[c]{\vspace{3pt}\textbf{Kolom}\\\textbf{Referensi}}
+    } \\
+
+    \hline
+    \endhead
+
+    1 & \textit{harga\_pasar\_harians} & \textit{komoditas\_id} & \textit{komoditas} & \textit{id} \\ \hline
+    2 & \textit{harga\_pasar\_harians} & \textit{user\_id} & \textit{users} & \textit{id} \\ \hline
+    3 & \textit{harga\_pasar\_harians} & \textit{pasar\_id} & \textit{pasars} & \textit{id} \\ \hline
+    4 & \textit{harga\_petani\_harians} & \textit{komoditas\_id} & \textit{komoditas} & \textit{id} \\ \hline
+    5 & \textit{harga\_petani\_harians} & \textit{user\_id} & \textit{users} & \textit{id} \\ \hline
+    6 & \textit{ketersediaan\_harians} & \textit{komoditas\_id} & \textit{komoditas} & \textit{id} \\ \hline
+    7 & \textit{ketersediaan\_harians} & \textit{user\_id} & \textit{users} & \textit{id} \\ \hline
+    8 & \textit{panens} & \textit{komoditas\_id} & \textit{komoditas} & \textit{id} \\ \hline
+    9 & \textit{panens} & \textit{user\_id} & \textit{users} & \textit{id} \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:relasi-database} menunjukkan hubungan antartabel yang digunakan dalam basis data SIPANTAU. Relasi tersebut menghubungkan data operasional dengan data pengguna dan data referensi yang diperlukan oleh sistem.
+
+Perancangan backend selanjutnya menentukan struktur layanan yang mengelola proses bisnis SIPANTAU berdasarkan struktur basis data yang telah dirancang. Backend menggunakan Laravel untuk menerima dan memproses permintaan dari pengguna melalui frontend berbasis Next.js. Nginx digunakan sebagai API Gateway dan reverse proxy yang mengatur lalu lintas permintaan menuju layanan frontend dan backend. Backend Laravel berkomunikasi dengan basis data MySQL untuk mengelola data SIPANTAU dan berkomunikasi dengan ML Service berbasis FastAPI untuk menjalankan proses prediksi harga.
+
+\begin{center}
+
+    \includegraphics[width=1\textwidth]{img/arsitektur.png}
+
+    \captionof{figure}{Arsitektur SIPANTAU}
+
+    \label{fig:arsitektur-sipantau}
+
+\end{center}
+
+Arsitektur SIPANTAU pada Gambar \ref{fig:arsitektur-sipantau} menunjukkan hubungan antara komponen aplikasi yang digunakan dalam sistem. Sistem berjalan pada lingkungan Ubuntu yang menjadi sistem operasi tempat seluruh layanan aplikasi dijalankan. Nginx berperan sebagai API Gateway dan reverse proxy yang menerima permintaan dari pengguna dan meneruskannya kepada layanan yang sesuai. Frontend menggunakan Next.js untuk menyediakan antarmuka pengguna, sedangkan backend menggunakan Laravel untuk menangani proses bisnis dan menyediakan API.
+
+Backend Laravel terhubung dengan basis data MySQL untuk menyimpan dan mengambil data yang digunakan oleh sistem. Backend juga terhubung dengan ML Service berbasis FastAPI untuk menjalankan proses prediksi harga. ML Service menggunakan model yang telah dilatih sebelumnya sebagai dasar proses prediksi. Dengan rancangan tersebut, proses pengelolaan data dan proses prediksi ditempatkan pada layanan yang terpisah sehingga masing-masing layanan dapat menjalankan tanggung jawabnya secara khusus.
+
+Perancangan API selanjutnya menentukan endpoint yang digunakan untuk mendukung fungsi backend SIPANTAU dalam ruang lingkup pengembangan. Backend Laravel menyediakan endpoint untuk autentikasi pengguna, registrasi akun, pengelolaan data komoditas dan pasar, serta pengelolaan data ketersediaan, panen, harga pasar, dan harga petani.
+
+\begin{longtable}{|c|c|p{3cm}|p{6.4cm}|}
+
+    \caption{Rancangan endpoint API SIPANTAU}
+    \label{tab:rancangan-api} \\
+
+    \hline
+
+    \textbf{No.} &
+    \textbf{Method} &
+    \textbf{Endpoint} &
+    \textbf{Fungsi} \\
+
+    \hline
+    \endfirsthead
+
+    \hline
+
+    \textbf{No.} &
+    \textbf{Method} &
+    \textbf{Endpoint} &
+    \textbf{Fungsi} \\
+
+    \hline
+    \endhead
+
+    1 & POST & \texttt{/login} &
+    Melakukan autentikasi pengguna. \\ \hline
+
+    2 & POST & \texttt{/logout} &
+    Mengakhiri sesi autentikasi pengguna. \\ \hline
+
+    3 & GET & \texttt{/me} &
+    Mengambil informasi pengguna yang sedang terautentikasi. \\ \hline
+
+    4 & POST & \texttt{/register} &
+    Mendaftarkan akun pengguna baru. \\ \hline
+
+    5 & GET & \texttt{/komoditas} &
+    Mengambil data komoditas. \\ \hline
+
+    6 & POST & \texttt{/komoditas} &
+    Menambahkan data komoditas baru. \\ \hline
+
+    7 & GET & \texttt{/pasar} &
+    Mengambil data pasar. \\ \hline
+
+    8 & POST & \texttt{/pasar} &
+    Menambahkan data pasar baru. \\ \hline
+
+    9 & POST & \texttt{/ketersediaan} &
+    Menyimpan data ketersediaan dan kebutuhan harian komoditas. \\ \hline
+
+    10 & GET & \texttt{/ketersediaan} &
+    Mengambil data ketersediaan harian. \\ \hline
+
+    11 & POST & \texttt{/panen} &
+    Menyimpan data perkiraan panen komoditas. \\ \hline
+
+    12 & GET & \texttt{/panen} &
+    Mengambil data panen. \\ \hline
+
+    13 & POST & \texttt{/harga-pasar} &
+    Menyimpan data harga pasar harian. \\ \hline
+
+    14 & GET & \texttt{/harga-pasar} &
+    Mengambil data harga pasar harian. \\ \hline
+
+    15 & POST & \texttt{/harga-petani} &
+    Menyimpan data harga petani harian. \\ \hline
+
+    16 & GET & \texttt{/harga-petani} &
+    Mengambil data harga petani harian. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:rancangan-api} menunjukkan endpoint API yang digunakan untuk mendukung pengelolaan data pada SIPANTAU. Endpoint tersebut menyediakan operasi untuk menyimpan dan mengambil data yang digunakan oleh sistem.
+
 \section{Pembahasan}

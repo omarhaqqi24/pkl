@@ -72,7 +72,6 @@
       \field{labeldatesource}{}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{Educational Data Mining (EDM) is used to extract and discover interesting patterns from educational institution datasets using Machine Learning (ML) algorithms. There is much academic information related to students available. Therefore, it is helpful to apply data mining to extract factors affecting students’ academic performance. In this paper, a web-based system for predicting academic performance and identifying students at risk of failure through academic and demographic factors is developed. The ML model is developed to predict the total score of a course at the early stages. Several ML algorithms are applied, namely: Support Vector Machine (SVM), Random Forest (RF), K-Nearest Neighbors (KNN), Artificial Neural Network (ANN), and Linear Regression (LR). This model applies to the data of female students of the Computer Science Department at Imam Abdulrahman bin Faisal University (IAU). The dataset contains 842 instances for 168 students. Moreover, the results showed that the prediction’s Mean Absolute Percentage Error (MAPE) reached 6.34%, and the academic factors had a higher impact on students’ academic performance than the demographic factors, the midterm exam score in the top. The developed web-based prediction system is available on an online server and can be used by tutors.}
       \field{issn}{2306-5729}
       \field{issue}{2}
       \field{journaltitle}{Data}
@@ -92,6 +91,34 @@
       \verb https://www.mdpi.com/2306-5729/7/2/21
       \endverb
     \endentry
+    \entry{bps-penduduk-2025}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=217ddd80de0ca8b8f12be4ee75de2243}{%
+           family={{Badan Pusat Statistik Kabupaten Sukabumi}},
+           familyi={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{fullhash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{fullhashraw}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{bibnamehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authorbibnamehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authornamehash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authorfullhash}{217ddd80de0ca8b8f12be4ee75de2243}
+      \strng{authorfullhashraw}{217ddd80de0ca8b8f12be4ee75de2243}
+      \field{extraname}{1}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kabupaten Sukabumi, 2025}
+      \field{urlday}{1}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+    \endentry
     \entry{bps-sukabumi-2026}{report}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=217ddd80de0ca8b8f12be4ee75de2243}{%
@@ -109,6 +136,7 @@
       \strng{authornamehash}{217ddd80de0ca8b8f12be4ee75de2243}
       \strng{authorfullhash}{217ddd80de0ca8b8f12be4ee75de2243}
       \strng{authorfullhashraw}{217ddd80de0ca8b8f12be4ee75de2243}
+      \field{extraname}{2}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{extradatescope}{labelyear}
@@ -127,54 +155,21 @@
       \field{year}{2026}
       \field{dateera}{ce}
       \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://sukabumikab.bps.go.id/id/publication/2026/04/06/bd127ac6cc13a55f3d306265/produk-domestik-regional-bruto-kabupaten-sukabumi-menurut-lapangan-usaha-2021-2025.html
-      \endverb
-      \verb{url}
-      \verb https://sukabumikab.bps.go.id/id/publication/2026/04/06/bd127ac6cc13a55f3d306265/produk-domestik-regional-bruto-kabupaten-sukabumi-menurut-lapangan-usaha-2021-2025.html
-      \endverb
-    \endentry
-    \entry{bps-penduduk-2025}{online}{}{}
-      \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=28ee565fd4648482145c29774c55e41c}{%
-           family={{Badan Pusat Statistika Kabupaten Sukabumi}},
-           familyi={B\bibinitperiod}}}%
-      }
-      \strng{namehash}{28ee565fd4648482145c29774c55e41c}
-      \strng{fullhash}{28ee565fd4648482145c29774c55e41c}
-      \strng{fullhashraw}{28ee565fd4648482145c29774c55e41c}
-      \strng{bibnamehash}{28ee565fd4648482145c29774c55e41c}
-      \strng{authorbibnamehash}{28ee565fd4648482145c29774c55e41c}
-      \strng{authornamehash}{28ee565fd4648482145c29774c55e41c}
-      \strng{authorfullhash}{28ee565fd4648482145c29774c55e41c}
-      \strng{authorfullhashraw}{28ee565fd4648482145c29774c55e41c}
-      \field{sortinit}{B}
-      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Penduduk, Laju Pertumbuhan Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kabupaten Sukabumi, 2025}
-      \field{urlday}{1}
-      \field{urlmonth}{7}
-      \field{urlyear}{2025}
-      \field{year}{2025}
-      \field{urldateera}{ce}
     \endentry
     \entry{bps-luas-2025}{online}{}{}
       \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=7546d20b01c73e46735ff066ec6bb6f8}{%
-           family={{Badan Pusat Statistika Provinsi Jawa Barat}},
+        {{un=0,uniquepart=base,hash=85fffe56c224f1f3f8a91f65dde48050}{%
+           family={{Badan Pusat Statistik Provinsi Jawa Barat}},
            familyi={B\bibinitperiod}}}%
       }
-      \strng{namehash}{7546d20b01c73e46735ff066ec6bb6f8}
-      \strng{fullhash}{7546d20b01c73e46735ff066ec6bb6f8}
-      \strng{fullhashraw}{7546d20b01c73e46735ff066ec6bb6f8}
-      \strng{bibnamehash}{7546d20b01c73e46735ff066ec6bb6f8}
-      \strng{authorbibnamehash}{7546d20b01c73e46735ff066ec6bb6f8}
-      \strng{authornamehash}{7546d20b01c73e46735ff066ec6bb6f8}
-      \strng{authorfullhash}{7546d20b01c73e46735ff066ec6bb6f8}
-      \strng{authorfullhashraw}{7546d20b01c73e46735ff066ec6bb6f8}
+      \strng{namehash}{85fffe56c224f1f3f8a91f65dde48050}
+      \strng{fullhash}{85fffe56c224f1f3f8a91f65dde48050}
+      \strng{fullhashraw}{85fffe56c224f1f3f8a91f65dde48050}
+      \strng{bibnamehash}{85fffe56c224f1f3f8a91f65dde48050}
+      \strng{authorbibnamehash}{85fffe56c224f1f3f8a91f65dde48050}
+      \strng{authornamehash}{85fffe56c224f1f3f8a91f65dde48050}
+      \strng{authorfullhash}{85fffe56c224f1f3f8a91f65dde48050}
+      \strng{authorfullhashraw}{85fffe56c224f1f3f8a91f65dde48050}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{extradatescope}{labelyear}
@@ -829,6 +824,63 @@
       \verb 10.1016/j.jss.2021.111109
       \endverb
     \endentry
+    \entry{Mohammed2022}{article}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=fdbe169c6ea7339d3d70ca17aebdce45}{%
+           family={Mohammed},
+           familyi={M\bibinitperiod},
+           given={Nuredin\bibnamedelima I.},
+           giveni={N\bibinitperiod\bibinitdelim I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ac078f3bb7e120f6b55d86807d1c2747}{%
+           family={Jarde},
+           familyi={J\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cb87ee2fcc2019631a037addeab4aa11}{%
+           family={Mackenzie},
+           familyi={M\bibinitperiod},
+           given={Grant},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9942562b8937c1f1aae3ae83e155db4b}{%
+           family={D'Alessandro},
+           familyi={D\bibinitperiod},
+           given={Umberto},
+           giveni={U\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=780f4225ab8c2b5945026f83680bb038}{%
+           family={Jeffries},
+           familyi={J\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8f7734c50673705c364c0f4d8ef75fc3}
+      \strng{fullhash}{b8c8a9ca70e907739ecf6a8b4d3db766}
+      \strng{fullhashraw}{b8c8a9ca70e907739ecf6a8b4d3db766}
+      \strng{bibnamehash}{8f7734c50673705c364c0f4d8ef75fc3}
+      \strng{authorbibnamehash}{8f7734c50673705c364c0f4d8ef75fc3}
+      \strng{authornamehash}{8f7734c50673705c364c0f4d8ef75fc3}
+      \strng{authorfullhash}{b8c8a9ca70e907739ecf6a8b4d3db766}
+      \strng{authorfullhashraw}{b8c8a9ca70e907739ecf6a8b4d3db766}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2296-2565}
+      \field{journaltitle}{Frontiers in Public Health}
+      \field{month}{2}
+      \field{title}{Deploying Machine Learning Models Using Progressive Web Applications: Implementation Using a Neural Network Prediction Model for Pneumonia Related Child Mortality in The Gambia}
+      \field{volume}{9}
+      \field{year}{2022}
+      \verb{doi}
+      \verb 10.3389/fpubh.2021.772620
+      \endverb
+    \endentry
     \entry{Nurhayati2023}{article}{}{}
       \name{author}{2}{}{%
         {{un=0,uniquepart=base,hash=f89e7b630a28683fbf9d4905bad2ff93}{%
@@ -1024,6 +1076,54 @@
       \range{pages}{7}
       \verb{doi}
       \verb 10.35335/enrichment.v12i1.346
+      \endverb
+    \endentry
+    \entry{Sit2023}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=e2972ea0f62e03d79fbcd0bcf0f31f9a}{%
+           family={Sit},
+           familyi={S\bibinitperiod},
+           given={Muhammed},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=33e8472f9e80cbaf61f0d54334dfe7eb}{%
+           family={Demir},
+           familyi={D\bibinitperiod},
+           given={Ibrahim},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \strng{fullhash}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \strng{fullhashraw}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \strng{bibnamehash}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \strng{authorbibnamehash}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \strng{authornamehash}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \strng{authorfullhash}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \strng{authorfullhashraw}{9f7d302b6ccad7a6b762edf1c1e607d0}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2076-3417}
+      \field{issue}{5}
+      \field{journaltitle}{Applied Sciences}
+      \field{month}{3}
+      \field{title}{Democratizing Deep Learning Applications in Earth and Climate Sciences on the Web: EarthAIHub}
+      \field{volume}{13}
+      \field{year}{2023}
+      \field{pages}{3185}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/app13053185
+      \endverb
+      \verb{urlraw}
+      \verb https://www.mdpi.com/2076-3417/13/5/3185
+      \endverb
+      \verb{url}
+      \verb https://www.mdpi.com/2076-3417/13/5/3185
       \endverb
     \endentry
     \entry{Taipalus2021}{article}{}{}

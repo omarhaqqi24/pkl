@@ -106,8 +106,10 @@
   {\normalfont\normalsize\bfseries}}
 \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
   {3.25ex \@plus1ex \@minus.2ex}%
-  {-1em}%
+  {1.5ex\@plus.2ex}%
   {\normalfont\normalsize\bfseries}}
+
+\setcounter{secnumdepth}{3}
 \renewcommand{\paragraph}{\subparagraph}
 
 \@addtoreset {equation}{chapter}
