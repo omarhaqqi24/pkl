@@ -227,7 +227,7 @@ Bagian ini membahas hasil perancangan, implementasi, dan pengujian backend serta
 
 \subsubsection{Perancangan}
 
-Perancangan backend dan basis data dilakukan berdasarkan kebutuhan fungsional dan non-fungsional yang telah diidentifikasi pada tahap analisis. Perancangan tersebut mencakup struktur basis data, arsitektur backend, dan rancangan API yang digunakan untuk menyediakan dan mengelola data SIPANTAU.
+Perancangan backend dan basis data dilakukan berdasarkan kebutuhan fungsional dan non-fungsional yang telah diidentifikasi pada tahap analisis. Perancangan tersebut mencakup struktur basis data, arsitektur backend, mekanisme authentication, serta rancangan API yang digunakan untuk menyediakan dan mengelola data SIPANTAU. Perancangan authorization berbasis peran tidak dibahas pada bagian ini karena mekanisme tersebut diterapkan pada tahap pengembangan berikutnya.
 
 Perancangan basis data menentukan struktur data dan hubungan antarentitas yang digunakan oleh SIPANTAU. Rancangan tersebut mencakup entitas pengguna, pasar, komoditas, harga pasar harian, harga petani harian, ketersediaan harian, dan panen. Hasil perancangan basis data SIPANTAU ditunjukkan pada Gambar \ref{fig:erd-sipantau}.
 
@@ -304,15 +304,13 @@ Arsitektur SIPANTAU pada Gambar \ref{fig:arsitektur-sipantau} menunjukkan hubung
 
 Backend Laravel terhubung dengan basis data MySQL untuk menyimpan dan mengambil data yang digunakan oleh sistem. Backend juga terhubung dengan ML Service berbasis FastAPI untuk menjalankan proses prediksi harga. ML Service menggunakan model yang telah dilatih sebelumnya sebagai dasar proses prediksi. Dengan rancangan tersebut, proses pengelolaan data dan proses prediksi ditempatkan pada layanan yang terpisah sehingga masing-masing layanan dapat menjalankan tanggung jawabnya secara khusus.
 
-Perancangan API selanjutnya menentukan endpoint yang digunakan untuk mendukung fungsi backend SIPANTAU dalam ruang lingkup pengembangan. Backend Laravel menyediakan endpoint untuk autentikasi pengguna, registrasi akun, pengelolaan data komoditas dan pasar, serta pengelolaan data ketersediaan, panen, harga pasar, dan harga petani.
+Perancangan API dilakukan untuk menentukan mekanisme komunikasi antara frontend dan backend dalam pengelolaan data SIPANTAU. Selain menyediakan endpoint untuk pengelolaan data, API juga dirancang untuk mendukung proses \textit{authentication} pengguna. Endpoint \textit{register} dan \textit{login} disediakan sebagai tahap awal untuk memperoleh akses pengguna, sedangkan endpoint yang memerlukan pengguna terautentikasi ditempatkan pada \textit{middleware auth:sanctum}. Pengguna yang berhasil melakukan \textit{login} memperoleh token yang digunakan pada permintaan berikutnya terhadap endpoint yang dilindungi. Endpoint pengelolaan data mencakup data komoditas, pasar, ketersediaan, panen, dan harga pasar harian.
 
-\begin{longtable}{|c|c|p{3cm}|p{6.4cm}|}
-
+\begin{longtable}{|c|c|p{3.4cm}|p{6cm}|}
     \caption{Rancangan endpoint API SIPANTAU}
     \label{tab:rancangan-api} \\
 
     \hline
-
     \textbf{No.} &
     \textbf{Method} &
     \textbf{Endpoint} &
@@ -322,7 +320,6 @@ Perancangan API selanjutnya menentukan endpoint yang digunakan untuk mendukung f
     \endfirsthead
 
     \hline
-
     \textbf{No.} &
     \textbf{Method} &
     \textbf{Endpoint} &
@@ -331,17 +328,17 @@ Perancangan API selanjutnya menentukan endpoint yang digunakan untuk mendukung f
     \hline
     \endhead
 
-    1 & POST & \texttt{/login} &
-    Melakukan autentikasi pengguna. \\ \hline
-
-    2 & POST & \texttt{/logout} &
-    Mengakhiri sesi autentikasi pengguna. \\ \hline
-
-    3 & GET & \texttt{/me} &
-    Mengambil informasi pengguna yang sedang terautentikasi. \\ \hline
-
-    4 & POST & \texttt{/register} &
+    1 & POST & \texttt{/register} &
     Mendaftarkan akun pengguna baru. \\ \hline
+
+    2 & POST & \texttt{/login} &
+    Melakukan proses \textit{authentication} pengguna dan menghasilkan token. \\ \hline
+
+    3 & POST & \texttt{/logout} &
+    Mengakhiri akses \textit{authentication} pengguna. \\ \hline
+
+    4 & GET & \texttt{/me} &
+    Mengambil informasi pengguna yang sedang terautentikasi. \\ \hline
 
     5 & GET & \texttt{/komoditas} &
     Mengambil data komoditas. \\ \hline
@@ -355,32 +352,988 @@ Perancangan API selanjutnya menentukan endpoint yang digunakan untuk mendukung f
     8 & POST & \texttt{/pasar} &
     Menambahkan data pasar baru. \\ \hline
 
-    9 & POST & \texttt{/ketersediaan} &
-    Menyimpan data ketersediaan dan kebutuhan harian komoditas. \\ \hline
-
-    10 & GET & \texttt{/ketersediaan} &
+    9 & GET & \texttt{/ketersediaan} &
     Mengambil data ketersediaan harian. \\ \hline
 
-    11 & POST & \texttt{/panen} &
-    Menyimpan data perkiraan panen komoditas. \\ \hline
+    10 & POST & \texttt{/ketersediaan} &
+    Menyimpan data ketersediaan dan kebutuhan harian komoditas. \\ \hline
 
-    12 & GET & \texttt{/panen} &
+    11 & GET & \texttt{/panen} &
     Mengambil data panen. \\ \hline
 
-    13 & POST & \texttt{/harga-pasar} &
-    Menyimpan data harga pasar harian. \\ \hline
+    12 & POST & \texttt{/panen} &
+    Menyimpan data perkiraan panen komoditas. \\ \hline
 
-    14 & GET & \texttt{/harga-pasar} &
+    13 & GET & \texttt{/harga-pasar} &
     Mengambil data harga pasar harian. \\ \hline
 
-    15 & POST & \texttt{/harga-petani} &
-    Menyimpan data harga petani harian. \\ \hline
-
-    16 & GET & \texttt{/harga-petani} &
-    Mengambil data harga petani harian. \\ \hline
+    14 & POST & \texttt{/harga-pasar} &
+    Menyimpan data harga pasar harian. \\ \hline
 
 \end{longtable}
 
-Tabel \ref{tab:rancangan-api} menunjukkan endpoint API yang digunakan untuk mendukung pengelolaan data pada SIPANTAU. Endpoint tersebut menyediakan operasi untuk menyimpan dan mengambil data yang digunakan oleh sistem.
+Tabel \ref{tab:rancangan-api} menunjukkan endpoint API yang digunakan pada tahap awal implementasi backend SIPANTAU. Endpoint \textit{register} dan \textit{login} digunakan untuk menyediakan mekanisme awal \textit{authentication}, sedangkan endpoint \textit{logout}, \textit{me}, dan pengelolaan data ditempatkan pada \textit{middleware auth:sanctum}. Dengan rancangan tersebut, pengguna memperoleh token setelah berhasil melakukan \textit{authentication} dan menggunakan token tersebut untuk mengakses endpoint yang dilindungi.
+
+\subsubsection{Implementasi}
+
+Implementasi backend dan basis data dilakukan dengan menerapkan rancangan yang telah ditetapkan pada tahap perancangan. Implementasi tersebut mencakup penerapan struktur basis data menggunakan MySQL dan pengembangan backend menggunakan Laravel untuk menyediakan layanan yang dibutuhkan oleh SIPANTAU. Implementasi backend juga menerapkan API sebagai mekanisme komunikasi antara \textit{frontend} dan \textit{backend}, serta menerapkan mekanisme \textit{authentication} untuk membatasi akses terhadap fungsi yang memerlukan pengguna terautentikasi.
+
+Implementasi basis data dilakukan dengan menerapkan struktur tabel dan relasi yang telah dirancang pada tahap sebelumnya. Laravel menggunakan \textit{migration} untuk membentuk tabel, menentukan tipe data setiap kolom, serta menerapkan \textit{primary key} dan \textit{foreign key} pada tabel yang memiliki hubungan dengan entitas lainnya. Implementasi tersebut menghasilkan struktur basis data MySQL yang sesuai dengan rancangan basis data SIPANTAU.
+
+\begin{code}
+\begin{ignasicblock}
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('harga_pasar_harians', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('harga_pasar');
+            $table->date('tanggal');
+            $table->foreignId('komoditas_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('pasar_id')->constrained()->cascadeOnDelete();
+            $table->timestamps();
+            $table->unique([
+                'komoditas_id',
+                'tanggal',
+                'pasar_id'
+            ]);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('harga_pasar_harians');
+    }
+};
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan implementasi \textit{migration} untuk tabel \textit{harga\allowbreak\_pasar\allowbreak\_harians}. \textit{Migration} tersebut mendefinisikan atribut harga dan tanggal serta \textit{foreign key} yang menghubungkan data harga pasar dengan tabel \textit{komoditas}, \textit{users}, dan \textit{pasars}. Implementasi tersebut juga menerapkan penghapusan data secara berantai melalui \textit{cascadeOnDelete} serta batasan keunikan berdasarkan komoditas, tanggal, dan pasar untuk menjaga konsistensi data pada basis data.
+
+Implementasi basis data selanjutnya dilanjutkan dengan penerapan Model Eloquent untuk merepresentasikan tabel basis data pada \textit{backend} Laravel. Model Eloquent digunakan oleh \textit{backend} untuk berinteraksi dengan data pada basis data melalui mekanisme ORM (\textit{Object-Relational Mapping}). Pada SIPANTAU, model \textit{HargaPasarHarian} digunakan untuk merepresentasikan data harga pasar harian dan mendefinisikan atribut serta hubungan data yang diperlukan oleh \textit{backend}.
+
+\begin{code}
+\begin{ignasicblock}
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class HargaPasarHarian extends Model
+{
+    protected $fillable = [
+        'harga_pasar',
+        'tanggal',
+        'komoditas_id',
+        'user_id',
+        'pasar_id',
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
+    ];
+
+    public function komoditas()
+    {
+        return $this->belongsTo(Komoditas::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function pasar()
+    {
+        return $this->belongsTo(Pasar::class);
+    }
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan implementasi model \textit{HargaPasarHarian} yang digunakan untuk merepresentasikan data harga pasar harian. Atribut \textit{\$fillable} menentukan kolom yang dapat diisi melalui mekanisme \textit{mass assignment}, yaitu \textit{harga\allowbreak\_pasar}, \textit{tanggal}, \textit{komoditas\allowbreak\_id}, \textit{user\allowbreak\_id}, dan \textit{pasar\allowbreak\_id}. Atribut \textit{\$casts} digunakan untuk mengonversi nilai kolom \textit{tanggal} menjadi tipe data tanggal ketika data diakses melalui model. Model tersebut juga mendefinisikan relasi \textit{belongsTo} dengan model \textit{Komoditas}, \textit{User}, dan \textit{Pasar} yang sesuai dengan \textit{foreign key} pada tabel \textit{harga\allowbreak\_pasar\allowbreak\_harians}. Dengan implementasi tersebut, model dapat digunakan oleh \textit{backend} untuk mengelola data harga pasar serta mengakses entitas yang berkaitan.
+
+Implementasi \textit{backend} selanjutnya dilakukan melalui Controller yang menangani permintaan pengelolaan data harga pasar. Controller menerima \textit{request} dari \textit{frontend}, melakukan validasi terhadap data yang dikirimkan, memproses data menggunakan Model Eloquent, serta menghasilkan \textit{response} yang dapat digunakan oleh \textit{frontend}. Pada SIPANTAU, \textit{HargaPasarHarianController} digunakan untuk menyediakan proses pengambilan dan penyimpanan data harga pasar harian.
+
+\begin{code}
+\begin{ignasicblock}
+public function index()
+{
+    try {
+        $hargaPasar = HargaPasarHarian::with([
+            'komoditas:id,nama_komoditas',
+            'user:id,name',
+            'pasar:id,nama_pasar',
+        ])->get();
+
+        return $this->success(
+            HargaPasarHarianResource::collection($hargaPasar),
+            'Harga Pasar Harian fetched successfully'
+        );
+    } catch (Throwable $e) {
+        return $this->error($e->getMessage());
+    }
+}
+
+public function store(Request $request)
+{
+    try {
+        $saveIds = [];
+
+        $validated = $request->validate([
+            'komoditas_id' => 'required|exists:komoditas,id',
+            'items' => 'required|array|min:1',
+            'items.*.harga_pasar' => 'required|integer|min:0',
+            'items.*.tanggal' => 'required|date',
+            'items.*.pasar_id' => 'required|exists:pasars,id',
+        ]);
+
+        DB::transaction(function () use ($validated, &$saveIds, $request) {
+            foreach ($validated['items'] as $item) {
+                $record = HargaPasarHarian::updateOrCreate(
+                    [
+                        'komoditas_id' => $validated['komoditas_id'],
+                        'pasar_id' => $item['pasar_id'],
+                        'tanggal' => $item['tanggal'],
+                    ],
+                    [
+                        'harga_pasar' => $item['harga_pasar'],
+                        'user_id' => $request->user()->id,
+                    ]
+                );
+
+                $saveIds[] = $record->id;
+            }
+        });
+
+        $records = HargaPasarHarian::with([
+            'komoditas',
+            'user',
+            'pasar',
+        ])->whereIn('id', $saveIds)->get();
+
+        return $this->success(
+            HargaPasarHarianResource::collection($records),
+            'Harga Pasar Harian created successfully',
+            201
+        );
+    } catch (Throwable $e) {
+        return $this->error($e->getMessage());
+    }
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan implementasi \textit{HargaPasarHarianController} yang menyediakan fungsi untuk mengambil dan menyimpan data harga pasar harian. Method \textit{index()} menggunakan relasi \textit{with()} untuk mengambil data harga pasar beserta informasi komoditas, pengguna, dan pasar yang berkaitan, kemudian hasilnya dikembalikan menggunakan \textit{HargaPasarHarianResource}. Method \textit{store()} melakukan validasi terhadap komoditas, harga, tanggal, dan pasar sebelum data diproses dan disimpan ke basis data. Proses penyimpanan menggunakan \textit{DB::transaction()} dan \textit{updateOrCreate()} sehingga data diproses dalam satu transaksi serta diperbarui berdasarkan kombinasi komoditas, pasar, dan tanggal apabila data dengan kombinasi tersebut telah tersedia. Setelah proses penyimpanan selesai, data yang tersimpan diambil kembali beserta relasinya dan dikembalikan dalam bentuk \textit{response} API. Method \textit{store()} juga menggunakan informasi pengguna yang telah terautentikasi melalui objek \textit{request} untuk mencatat pengguna yang menyimpan data harga pasar.
+
+Implementasi \textit{authentication} dilakukan menggunakan Laravel Sanctum dengan mekanisme token untuk mengidentifikasi pengguna pada API. Dukungan terhadap pembuatan token diterapkan pada model \textit{User} melalui \textit{trait HasApiTokens}. Selain itu, atribut \textit{password} dikonfigurasi untuk diproses dalam bentuk \textit{hash} sehingga kredensial pengguna tidak disimpan dalam bentuk teks asli. Proses \textit{authentication} selanjutnya diimplementasikan pada \textit{AuthController} yang menangani registrasi, login, dan logout pengguna.
+
+\begin{code}
+\begin{ignasicblock}
+public function register(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8',
+        'role' => 'nullable|string|exists:roles,name',
+    ]);
+
+    $user = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+    ]);
+
+    $user->assignRole($validated['role'] ?? 'user');
+
+    return $this->success([
+        'token' => $user->createToken('api-token')->plainTextToken,
+    ], 'User registered successfully', 201);
+}
+
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    return $this->success([
+        'token' => $user->createToken('api-token')->plainTextToken,
+    ], 'Login successful');
+}
+
+public function logout(Request $request)
+{
+    $request->user()->tokens()->delete();
+
+    return $this->success(null, 'Logged out successfully');
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan implementasi proses \textit{authentication} pada \textit{AuthController}. Method \textit{register()} melakukan validasi terhadap data pengguna sebelum membuat akun baru menggunakan model \textit{User}. \textit{Password} diproses menggunakan \textit{Hash::make()} sebelum disimpan ke basis data, kemudian sistem menetapkan \textit{role} awal dan menghasilkan token menggunakan method \textit{createToken()}. Pada method \textit{login()}, sistem mengambil pengguna berdasarkan email dan memverifikasi \textit{password} menggunakan \textit{Hash::check()}. Apabila kredensial sesuai, sistem menghasilkan token yang digunakan untuk mengakses API yang dilindungi. Proses logout dilakukan dengan menghapus token milik pengguna yang sedang terautentikasi melalui method \textit{tokens()->delete()}.
+
+Penerapan \textit{authentication} pada API kemudian dilakukan menggunakan \textit{middleware auth:sanctum}. Endpoint \textit{register} dan \textit{login} ditempatkan di luar \textit{middleware} tersebut karena digunakan untuk memperoleh token, sedangkan endpoint yang memerlukan pengguna terautentikasi ditempatkan di dalam kelompok \textit{middleware auth:sanctum}. Penerapan mekanisme tersebut ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/me', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('/komoditas', [KomoditasController::class, 'index']);
+    Route::post('/komoditas', [KomoditasController::class, 'store']);
+
+    Route::get('/pasar', [PasarController::class, 'index']);
+    Route::post('/pasar', [PasarController::class, 'store']);
+
+    Route::get('/ketersediaan', [KetersediaanHarianController::class, 'index']);
+    Route::post('/ketersediaan', [KetersediaanHarianController::class, 'store']);
+
+    Route::get('/panen', [PanenController::class, 'index']);
+    Route::post('/panen', [PanenController::class, 'store']);
+
+    Route::get('/harga-pasar', [HargaPasarHarianController::class, 'index']);
+    Route::post('/harga-pasar', [HargaPasarHarianController::class, 'store']);
+
+    Route::get('/harga-petani', [HargaPetaniHarianController::class, 'index']);
+    Route::post('/harga-petani', [HargaPetaniHarianController::class, 'store']);
+});
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan penerapan API Route pada \textit{backend} SIPANTAU. Endpoint \textit{/register} dan \textit{/login} diarahkan ke \textit{AuthController} untuk menangani pendaftaran dan \textit{authentication} pengguna. Endpoint lainnya ditempatkan dalam \textit{middleware auth:sanctum} sehingga pengguna harus melalui proses \textit{authentication} sebelum dapat mengaksesnya. Endpoint pengelolaan data menggunakan method \textit{GET} dan \textit{POST} untuk mengambil dan menyimpan data komoditas, pasar, ketersediaan, panen, harga pasar, dan harga petani. Dengan penerapan tersebut, mekanisme \textit{authentication} terintegrasi dengan seluruh API yang digunakan oleh SIPANTAU.
+
+Secara keseluruhan, implementasi backend dan basis data menghasilkan komponen yang saling terintegrasi antara struktur basis data, Model Eloquent, Controller, API Route, dan mekanisme \textit{authentication}. Basis data digunakan sebagai penyimpanan data, Model Eloquent menyediakan representasi data pada \textit{backend}, Controller menangani proses bisnis dan pengolahan data, sedangkan API Route menyediakan jalur komunikasi antara \textit{frontend} dan \textit{backend}. Mekanisme \textit{authentication} melengkapi implementasi tersebut dengan membatasi akses terhadap endpoint yang memerlukan pengguna terautentikasi.
+
+\subsubsection{Pengujian}
+
+Pengujian backend dan basis data dilakukan untuk memastikan fungsi backend SIPANTAU dapat berjalan sesuai dengan rancangan. Pengujian mencakup mekanisme \textit{authentication} pengguna serta fungsi pengelolaan data yang meliputi penambahan, pengambilan, dan pembaruan data. Pengujian dilakukan menggunakan Postman dengan mengirimkan request ke endpoint yang tersedia dan memeriksa kode status serta response yang dihasilkan oleh backend.
+
+\vspace{0.5em}
+\noindent\textbf{1. Pengujian Authentication}
+\vspace{0.5em}
+
+Pengujian authentication dilakukan untuk memastikan bahwa backend SIPANTAU dapat menjalankan proses registrasi akun, login, pengambilan informasi pengguna, dan logout. Pengujian dilakukan dengan mengirimkan request ke endpoint authentication menggunakan Postman. Hasil pengujian authentication ditunjukkan pada Tabel \ref{tab:pengujian-auth}.
+
+\begin{longtable}{|c|p{2cm}|c|p{2.3cm}|p{2.7cm}|c|c|}
+\caption{Hasil pengujian authentication SIPANTAU}
+\label{tab:pengujian-auth} \\
+
+\hline
+\textbf{No.} &
+\textbf{Fungsi} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} &
+\textbf{Fungsi} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endhead
+
+1 &
+Registrasi akun &
+POST &
+/register &
+Mengirim data akun baru dengan data yang valid. &
+201 &
+Berhasil \\ \hline
+
+2 &
+Login pengguna &
+POST &
+/login &
+Mengirim email dan password akun yang telah terdaftar. &
+200 &
+Berhasil \\ \hline
+
+3 &
+Mengambil informasi pengguna &
+GET &
+/me &
+Mengirim request menggunakan token authentication. &
+200 &
+Berhasil \\ \hline
+
+4 &
+Logout pengguna &
+POST &
+/logout &
+Mengirim request menggunakan token pengguna yang telah terautentikasi. &
+200 &
+Berhasil \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:pengujian-auth} menunjukkan hasil pengujian terhadap fungsi authentication pada SIPANTAU. Proses registrasi akun menghasilkan kode HTTP 201 dan token authentication, sedangkan proses login menghasilkan kode HTTP 200 beserta token yang dapat digunakan untuk mengakses endpoint yang memerlukan authentication. Endpoint \textit{/me} berhasil mengembalikan informasi pengguna yang sedang terautentikasi, sedangkan endpoint \textit{/logout} menghasilkan kode HTTP 200 dan response yang menunjukkan bahwa proses logout berhasil.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{img/pengujian-login.png}
+    \captionof{figure}{Pengujian endpoint login dengan Postman}
+    \label{fig:pengujian-login}
+\end{center}
+
+Gambar \ref{fig:pengujian-login} menunjukkan pengiriman request login menggunakan email dan password akun yang telah terdaftar. Backend mengembalikan kode HTTP 200 dan token authentication pada response. Hasil tersebut menunjukkan bahwa backend dapat melakukan authentication terhadap pengguna yang memberikan kredensial yang sesuai.
+
+Pengujian selanjutnya memeriksa informasi pengguna yang telah terautentikasi melalui endpoint \textit{/me}. Bukti pengujian endpoint tersebut ditunjukkan pada Gambar \ref{fig:pengujian-me}.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{img/pengujian-me.png}
+    \captionof{figure}{Pengujian endpoint \textit{/me} dengan Postman}
+    \label{fig:pengujian-me}
+\end{center}
+
+Gambar \ref{fig:pengujian-me} menunjukkan bahwa backend mengembalikan informasi pengguna yang sedang terautentikasi ketika request menggunakan token authentication dikirimkan. Hasil tersebut menunjukkan bahwa backend dapat mengenali pengguna berdasarkan token yang diberikan pada request.
+
+\vspace{0.5em}
+\noindent\textbf{2. Pengujian Penambahan Data}
+\vspace{0.5em}
+
+Pengujian penambahan data dilakukan untuk memastikan bahwa setiap Controller dapat menerima data melalui method POST dan menyimpannya melalui backend. Pengujian mencakup enam jenis data yang dikelola oleh SIPANTAU, yaitu komoditas, pasar, ketersediaan harian, panen, harga pasar harian, dan harga petani harian. Hasil pengujian penambahan data ditunjukkan pada Tabel \ref{tab:pengujian-penambahan-data}.
+
+\begin{longtable}{|c|p{2cm}|c|p{2.3cm}|p{2.7cm}|c|c|}
+\caption{Hasil pengujian penambahan data SIPANTAU}
+\label{tab:pengujian-penambahan-data} \\
+
+\hline
+\textbf{No.} &
+\textbf{Data} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} &
+\textbf{Data} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endhead
+
+1 &
+Komoditas &
+POST &
+/komoditas &
+Mengirim data komoditas baru. &
+201 &
+Berhasil \\ \hline
+
+2 &
+Pasar &
+POST &
+/pasar &
+Mengirim data pasar baru. &
+201 &
+Berhasil \\ \hline
+
+3 &
+Ketersediaan Harian &
+POST &
+/ketersediaan &
+Mengirim data ketersediaan, kebutuhan, neraca, dan tanggal. &
+201 &
+Berhasil \\ \hline
+
+4 &
+Panen &
+POST &
+/panen &
+Mengirim data perkiraan tonase dan tanggal panen. &
+201 &
+Berhasil \\ \hline
+
+5 &
+Harga Pasar Harian &
+POST &
+/harga-pasar &
+Mengirim data harga, tanggal, komoditas, dan pasar. &
+201 &
+Berhasil \\ \hline
+
+6 &
+Harga Petani Harian &
+POST &
+/harga-petani &
+Mengirim data harga petani, tanggal, dan komoditas. &
+201 &
+Berhasil \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:pengujian-penambahan-data} menunjukkan hasil pengujian penambahan data pada enam endpoint backend SIPANTAU. Seluruh endpoint menghasilkan kode HTTP 201 dan mengembalikan response yang memuat data hasil pemrosesan. Hasil tersebut menunjukkan bahwa backend dapat menerima dan memproses data dari setiap jenis entitas yang diuji.
+
+Salah satu bukti pengujian penambahan data ditunjukkan pada Gambar \ref{fig:pengujian-tambah-harga-petani}.
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{img/pengujian-tambah-harga-petani.png}
+    \captionof{figure}{Pengujian penambahan data harga petani harian dengan Postman}
+    \label{fig:pengujian-tambah-harga-petani}
+\end{center}
+
+Gambar \ref{fig:pengujian-tambah-harga-petani} menunjukkan pengiriman data harga petani harian melalui endpoint \texttt{/harga-petani}. Request mengirimkan data komoditas, harga petani, dan tanggal, kemudian backend mengembalikan kode HTTP 201 beserta data yang telah diproses. Hasil tersebut menunjukkan bahwa endpoint dapat menerima dan memproses data harga petani harian.
+
+\vspace{0.5em}
+\noindent\textbf{3. Pengujian Pengambilan Data}
+\vspace{0.5em}
+
+Pengujian pengambilan data dilakukan untuk memastikan bahwa backend dapat mengambil data yang tersimpan pada basis data dan mengembalikannya melalui response API. Pengujian dilakukan pada enam endpoint GET yang mewakili seluruh Controller pengelolaan data. Hasil pengujian pengambilan data ditunjukkan pada Tabel \ref{tab:pengujian-pengambilan-data}.
+
+\begin{longtable}{|c|p{2cm}|c|p{2.3cm}|p{2.7cm}|c|c|}
+\caption{Hasil pengujian pengambilan data SIPANTAU}
+\label{tab:pengujian-pengambilan-data} \\
+
+\hline
+\textbf{No.} &
+\textbf{Data} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} &
+\textbf{Data} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endhead
+
+1 &
+Komoditas &
+GET &
+/komoditas &
+Mengambil data komoditas yang tersedia. &
+200 &
+Berhasil \\ \hline
+
+2 &
+Pasar &
+GET &
+/pasar &
+Mengambil data pasar yang tersedia. &
+200 &
+Berhasil \\ \hline
+
+3 &
+Ketersediaan Harian &
+GET &
+/ketersediaan &
+Mengambil data ketersediaan harian. &
+200 &
+Berhasil \\ \hline
+
+4 &
+Panen &
+GET &
+/panen &
+Mengambil data panen yang tersedia. &
+200 &
+Berhasil \\ \hline
+
+5 &
+Harga Pasar Harian &
+GET &
+/harga-pasar &
+Mengambil data harga pasar harian. &
+200 &
+Berhasil \\ \hline
+
+6 &
+Harga Petani Harian &
+GET &
+/harga-petani &
+Mengambil data harga petani harian. &
+200 &
+Berhasil \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:pengujian-pengambilan-data} menunjukkan hasil pengujian pengambilan data pada enam endpoint backend SIPANTAU. Seluruh endpoint menghasilkan kode HTTP 200 dan mengembalikan data melalui response API. Hasil tersebut menunjukkan bahwa backend dapat mengambil data dari basis data dan menyajikannya melalui endpoint yang sesuai.
+
+Bukti pengujian pengambilan data harga petani harian ditunjukkan pada Gambar \ref{fig:pengujian-ambil-harga-petani}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-ambil-harga-petani.png}
+    \captionof{figure}{Pengujian pengambilan data harga petani harian dengan Postman}
+    \label{fig:pengujian-ambil-harga-petani}
+\end{center}
+
+Gambar \ref{fig:pengujian-ambil-harga-petani} menunjukkan bahwa endpoint \texttt{/harga-petani} mengembalikan data harga petani harian yang telah tersimpan pada sistem. Backend mengembalikan kode HTTP 200 dan menyertakan informasi harga, tanggal, komoditas, serta pengguna pada response. Hasil tersebut menunjukkan bahwa backend dapat mengambil data dari basis data dan menyajikannya melalui API.
+
+\vspace{0.5em}
+\noindent\textbf{4. Pengujian Pembaruan Data}
+\vspace{0.5em}
+
+Pengujian pembaruan data dilakukan untuk memastikan bahwa backend dapat memperbarui record yang telah tersimpan ketika data dengan identitas yang sama dikirimkan kembali. Pengujian dilakukan pada empat Controller yang menerapkan mekanisme \textit{updateOrCreate()}, yaitu Ketersediaan Harian, Panen, Harga Pasar Harian, dan Harga Petani Harian. Hasil pengujian pembaruan data ditunjukkan pada Tabel \ref{tab:pengujian-pembaruan-data}.
+
+\begin{longtable}{|c|p{2cm}|c|p{2.3cm}|p{2.7cm}|c|c|}
+\caption{Hasil pengujian pembaruan data SIPANTAU}
+\label{tab:pengujian-pembaruan-data} \\
+
+\hline
+\textbf{No.} &
+\textbf{Data} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} &
+\textbf{Data} &
+\textbf{Method} &
+\textbf{Endpoint} &
+\textbf{Skenario} &
+\textbf{Kode} &
+\textbf{Hasil} \\
+
+\hline
+\endhead
+
+1 &
+Ketersediaan Harian &
+POST &
+/ketersediaan &
+Mengirim kembali data dengan identitas yang sama dan nilai yang berbeda. &
+201 &
+Berhasil \\ \hline
+
+2 &
+Panen &
+POST &
+/panen &
+Mengirim kembali data dengan identitas yang sama dan nilai tonase yang berbeda. &
+201 &
+Berhasil \\ \hline
+
+3 &
+Harga Pasar Harian &
+POST &
+/harga-pasar &
+Mengirim kembali data dengan komoditas, pasar, dan tanggal yang sama tetapi harga berbeda. &
+201 &
+Berhasil \\ \hline
+
+4 &
+Harga Petani Harian &
+POST &
+/harga-petani &
+Mengirim kembali data dengan komoditas dan tanggal yang sama tetapi harga berbeda. &
+201 &
+Berhasil \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:pengujian-pembaruan-data} menunjukkan hasil pengujian pembaruan data pada empat Controller yang menggunakan mekanisme \textit{updateOrCreate()}. Pengujian mengirimkan kembali data dengan identitas yang sama dan nilai yang berbeda dari data sebelumnya. Hasil pengujian menunjukkan bahwa proses tersebut memperbarui record yang telah tersedia tanpa membuat record baru.
+
+Bukti pengujian pembaruan data harga petani harian ditunjukkan pada Gambar \ref{fig:pengujian-update-harga-petani}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-update-harga-petani.png}
+    \captionof{figure}{Pengujian pembaruan data harga petani harian dengan Postman}
+    \label{fig:pengujian-update-harga-petani}
+\end{center}
+
+Gambar \ref{fig:pengujian-update-harga-petani} menunjukkan pengiriman kembali data harga petani untuk tanggal yang sama dengan nilai harga yang berbeda dari data sebelumnya. Response menunjukkan bahwa record tetap menggunakan ID yang sama, sedangkan nilai harga berubah sesuai dengan data pada request. Hasil tersebut menunjukkan bahwa backend memperbarui record yang telah tersedia tanpa membuat record baru.
+
+Hasil pengujian pada Tabel \ref{tab:pengujian-auth}, Tabel \ref{tab:pengujian-penambahan-data}, Tabel \ref{tab:pengujian-pengambilan-data}, dan Tabel \ref{tab:pengujian-pembaruan-data} menunjukkan bahwa backend SIPANTAU dapat menjalankan proses \textit{authentication} serta pengelolaan data melalui proses penambahan, pengambilan, dan pembaruan data. Pengujian \textit{authentication} menunjukkan bahwa pengguna dapat melakukan registrasi, login, memperoleh informasi pengguna, dan logout menggunakan mekanisme token, sedangkan pengujian pengelolaan data menunjukkan bahwa endpoint dapat menerima dan memproses data sesuai dengan fungsi yang dirancang.
+
+\subsection{Perancangan, Implementasi, dan Pengujian Autentikasi dan Otorisasi}
+
+\subsubsection{Perancangan}
+
+Perancangan autentikasi dan otorisasi dilakukan untuk mengatur mekanisme identifikasi pengguna serta pembatasan akses terhadap fungsi SIPANTAU. Perancangan autentikasi digunakan untuk menentukan proses yang harus dilakukan sistem dalam memverifikasi pengguna sebelum mengakses fungsi yang dilindungi. Setelah pengguna berhasil terautentikasi, perancangan otorisasi digunakan untuk menentukan fungsi yang dapat diakses berdasarkan role pengguna. Perancangan tersebut disusun dengan mempertimbangkan kebutuhan keamanan sistem serta pembagian tugas pengguna dalam pengoperasian SIPANTAU.
+
+Perancangan autentikasi menggunakan mekanisme token-based authentication yang disediakan oleh Laravel Sanctum. Proses autentikasi dirancang melalui dua tahap utama, yaitu registrasi akun dan login. Pada proses login, sistem memverifikasi kredensial pengguna dan menghasilkan token yang digunakan sebagai bukti autentikasi pada permintaan berikutnya. Token dikirimkan pada header \textit{Authorization} menggunakan skema \textit{Bearer} untuk mengidentifikasi pengguna pada setiap permintaan terhadap endpoint yang dilindungi. Endpoint yang berkaitan dengan pengelolaan data dan informasi pengguna dirancang untuk hanya dapat diakses setelah pengguna berhasil melalui proses autentikasi.
+
+Perancangan otorisasi dilakukan dengan menerapkan pendekatan Role-Based Access Control (RBAC), yaitu pengaturan hak akses berdasarkan role yang dimiliki pengguna. Role ditentukan berdasarkan kelompok pengguna yang telah diidentifikasi pada analisis kebutuhan sistem, yaitu Dinas Perdagangan, Dinas Ketahanan Pangan, Dinas Pertanian, TPID, dan Admin. Setiap role dirancang memiliki hak akses yang berbeda sesuai dengan fungsi dan tanggung jawabnya dalam sistem. Pembagian tersebut digunakan untuk membatasi pengguna agar hanya dapat menjalankan fungsi yang sesuai dengan kewenangan role yang dimilikinya.
+
+Pemetaan role terhadap fungsi sistem digunakan sebagai dasar dalam menentukan hak akses pada backend SIPANTAU. Pemetaan tersebut ditunjukkan pada Tabel \ref{tab:pemetaan-role}.
+
+\begin{longtable}{|c|p{3cm}|p{7cm}|}
+\caption{Pemetaan Role dan Fungsi SIPANTAU}
+\label{tab:pemetaan-role} \\
+\hline
+\textbf{No.} & \textbf{Role} & \textbf{Fungsi yang Diakses} \\
+\hline
+1 & Dinas Perdagangan & Pengelolaan data harga pasar \\ \hline
+2 & Dinas Ketahanan Pangan & Pengelolaan data kebutuhan dan ketersediaan \\ \hline
+3 & Dinas Pertanian & Pengelolaan data panen dan harga petani \\ \hline
+4 & TPID & Melihat hasil prediksi harga \\ \hline
+5 & Admin & Pengelolaan seluruh fungsi sistem dan administrasi pengguna \\ \hline
+\end{longtable}
+
+Tabel \ref{tab:pemetaan-role} menunjukkan bahwa setiap role memiliki cakupan akses yang disesuaikan dengan fungsi pengguna dalam SIPANTAU. Pemetaan tersebut menjadi acuan dalam menentukan permission yang diberikan kepada setiap role pada tahap implementasi. Dengan rancangan tersebut, autentikasi digunakan untuk memastikan pengguna telah teridentifikasi, sedangkan otorisasi digunakan untuk menentukan apakah pengguna memiliki hak untuk menjalankan fungsi tertentu. Rancangan autentikasi dan otorisasi tersebut selanjutnya diterapkan pada backend Laravel pada tahap implementasi.
+
+\subsubsection{Implementasi}
+
+Implementasi otorisasi dilakukan berdasarkan rancangan pembagian hak akses yang telah ditetapkan pada tahap perancangan. Mekanisme otorisasi diterapkan menggunakan package Spatie Laravel Permission untuk mengelola \textit{role} dan \textit{permission}, serta Laravel \textit{Gate} untuk menerapkan aturan akses khusus pada pengguna dengan \textit{role} tertentu. Implementasi selanjutnya diterapkan pada \textit{endpoint} API menggunakan \textit{middleware permission} agar akses terhadap fungsi sistem dapat dibatasi berdasarkan hak akses pengguna.
+
+\vspace{0.5em}
+\noindent\textbf{1. Implementasi Role dan Permission}
+\vspace{0.5em}
+
+Implementasi \textit{role} dan \textit{permission} dilakukan menggunakan package Spatie Laravel Permission. Dukungan terhadap pengelolaan \textit{role} diterapkan pada model \textit{User} melalui \textit{trait HasRoles}. Trait tersebut memungkinkan model pengguna berinteraksi dengan mekanisme \textit{role} dan \textit{permission} yang disediakan oleh package. Bagian model \textit{User} yang berkaitan dengan implementasi tersebut ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+use Spatie\Permission\Traits\HasRoles;
+
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan penggunaan \textit{HasRoles} pada model \textit{User}. Trait tersebut digunakan untuk menambahkan dukungan pengelolaan \textit{role} dan \textit{permission} pada pengguna sehingga hubungan antara pengguna dan hak akses dapat dikelola melalui model tersebut.
+
+Struktur penyimpanan \textit{role} dan \textit{permission} kemudian dibentuk melalui \textit{migration} yang disediakan oleh Spatie Laravel Permission. Struktur tersebut mencakup tabel \textit{roles} dan \textit{permissions} sebagai penyimpan data \textit{role} dan \textit{permission}, serta tabel relasi untuk menghubungkan pengguna dengan \textit{role}, pengguna dengan \textit{permission}, dan \textit{role} dengan \textit{permission}. Hubungan tersebut memungkinkan sistem menerapkan pembagian hak akses secara terstruktur pada basis data.
+
+Pembuatan dan pemetaan \textit{role} dan \textit{permission} selanjutnya dilakukan melalui \textit{seeder}. Permission yang digunakan dalam SIPANTAU meliputi \textit{create\_ketersediaan\_harian}, \textit{view\_komoditas}, \textit{create\_harga\_pasar}, \textit{create\_harga\_petani}, dan \textit{create\_panen}. Role yang dibentuk pada tahap ini meliputi \textit{dinas\_pertanian}, \textit{dinas\_perdagangan}, \textit{dinas\_ketahanan\_pangan}, \textit{admin}, dan \textit{user}. Penerapan pembuatan dan pemetaan tersebut ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+$permissions = [
+    'create_ketersediaan_harian',
+    'view_komoditas',
+    'create_harga_pasar',
+    'create_harga_petani',
+    'create_panen',
+];
+
+$roles = [
+    'dinas_pertanian',
+    'dinas_perdagangan',
+    'dinas_ketahanan_pangan',
+    'admin',
+    'user',
+];
+
+foreach ($permissions as $perm) {
+    Permission::firstOrCreate([
+        'name' => $perm,
+        'guard_name' => 'web'
+    ]);
+}
+
+foreach ($roles as $role) {
+    Role::firstOrCreate([
+        'name' => $role,
+        'guard_name' => 'web'
+    ]);
+}
+
+Role::findByName('dinas_pertanian')->syncPermissions([
+    'view_komoditas',
+    'create_harga_petani',
+    'create_panen'
+]);
+
+Role::findByName('dinas_perdagangan')->syncPermissions([
+    'view_komoditas',
+    'create_harga_pasar'
+]);
+
+Role::findByName('dinas_ketahanan_pangan')->syncPermissions([
+    'create_ketersediaan_harian',
+    'view_komoditas'
+]);
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan proses pembentukan \textit{permission} dan \textit{role} serta pemetaan \textit{permission} kepada masing-masing \textit{role}. Role \textit{dinas\_pertanian} diberikan \textit{permission} untuk melihat data komoditas, menambahkan harga petani, dan menambahkan data panen. Role \textit{dinas\_perdagangan} diberikan \textit{permission} untuk melihat data komoditas dan menambahkan harga pasar, sedangkan \textit{role dinas\_ketahanan\_pangan} diberikan \textit{permission} untuk menambahkan data ketersediaan harian dan melihat data komoditas. Pemetaan tersebut menjadi dasar bagi sistem dalam menentukan hak akses pengguna terhadap fungsi tertentu.
+
+\vspace{0.5em}
+\noindent\textbf{2. Implementasi Gate}
+\vspace{0.5em}
+
+Implementasi otorisasi juga menggunakan \textit{Gate} untuk menerapkan aturan akses khusus bagi pengguna dengan \textit{role admin}. Konfigurasi tersebut ditempatkan pada \textit{AppServiceProvider} menggunakan method \textit{Gate::before()} yang dijalankan sebelum pemeriksaan \textit{ability} lainnya. Mekanisme tersebut digunakan untuk memberikan hasil akses kepada pengguna yang memiliki \textit{role admin} pada pemeriksaan \textit{Gate}. Penerapan konfigurasi tersebut ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+Gate::before(function ($user, $ability) {
+    return $user->hasRole('admin') ? true : null;
+});
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa sistem memeriksa \textit{role} pengguna sebelum pemeriksaan \textit{ability} dilakukan. Pengguna yang memiliki \textit{role admin} akan memperoleh nilai \textit{true}, sedangkan pengguna yang tidak memiliki \textit{role admin} akan mengembalikan nilai \textit{null}. Dengan mekanisme tersebut, pengguna dengan \textit{role admin} dapat memperoleh akses pada pemeriksaan yang menggunakan \textit{Gate}, sedangkan pemeriksaan terhadap pengguna lainnya dilanjutkan menggunakan mekanisme otorisasi yang berlaku.
+
+\vspace{0.5em}
+\noindent\textbf{3. Penerapan Permission pada API}
+\vspace{0.5em}
+
+\textit{Permission} yang telah ditetapkan kepada setiap \textit{role} kemudian diterapkan pada \textit{endpoint} API menggunakan \textit{middleware permission}. Penerapan tersebut dilakukan bersama dengan \textit{middleware auth:sanctum} yang telah diimplementasikan pada tahap sebelumnya. \textit{Middleware auth:sanctum} digunakan untuk menyediakan identitas pengguna yang melakukan permintaan, sedangkan \textit{middleware permission} digunakan untuk memeriksa hak akses pengguna terhadap fungsi yang diminta. Penerapan \textit{permission} pada beberapa \textit{endpoint} SIPANTAU ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+Route::middleware(['auth:sanctum', 'permission:create_ketersediaan_harian'])
+    ->post('/ketersediaan', [KetersediaanHarianController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'permission:create_harga_petani'])
+    ->post('/harga-petani', [HargaPetaniHarianController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'permission:create_harga_pasar'])
+    ->post('/harga-pasar', [HargaPasarHarianController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'permission:view_komoditas'])
+    ->get('/komoditas', [KomoditasController::class, 'index']);
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa setiap \textit{endpoint} yang dibatasi memiliki dua \textit{middleware}. Middleware \textit{auth:sanctum} digunakan untuk memastikan bahwa permintaan dilakukan oleh pengguna yang telah terautentikasi, sedangkan \textit{middleware permission} digunakan untuk memeriksa \textit{permission} yang dimiliki pengguna. Sebagai contoh, \textit{endpoint} penambahan data ketersediaan harian memerlukan \textit{permission create\_ketersediaan\_harian}, sedangkan \textit{endpoint} penambahan harga pasar memerlukan \textit{permission create\_harga\_pasar}. Dengan penerapan tersebut, akses terhadap fungsi API dapat dibatasi berdasarkan hak akses yang telah ditetapkan pada pengguna.
+
+Implementasi otorisasi pada SIPANTAU dengan demikian terdiri atas pengelolaan \textit{role} dan \textit{permission}, penerapan aturan khusus melalui \textit{Gate}, serta pembatasan akses pada \textit{endpoint} API menggunakan \textit{middleware permission}. Implementasi tersebut selanjutnya diuji menggunakan akun dengan \textit{role} yang berbeda untuk memastikan bahwa pengguna dapat mengakses fungsi yang sesuai dengan hak akses yang telah ditetapkan.
+
+\subsubsection{Pengujian}
+
+Pengujian otorisasi dilakukan untuk memastikan bahwa pembatasan akses pada SIPANTAU berjalan sesuai dengan \textit{role} dan \textit{permission} yang telah ditetapkan pada tahap implementasi. Pengujian dilakukan menggunakan beberapa akun dengan \textit{role} yang berbeda, kemudian setiap akun digunakan untuk mengakses \textit{endpoint} yang sesuai dengan hak aksesnya dan satu \textit{endpoint} yang tidak menjadi hak aksesnya. Pengujian dilakukan menggunakan Postman dengan mengamati kode status dan \textit{response} yang diberikan oleh \textit{backend}. Daftar akun yang digunakan dalam pengujian ditunjukkan pada Tabel \ref{tab:akun-pengujian-otorisasi}.
+
+\begin{longtable}{|c|p{3cm}|p{4cm}|p{4.8cm}|}
+\caption{Daftar Akun Pengujian Otorisasi}
+\label{tab:akun-pengujian-otorisasi} \\
+\hline
+\textbf{ID} & \textbf{Role} & \textbf{Nama} & \textbf{Email} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{ID} & \textbf{Role} & \textbf{Nama} & \textbf{Email} \\
+\hline
+\endhead
+
+9 & \textit{dinas\allowbreak \_pertanian} &
+tes\allowbreak \_dinas\allowbreak \_pertanian &
+tes\allowbreak \_pertanian\allowbreak @sipantau.id \\ \hline
+
+10 & \textit{dinas\allowbreak \_perdagangan} &
+tes\allowbreak \_dinas\allowbreak \_perdagangan &
+tes\allowbreak \_perdagangan\allowbreak @sipantau.id \\ \hline
+
+11 & \textit{dinas\allowbreak \_ketahanan\allowbreak \_pangan} &
+tes\allowbreak \_dinas\allowbreak \_ketahanan\allowbreak \_pangan &
+tes\allowbreak \_ketahanan\allowbreak \_pangan\allowbreak @sipantau.id \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:akun-pengujian-otorisasi} menunjukkan akun yang digunakan untuk mewakili setiap \textit{role} pada pengujian otorisasi. ID pengguna digunakan sebagai identitas pembanding terhadap informasi pengguna yang ditampilkan pada \textit{response} API sehingga hasil pengujian dapat dikaitkan dengan akun yang digunakan.
+
+Pengujian kemudian dilakukan dengan mengakses setiap fungsi sesuai dengan \textit{permission} yang dimiliki oleh masing-masing \textit{role} serta mencoba mengakses satu fungsi yang tidak memiliki \textit{permission} yang sesuai. Pengujian terhadap \textit{role admin} dilakukan pada fungsi yang ditempatkan dalam kelompok \textit{role:admin}. Hasil pengujian otorisasi ditunjukkan pada Tabel \ref{tab:pengujian-otorisasi}.
+
+\begin{longtable}{|c|p{2.4cm}|c|p{2.3cm}|p{2.4cm}|c|c|}
+\caption{Hasil Pengujian Otorisasi SIPANTAU}
+\label{tab:pengujian-otorisasi} \\
+\hline
+\textbf{No.} & \textbf{Role} & \textbf{Method} & \textbf{Endpoint} & \textbf{Skenario} & \textbf{Kode} & \textbf{Hasil} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Role} & \textbf{Method} & \textbf{Endpoint} & \textbf{Skenario} & \textbf{Kode} & \textbf{Hasil} \\
+\hline
+\endhead
+
+1 & \textit{dinas\allowbreak \_pertanian} & GET & /komoditas &
+Mengakses data komoditas &
+200 & Berhasil \\ \hline
+
+2 & \textit{dinas\allowbreak \_pertanian} & POST & /panen &
+Menambahkan data panen &
+201 & Berhasil \\ \hline
+
+3 & \textit{dinas\allowbreak \_pertanian} & POST & /harga-petani &
+Menambahkan data harga petani &
+201 & Berhasil \\ \hline
+
+4 & \textit{dinas\allowbreak \_pertanian} & POST & /harga-pasar &
+Mencoba menambahkan data harga pasar tanpa \textit{permission} yang sesuai. &
+403 & Ditolak \\ \hline
+
+5 & \textit{dinas\allowbreak \_perdagangan} & GET & /komoditas &
+Mengakses data komoditas &
+200 & Berhasil \\ \hline
+
+6 & \textit{dinas\allowbreak \_perdagangan} & POST & /harga-pasar &
+Menambahkan data harga pasar &
+201 & Berhasil \\ \hline
+
+7 & \textit{dinas\allowbreak \_perdagangan} & POST & /harga-petani &
+Mencoba menambahkan data harga petani tanpa \textit{permission} yang sesuai. &
+403 & Ditolak \\ \hline
+
+8 & \textit{dinas\allowbreak \_ketahanan\allowbreak \_pangan} & GET & /komoditas &
+Mengakses data komoditas &
+200 & Berhasil \\ \hline
+
+9 & \textit{dinas\allowbreak \_ketahanan\allowbreak \_pangan} & POST & /ketersediaan &
+Menambahkan data ketersediaan harian &
+201 & Berhasil \\ \hline
+
+10 & \textit{dinas\_ketahanan\allowbreak \_pangan} & POST & /panen &
+Mencoba menambahkan data panen tanpa \textit{permission} yang sesuai. &
+403 & Ditolak \\ \hline
+
+11 & \textit{admin} & POST & /register &
+Mengakses fungsi registrasi akun sebagai pengguna dengan \textit{role admin}. &
+201 & Berhasil \\ \hline
+
+12 & \textit{admin} & POST & /komoditas &
+Mengakses fungsi penambahan data komoditas sebagai pengguna dengan \textit{role admin}. &
+201 & Berhasil \\ \hline
+
+13 & \textit{admin} & GET & /pasar &
+Mengakses data pasar sebagai pengguna dengan \textit{role admin}. &
+200 & Berhasil \\ \hline
+
+14 & \textit{admin} & GET & /ketersediaan &
+Mengakses data ketersediaan harian sebagai pengguna dengan \textit{role admin}. &
+200 & Berhasil \\ \hline
+
+15 & \textit{admin} & GET & /panen &
+Mengakses data panen sebagai pengguna dengan \textit{role admin}. &
+200 & Berhasil \\ \hline
+
+16 & \textit{admin} & GET & /harga-pasar &
+Mengakses data harga pasar harian sebagai pengguna dengan \textit{role admin}. &
+200 & Berhasil \\ \hline
+
+17 & \textit{admin} & GET & /harga-petani &
+Mengakses data harga petani harian sebagai pengguna dengan \textit{role admin}. &
+200 & Berhasil \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:pengujian-otorisasi} menunjukkan bahwa pengguna dengan \textit{role} yang memiliki \textit{permission} sesuai dapat mengakses fungsi yang diberikan, sedangkan pengguna yang tidak memiliki \textit{permission} yang diperlukan memperoleh penolakan akses. Akun \textit{dinas\_pertanian} berhasil mengakses fungsi pengelolaan panen dan harga petani, tetapi ditolak ketika mencoba mengakses fungsi penambahan harga pasar. Akun \textit{dinas\_perdagangan} berhasil mengakses fungsi penambahan harga pasar, tetapi ditolak ketika mencoba mengakses fungsi penambahan harga petani. Akun \textit{dinas\allowbreak \_ketahanan\allowbreak \_pangan} berhasil mengakses fungsi penambahan ketersediaan harian, tetapi ditolak ketika mencoba mengakses fungsi penambahan panen. Sementara itu, akun \textit{admin} berhasil mengakses fungsi yang ditempatkan pada kelompok \textit{role:admin}.
+
+Bukti pengujian akses akun \textit{dinas\_pertanian} terhadap fungsi penambahan data panen ditunjukkan pada Gambar \ref{fig:pengujian-otorisasi-pertanian}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-otorisasi-pertanian.png}
+    \captionof{figure}{Pengujian Otorisasi Role Dinas Pertanian}
+    \label{fig:pengujian-otorisasi-pertanian}
+\end{center}
+
+Gambar \ref{fig:pengujian-otorisasi-pertanian} menunjukkan bahwa akun dengan \textit{role dinas\_pertanian} berhasil mengakses endpoint \texttt{/panen}. \textit{Response} menunjukkan kode HTTP 201 dan data panen yang berhasil diproses oleh \textit{backend}. Informasi pengguna pada \textit{response} menunjukkan ID 9 yang sesuai dengan akun pengujian pada Tabel \ref{tab:akun-pengujian-otorisasi}.
+
+Bukti pengujian akses akun \textit{dinas\_perdagangan} terhadap fungsi penambahan harga pasar ditunjukkan pada Gambar \ref{fig:pengujian-otorisasi-perdagangan}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-otorisasi-perdagangan.png}
+    \captionof{figure}{Pengujian Otorisasi Role Dinas Perdagangan}
+    \label{fig:pengujian-otorisasi-perdagangan}
+\end{center}
+
+Gambar \ref{fig:pengujian-otorisasi-perdagangan} menunjukkan bahwa akun dengan \textit{role dinas\_perdagangan} berhasil mengakses endpoint \texttt{/harga-pasar}. \textit{Response} menunjukkan kode HTTP 201 dan data harga pasar yang berhasil diproses oleh \textit{backend}. Informasi pengguna pada \textit{response} menunjukkan ID 10 yang sesuai dengan akun pengujian.
+
+Bukti pengujian akses akun \textit{dinas\_ketahanan\_pangan} terhadap fungsi penambahan data ketersediaan harian ditunjukkan pada Gambar \ref{fig:pengujian-otorisasi-ketahanan}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-otorisasi-ketahanan.png}
+    \captionof{figure}{Pengujian Otorisasi Role Dinas Ketahanan Pangan}
+    \label{fig:pengujian-otorisasi-ketahanan}
+\end{center}
+
+Gambar \ref{fig:pengujian-otorisasi-ketahanan} menunjukkan bahwa akun dengan \textit{role dinas\allowbreak \_ketahanan\allowbreak \_pangan} berhasil mengakses endpoint \texttt{/ketersediaan}. \textit{Response} menunjukkan kode HTTP 201 dan data ketersediaan harian yang berhasil diproses oleh \textit{backend}. Informasi pengguna pada \textit{response} menunjukkan ID 11 yang sesuai dengan akun pengujian.
+
+Bukti pengujian penolakan akses terhadap fungsi yang tidak dimiliki oleh \textit{role dinas\_pertanian} ditunjukkan pada Gambar \ref{fig:pengujian-otorisasi-ditolak}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-otorisasi-ditolak.png}
+    \captionof{figure}{Pengujian Penolakan Akses Role Dinas Pertanian}
+    \label{fig:pengujian-otorisasi-ditolak}
+\end{center}
+
+Gambar \ref{fig:pengujian-otorisasi-ditolak} menunjukkan bahwa akun dengan \textit{role dinas\_pertanian} mencoba mengakses endpoint \texttt{/harga-pasar} yang memerlukan \textit{permission create\allowbreak \_harga\allowbreak \_pasar}. \textit{Response} menunjukkan kode HTTP 403 dengan pesan bahwa pengguna tidak memiliki hak akses yang sesuai. Hasil tersebut menunjukkan bahwa \textit{middleware permission} dapat menolak permintaan ketika \textit{role} pengguna tidak memiliki \textit{permission} yang diperlukan.
+
+Bukti pengujian akses akun \textit{admin} terhadap fungsi penambahan data komoditas ditunjukkan pada Gambar \ref{fig:pengujian-otorisasi-admin}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-otorisasi-admin.png}
+    \captionof{figure}{Pengujian Otorisasi Role Admin}
+    \label{fig:pengujian-otorisasi-admin}
+\end{center}
+
+Gambar \ref{fig:pengujian-otorisasi-admin} menunjukkan bahwa akun dengan \textit{role admin} berhasil mengakses endpoint \texttt{/komoditas} untuk menambahkan data komoditas. \textit{Response} menunjukkan kode HTTP 201 dan data komoditas yang berhasil dibuat. Hasil tersebut menunjukkan bahwa pembatasan endpoint menggunakan \textit{role:admin} dapat memberikan akses kepada pengguna yang memiliki \textit{role admin}.
+
+Berdasarkan hasil pengujian pada Tabel \ref{tab:pengujian-otorisasi}, mekanisme otorisasi SIPANTAU dapat membedakan akses pengguna berdasarkan \textit{role} dan \textit{permission}. Pengujian menunjukkan bahwa akses terhadap fungsi yang sesuai dengan hak pengguna dapat dijalankan, sedangkan akses terhadap fungsi yang tidak diberikan ditolak dengan kode HTTP 403. Pengujian terhadap \textit{role admin} juga menunjukkan bahwa pengguna dengan \textit{role} tersebut dapat mengakses fungsi yang ditempatkan pada kelompok \textit{role:admin}.
 
 \section{Pembahasan}

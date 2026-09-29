@@ -1,0 +1,11 @@
+Route::middleware(['auth:sanctum', 'permission:create_ketersediaan_harian'])
+    ->post('/ketersediaan', [KetersediaanHarianController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'permission:create_harga_petani'])
+    ->post('/harga-petani', [HargaPetaniHarianController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'permission:create_harga_pasar'])
+    ->post('/harga-pasar', [HargaPasarHarianController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'permission:view_komoditas'])
+    ->get('/komoditas', [KomoditasController::class, 'index']);

@@ -16,6 +16,9 @@
     ItalicFont = calibri-italic
 ]
 
+\newfontfamily\codefont{Courier New}
+\setmonofont{Courier New}
+
 % ------------------------------------------------------------
 % Add your own needed package here
 % ------------------------------------------------------------
@@ -23,11 +26,61 @@
 \renewcommand\cftfigpresnum{Gambar\  }
 \renewcommand\cfttabpresnum{Tabel\   }
 
+% -----------------------------------------------------------------
+% Custom source code style
+% -----------------------------------------------------------------
+
+\usepackage[newfloat,chapter]{minted}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,skins,breakable}
+
+\newtcblisting{ignasicblock}[1][]{%
+  breakable,
+  colback=white,
+  colframe=black,
+  boxrule=0.4pt,
+  sharp corners,
+  enhanced,
+  listing engine=minted,
+  listing only,
+  left=10mm,
+  right=3mm,
+  top=2mm,
+  bottom=2mm,
+  overlay={%
+    \draw[line width=0.2pt]
+      ([xshift=8mm]frame.south west)
+      -- ([xshift=8mm]frame.north west);
+  },
+  minted language=text,
+  minted options={%
+    linenos=true,
+    fontsize=\fontsize{9}{9}\selectfont,
+    numbersep=6mm,
+    texcl=true,
+    breaklines=true,
+    breakanywhere=true,
+    breakautoindent=false,
+    autogobble=true
+  },
+  #1
+}
+
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+
+\renewcommand\theFancyVerbLine{%
+  \fontsize{9}{9}\selectfont
+  \arabic{FancyVerbLine}%
+}
 \usepackage[normalem]{ulem}
 \usepackage{hyperref} % add hyperlink to the document
 \urlstyle{same}
 \usepackage{xurl}
 \usepackage{tabularx}
+\usepackage{array}
 \makeatletter
 \def\UrlBreaks{%
   \do\/%
