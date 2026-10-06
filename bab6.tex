@@ -1,0 +1,39 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BAB 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mychapter{6}{BAB 6 PENUTUP}
+
+\section{Kesimpulan}
+
+Berdasarkan hasil analisis, perancangan, implementasi, pengujian, dan deployment yang telah dilakukan pada pengembangan SIPANTAU, diperoleh beberapa kesimpulan sebagai berikut.
+
+\begin{enumerate}
+    \item Website SIPANTAU berhasil dibangun dengan mengembangkan \textit{backend} menggunakan Laravel dan basis data MySQL untuk mendukung proses pengumpulan serta pengelolaan data harga komoditas pangan dari instansi terkait. Implementasi mencakup penerapan arsitektur berbasis \textit{container}, pembangunan Model dan Controller, penyediaan API sebagai media komunikasi dengan \textit{frontend}, dokumentasi API menggunakan berkas \textit{README.md}, serta penerapan \textit{authentication} dan \textit{authorization} berbasis \textit{role}. Hasil pengujian menunjukkan bahwa proses autentikasi, penambahan, pengambilan, dan pembaruan data dapat berjalan sesuai dengan rancangan, serta pengguna hanya dapat mengakses fungsi sesuai dengan hak akses yang dimilikinya.
+    
+    \item Hasil prediksi harga komoditas untuk tiga hari ke depan berhasil disediakan melalui integrasi antara \textit{backend} Laravel dengan layanan model prediksi berbasis FastAPI. \textit{Backend} mengambil data historis dari basis data, menyiapkan data masukan, mengirimkannya kepada layanan model prediksi, dan meneruskan hasil prediksi kepada \textit{frontend} untuk ditampilkan kepada pengguna. Fungsi prediksi berhasil diakses oleh pengguna yang memiliki hak akses, yaitu TPID, dan hasil pengujian menunjukkan bahwa proses prediksi dapat berjalan hingga ditampilkan melalui website SIPANTAU. Aplikasi juga berhasil diterapkan pada lingkungan \textit{production} sehingga fungsi pengelolaan data dan prediksi dapat digunakan melalui domain aplikasi dengan koneksi HTTPS.
+\end{enumerate}
+
+\section{Saran}
+
+Berdasarkan hasil implementasi dan pengujian, masih terdapat beberapa aspek yang dapat dikembangkan pada SIPANTAU. Saran pengembangan yang dapat dilakukan adalah sebagai berikut.
+
+\begin{enumerate}
+    \item Menerapkan mekanisme \textit{pagination} pada fungsi pengambilan data untuk mengurangi beban pemrosesan dan ukuran respons ketika jumlah data yang tersimpan semakin besar.
+    
+    \item Mengembangkan fitur pengelolaan akun yang lebih lengkap, meliputi verifikasi email saat registrasi, mekanisme \textit{reset password}, serta API untuk pengelolaan \textit{role} pengguna sehingga perubahan hak akses dapat dilakukan melalui fungsi administrasi tanpa mengubah kode program secara langsung.
+    
+    \item Melengkapi data yang digunakan dalam proses prediksi dengan mengintegrasikan data harga petani dan data panen apabila data tersebut telah tersedia secara memadai dari pihak terkait.
+    
+    \item Mengintegrasikan SIPANTAU dengan SILINDA sebagai sumber data harga pasar yang diperbarui setiap hari. Pengembangan integrasi perlu memperhatikan sinkronisasi antara data harga pasar dari SILINDA dengan data pendukung lainnya, seperti harga petani dan ketersediaan harian, yang masih diperoleh melalui penginputan secara manual.
+\end{enumerate}
+
+\section{Keberlanjutan}
+
+Keberlanjutan pengembangan SIPANTAU diarahkan pada peningkatan kemampuan sistem dalam menangani data, pengelolaan pengguna, serta integrasi sumber data dan proses prediksi. Rencana pengembangan yang dapat dilakukan adalah sebagai berikut.
+
+\begin{enumerate}
+    \item Mengembangkan SIPANTAU agar mampu menangani jumlah data yang lebih besar melalui penerapan \textit{pagination}, sekaligus melengkapi mekanisme pengelolaan akun dan hak akses pengguna. Pengembangan tersebut dapat mencakup verifikasi email, \textit{reset password}, dan pengelolaan \textit{role} melalui API.
+    
+    \item Mengembangkan integrasi data dengan SILINDA dan memperluas data masukan proses prediksi menggunakan data harga petani serta data panen. Pengembangan ini dapat dilanjutkan sebagai topik skripsi dengan berfokus pada sinkronisasi data dari berbagai sumber dan evaluasi metode prediksi harga komoditas berdasarkan data yang lebih lengkap.
+\end{enumerate}

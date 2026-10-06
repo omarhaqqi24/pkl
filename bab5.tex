@@ -288,6 +288,8 @@ Struktur basis data pada Gambar \ref{fig:erd-sipantau} menghubungkan data operas
 
 Tabel \ref{tab:relasi-database} menunjukkan hubungan antartabel yang digunakan dalam basis data SIPANTAU. Relasi tersebut menghubungkan data operasional dengan data pengguna dan data referensi yang diperlukan oleh sistem.
 
+Perancangan arsitektur backend juga mencakup pemisahan komponen aplikasi ke dalam \textit{container}. Pendekatan tersebut digunakan untuk menyediakan lingkungan eksekusi yang terpisah bagi komponen SIPANTAU dan memungkinkan setiap layanan dikelola secara independen. Komponen aplikasi dirancang untuk terdiri atas \textit{frontend}, \textit{backend}, Nginx sebagai API Gateway dan \textit{reverse proxy}, serta MySQL sebagai layanan basis data. Komponen-komponen tersebut dihubungkan melalui jaringan Docker sehingga dapat saling berkomunikasi sesuai dengan kebutuhan aplikasi.
+
 Perancangan backend selanjutnya menentukan struktur layanan yang mengelola proses bisnis SIPANTAU berdasarkan struktur basis data yang telah dirancang. Backend menggunakan Laravel untuk menerima dan memproses permintaan dari pengguna melalui frontend berbasis Next.js. Nginx digunakan sebagai API Gateway dan reverse proxy yang mengatur lalu lintas permintaan menuju layanan frontend dan backend. Backend Laravel berkomunikasi dengan basis data MySQL untuk mengelola data SIPANTAU dan berkomunikasi dengan ML Service berbasis FastAPI untuk menjalankan proses prediksi harga.
 
 \begin{center}
@@ -376,9 +378,105 @@ Tabel \ref{tab:rancangan-api} menunjukkan endpoint API yang digunakan pada tahap
 
 \subsubsection{Implementasi}
 
-Implementasi backend dan basis data dilakukan dengan menerapkan rancangan yang telah ditetapkan pada tahap perancangan. Implementasi tersebut mencakup penerapan struktur basis data menggunakan MySQL dan pengembangan backend menggunakan Laravel untuk menyediakan layanan yang dibutuhkan oleh SIPANTAU. Implementasi backend juga menerapkan API sebagai mekanisme komunikasi antara \textit{frontend} dan \textit{backend}, serta menerapkan mekanisme \textit{authentication} untuk membatasi akses terhadap fungsi yang memerlukan pengguna terautentikasi.
+Implementasi backend dan basis data dilakukan dengan menerapkan rancangan yang telah ditetapkan pada tahap perancangan. Implementasi diawali dengan menyiapkan lingkungan aplikasi menggunakan Docker sehingga komponen yang diperlukan dapat dijalankan dalam \textit{container} secara terpisah. Setelah lingkungan tersebut tersedia, implementasi dilanjutkan dengan pembentukan struktur basis data, penerapan Model dan Controller pada Laravel, penyediaan API, serta mekanisme authentication.
 
-Implementasi basis data dilakukan dengan menerapkan struktur tabel dan relasi yang telah dirancang pada tahap sebelumnya. Laravel menggunakan \textit{migration} untuk membentuk tabel, menentukan tipe data setiap kolom, serta menerapkan \textit{primary key} dan \textit{foreign key} pada tabel yang memiliki hubungan dengan entitas lainnya. Implementasi tersebut menghasilkan struktur basis data MySQL yang sesuai dengan rancangan basis data SIPANTAU.
+Implementasi kontainerisasi pada tahap awal mencakup layanan \textit{backend} Laravel dan Nginx sebagai API Gateway dan \textit{reverse proxy}. \textit{Backend} dijalankan pada \textit{container} \texttt{backend}, sedangkan Nginx dijalankan pada \textit{container} tersendiri. Kedua layanan ditempatkan pada jaringan Docker \texttt{sipantau-network} sehingga Nginx dapat meneruskan permintaan kepada \textit{backend} melalui jaringan internal Docker.
+
+Konfigurasi Docker Compose yang digunakan pada tahap implementasi awal ditunjukkan pada kode berikut.
+
+\begin{code}
+\begin{ignasicblock}
+name: sipantau
+
+services:
+
+  backend:
+    build: ./backend
+    container_name: backend
+    volumes:
+      - ./backend:/var/www
+      - laravel_vendor:/var/www/vendor
+    expose:
+      - 9000
+    networks:
+      - sipantau-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend:/var/www
+      - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+    networks:
+      - sipantau-network
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    expose:
+      - 3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+    networks:
+      - sipantau-network
+
+volumes:
+  laravel_vendor:
+
+networks:
+  sipantau-network:
+    external: true
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan konfigurasi Docker Compose untuk menjalankan layanan aplikasi SIPANTAU pada lingkungan pengembangan. Layanan \textit{backend} Laravel dijalankan pada \textit{container} \texttt{backend} dan menyediakan layanan PHP-FPM melalui port 9000. Nginx dijalankan pada \textit{container} \texttt{nginx} dan menerima permintaan dari luar melalui port 80, kemudian meneruskannya kepada layanan yang sesuai. Sementara itu, \textit{frontend} Next.js dijalankan pada \textit{container} \texttt{frontend} dan menyediakan layanan pada port 3000. Ketiga layanan tersebut dihubungkan melalui jaringan \texttt{sipantau-network} sehingga dapat saling berkomunikasi melalui jaringan internal Docker.
+
+Selain layanan aplikasi, basis data SIPANTAU dijalankan pada \textit{container} tersendiri menggunakan konfigurasi Docker Compose yang dipisahkan dari layanan aplikasi. Pemisahan tersebut memungkinkan pengelolaan layanan basis data dilakukan secara terpisah, sementara MySQL tetap dapat berkomunikasi dengan \textit{backend} melalui jaringan Docker yang sama.
+
+Konfigurasi Docker Compose untuk layanan basis data ditunjukkan pada kode berikut.
+
+\begin{code}
+\begin{ignasicblock}
+name: sipantau-db
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sipantau-network
+
+volumes:
+  mysql_data:
+    external: true
+    name: sipantau_mysql_data
+
+networks:
+  sipantau-network:
+    external: true
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan konfigurasi Docker Compose untuk menjalankan MySQL sebagai layanan basis data SIPANTAU. MySQL dijalankan pada \textit{container} \texttt{mysql\-db} dan dihubungkan ke jaringan \texttt{sipantau-network} yang sama dengan layanan aplikasi sehingga \textit{backend} dapat melakukan komunikasi dengan basis data melalui jaringan internal Docker. Data MySQL disimpan pada \textit{external volume} \texttt{sipantau\_mysql\_data} yang digunakan sebagai media penyimpanan data di luar siklus hidup \textit{container}.
+
+Setelah lingkungan aplikasi tersedia, implementasi basis data dilakukan dengan menerapkan struktur tabel dan relasi yang telah dirancang. Laravel menggunakan migration untuk membentuk tabel, menentukan tipe data setiap kolom, serta menerapkan primary key dan foreign key pada tabel yang memiliki hubungan dengan entitas lainnya. Implementasi tersebut menghasilkan struktur basis data MySQL yang sesuai dengan rancangan basis data SIPANTAU.
 
 \begin{code}
 \begin{ignasicblock}
@@ -628,6 +726,8 @@ Route::middleware('auth:sanctum')->group(function () {
 \end{code}
 
 Kode di atas menunjukkan penerapan API Route pada \textit{backend} SIPANTAU. Endpoint \textit{/register} dan \textit{/login} diarahkan ke \textit{AuthController} untuk menangani pendaftaran dan \textit{authentication} pengguna. Endpoint lainnya ditempatkan dalam \textit{middleware auth:sanctum} sehingga pengguna harus melalui proses \textit{authentication} sebelum dapat mengaksesnya. Endpoint pengelolaan data menggunakan method \textit{GET} dan \textit{POST} untuk mengambil dan menyimpan data komoditas, pasar, ketersediaan, panen, harga pasar, dan harga petani. Dengan penerapan tersebut, mekanisme \textit{authentication} terintegrasi dengan seluruh API yang digunakan oleh SIPANTAU.
+
+Dokumentasi API dibuat seiring dengan proses pengembangan endpoint backend menggunakan berkas \textit{README.md} pada repository SIPANTAU. Dokumentasi mulai disusun ketika endpoint backend mulai tersedia dan diperbarui secara bertahap setiap kali terdapat penambahan atau perubahan pada fungsi API. Dokumentasi tersebut mencakup method dan endpoint, kebutuhan token authentication, format data request, serta hak akses yang berkaitan dengan masing-masing fungsi. Dokumentasi API digunakan sebagai acuan bagi pengembangan frontend dalam melakukan komunikasi dengan backend sehingga implementasi pada sisi frontend dapat menyesuaikan endpoint dan format data yang telah disediakan.
 
 Secara keseluruhan, implementasi backend dan basis data menghasilkan komponen yang saling terintegrasi antara struktur basis data, Model Eloquent, Controller, API Route, dan mekanisme \textit{authentication}. Basis data digunakan sebagai penyimpanan data, Model Eloquent menyediakan representasi data pada \textit{backend}, Controller menangani proses bisnis dan pengolahan data, sedangkan API Route menyediakan jalur komunikasi antara \textit{frontend} dan \textit{backend}. Mekanisme \textit{authentication} melengkapi implementasi tersebut dengan membatasi akses terhadap endpoint yang memerlukan pengguna terautentikasi.
 
@@ -1336,4 +1436,921 @@ Gambar \ref{fig:pengujian-otorisasi-admin} menunjukkan bahwa akun dengan \textit
 
 Berdasarkan hasil pengujian pada Tabel \ref{tab:pengujian-otorisasi}, mekanisme otorisasi SIPANTAU dapat membedakan akses pengguna berdasarkan \textit{role} dan \textit{permission}. Pengujian menunjukkan bahwa akses terhadap fungsi yang sesuai dengan hak pengguna dapat dijalankan, sedangkan akses terhadap fungsi yang tidak diberikan ditolak dengan kode HTTP 403. Pengujian terhadap \textit{role admin} juga menunjukkan bahwa pengguna dengan \textit{role} tersebut dapat mengakses fungsi yang ditempatkan pada kelompok \textit{role:admin}.
 
+\subsection{Perancangan, Implementasi, dan Pengujian Integrasi Layanan ML}
+
+\subsubsection{Perancangan}
+
+Perancangan integrasi layanan model prediksi dilakukan untuk menentukan alur pertukaran data antara pengguna, \textit{frontend}, \textit{backend}, basis data, dan layanan model prediksi pada SIPANTAU. Perancangan tersebut mencakup mekanisme penerimaan permintaan prediksi, pengambilan dan penyiapan data historis, komunikasi antara \textit{backend} dengan layanan prediksi, pengolahan hasil prediksi, serta pembatasan akses terhadap fungsi prediksi. Model prediksi telah tersedia sebelumnya sehingga perancangan pada bagian ini berfokus pada integrasi model ke dalam aplikasi dan penyediaan akses prediksi melalui \textit{API}. 
+
+Alur integrasi dirancang dimulai ketika pengguna mengirimkan permintaan prediksi melalui \textit{frontend} dengan menentukan pasar dan komoditas yang akan diprediksi. Permintaan tersebut diteruskan ke \textit{backend} melalui \textit{endpoint} \textit{/predict} dengan membawa parameter \textit{pasar\_id} dan \textit{komoditas\_id}. \textit{Backend} melakukan validasi terhadap kedua parameter tersebut sebelum mengambil data yang diperlukan dari basis data. Rancangan \textit{endpoint} prediksi tersebut menggunakan method \textit{GET} dan memanfaatkan kedua parameter sebagai penentu data yang akan digunakan dalam proses prediksi. Dokumentasi penggunaan \textit{endpoint} prediksi ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+curl "http://sipantau.simdacloud.id/api/predict?pasar_id=<ID Pasar>&komoditas_id=<ID Komoditas>"
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bentuk permintaan terhadap \textit{endpoint} prediksi dengan parameter pasar dan komoditas. Parameter \textit{pasar\_id} digunakan untuk menentukan pasar yang akan diprediksi, sedangkan \textit{komoditas\_id} digunakan untuk menentukan komoditas yang menjadi objek prediksi. Parameter tersebut digunakan oleh \textit{backend} sebagai dasar dalam mengambil data historis yang sesuai dari basis data.
+
+Setelah permintaan diterima, \textit{backend} dirancang untuk mengambil data historis harga pasar dan data ketersediaan yang berkaitan dengan komoditas yang dipilih. Data harga pasar difilter berdasarkan pasar dan komoditas, kemudian digabungkan dengan data ketersediaan berdasarkan tanggal dan komoditas. Data tersebut diurutkan berdasarkan tanggal dan diambil sebanyak sepuluh data historis terakhir untuk digunakan sebagai konteks prediksi. Setiap data historis kemudian disusun menjadi empat variabel masukan, yaitu harga pasar, ketersediaan harian, kebutuhan harian, dan neraca harian.
+
+Struktur data yang digunakan sebagai masukan layanan model prediksi ditunjukkan pada Tabel \ref{tab:input-prediksi}.
+
+\begin{longtable}{|c|p{3.2cm}|p{4cm}|p{3.2cm}|}
+\caption{Data Masukan Layanan Model Prediksi}
+\label{tab:input-prediksi} \\
+\hline
+\textbf{No.} & \textbf{Variabel} & \textbf{Sumber Data} & \textbf{Keterangan} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Variabel} & \textbf{Sumber Data} & \textbf{Keterangan} \\
+\hline
+\endhead
+
+1 & Harga pasar & \textit{harga\allowbreak\_pasar\allowbreak\_harians} & Harga komoditas pada pasar dan tanggal tertentu. \\ \hline
+2 & Ketersediaan harian & \textit{ketersediaan\allowbreak\_harians} & Nilai ketersediaan komoditas pada tanggal tertentu. \\ \hline
+3 & Kebutuhan harian & \textit{ketersediaan\allowbreak\_harians} & Nilai kebutuhan komoditas pada tanggal tertentu. \\ \hline
+4 & Neraca harian & \textit{ketersediaan\allowbreak\_harians} & Nilai neraca antara ketersediaan dan kebutuhan komoditas. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:input-prediksi} menunjukkan empat variabel yang digunakan sebagai konteks masukan pada proses prediksi. Data harga pasar diperoleh dari tabel \textit{harga\allowbreak\_pasar\allowbreak\_harians}, sedangkan ketersediaan harian, kebutuhan harian, dan neraca harian diperoleh dari tabel \textit{ketersediaan\allowbreak\_harians}. Keempat variabel tersebut disusun berdasarkan urutan waktu dan digunakan bersama sepuluh data historis terakhir sebagai masukan layanan prediksi.
+
+Data yang telah disiapkan kemudian dirancang untuk dikirimkan dari \textit{backend} Laravel menuju layanan prediksi melalui \textit{HTTP request}. Komunikasi tersebut menggunakan method \textit{POST} dengan alamat layanan \textit{ml-service:8001/predict}. Layanan prediksi dirancang menggunakan FastAPI dan menerima data melalui parameter \textit{data}. Setelah data diterima, layanan mengubah data menjadi bentuk numerik, mengatur dimensinya sesuai kebutuhan model, dan meneruskannya ke model Chronos-2 untuk menghasilkan prediksi tiga periode berikutnya. Mekanisme tersebut memungkinkan proses prediksi dijalankan pada layanan terpisah dari \textit{backend} utama.
+
+Alur integrasi antara komponen SIPANTAU ditunjukkan pada Gambar \ref{fig:alur-integrasi-prediksi}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/alur-integrasi-prediksi.png}
+    \captionof{figure}{Alur Integrasi Layanan Model Prediksi SIPANTAU}
+    \label{fig:alur-integrasi-prediksi}
+\end{center}
+
+Gambar \ref{fig:alur-integrasi-prediksi} menunjukkan alur pertukaran data dari pengguna hingga layanan model prediksi dan kembali ke pengguna. Proses dimulai dari pengguna yang mengirimkan \textit{HTTP request} melalui \textit{frontend}. \textit{Frontend} meneruskan permintaan tersebut kepada \textit{backend}, kemudian \textit{backend} mengambil data historis dari basis data sebagai konteks prediksi. Data yang telah disiapkan selanjutnya dikirimkan kepada layanan model prediksi dan hasil prediksi dikembalikan ke \textit{backend}. Hasil tersebut kemudian diteruskan kembali melalui \textit{frontend} untuk ditampilkan kepada pengguna.
+
+Pada sisi layanan model, model Chronos-2 dirancang sebagai model \textit{forecasting} yang digunakan untuk menghasilkan tiga nilai prediksi. Layanan FastAPI menerima konteks data dari \textit{backend}, mengubahnya menjadi bentuk masukan yang sesuai, kemudian menjalankan proses prediksi menggunakan \textit{pipeline} Chronos-2. Hasil keluaran model diambil sebagai nilai median dan dikembalikan dalam bentuk tiga nilai prediksi harga melalui \textit{response} JSON. Dengan rancangan tersebut, layanan prediksi memiliki tanggung jawab untuk mengolah masukan dan menghasilkan prediksi, sedangkan \textit{backend} bertanggung jawab terhadap pengambilan data dan komunikasi dengan aplikasi.
+
+Perancangan integrasi juga mencakup pembatasan akses terhadap fungsi prediksi menggunakan \textit{role} dan \textit{permission}. Akses terhadap \textit{endpoint} \textit{/predict} dirancang untuk memerlukan \textit{permission view\_prediksi} setelah pengguna terautentikasi. Permission tersebut diberikan kepada \textit{role tpid} melalui konfigurasi khusus pada \textit{seeder}. Dengan rancangan tersebut, fungsi prediksi hanya dapat digunakan oleh pengguna yang memiliki hak akses untuk melihat hasil prediksi.
+
+Pemetaan akses terhadap fungsi prediksi ditunjukkan pada Tabel \ref{tab:akses-prediksi}.
+
+\begin{longtable}{|c|p{3cm}|p{3.5cm}|p{3cm}|}
+\caption{Pemetaan Akses Fungsi Prediksi}
+\label{tab:akses-prediksi} \\
+\hline
+\textbf{No.} & \textbf{Role} & \textbf{Permission} & \textbf{Akses} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Role} & \textbf{Permission} & \textbf{Akses} \\
+\hline
+\endhead
+
+1 & \textit{tpid} & \textit{view\_prediksi} &
+Melihat hasil prediksi harga \\ \hline
+
+2 & \textit{admin} & Akses penuh &
+Melihat hasil prediksi harga serta fungsi sistem lainnya \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:akses-prediksi} menunjukkan bahwa fungsi prediksi dapat diakses oleh \textit{role tpid} melalui \textit{permission view\_prediksi} serta oleh \textit{role admin} yang memiliki akses penuh terhadap fungsi sistem. Permission \textit{view\_prediksi} digunakan sebagai pembatas akses terhadap \textit{endpoint} \textit{/predict}, sedangkan akses penuh pada \textit{role admin} mengikuti mekanisme otorisasi yang telah diterapkan pada aplikasi.
+
+Secara keseluruhan, perancangan integrasi layanan model prediksi menghasilkan alur yang menghubungkan permintaan pengguna, pengambilan data historis pada \textit{backend}, pengiriman konteks ke layanan prediksi, pemrosesan menggunakan Chronos-2, dan pengembalian tiga hasil prediksi kepada pengguna. Perancangan tersebut juga menetapkan mekanisme pembatasan akses melalui \textit{permission view\_prediksi} untuk \textit{role tpid} serta akses penuh bagi \textit{role admin}. Rancangan ini selanjutnya digunakan sebagai dasar dalam implementasi \textit{PredictController}, layanan FastAPI, konfigurasi model, dan pengaturan akses terhadap \textit{endpoint} prediksi.
+
+\subsubsection{Implementasi}
+
+Implementasi integrasi layanan model prediksi dilakukan dengan menerapkan rancangan pertukaran data antara \textit{frontend}, \textit{backend}, basis data, dan layanan model prediksi. Implementasi terdiri atas penerapan proses prediksi pada \textit{backend} Laravel, pembuatan layanan prediksi menggunakan FastAPI, penerapan model Chronos-2 sebagai model \textit{forecasting}, serta pengaturan hak akses terhadap fungsi prediksi. Setiap komponen diimplementasikan sebagai bagian yang saling terhubung untuk memungkinkan permintaan prediksi diproses hingga menghasilkan tiga nilai prediksi harga.
+
+\vspace{0.5em}
+\noindent\textbf{1. Implementasi Backend untuk Integrasi Model Prediksi}
+\vspace{0.5em}
+
+Implementasi integrasi pada \textit{backend} dilakukan melalui \textit{PredictController} yang menangani permintaan prediksi dari pengguna. \textit{Controller} menerima parameter \textit{pasar\_id} dan \textit{komoditas\_id}, kemudian melakukan validasi terhadap kedua parameter tersebut sebelum mengambil data yang diperlukan dari basis data. Data yang digunakan diperoleh melalui penggabungan tabel \textit{harga\allowbreak\_pasar\allowbreak\_harians} dan \textit{ketersediaan\allowbreak\_harians} berdasarkan tanggal dan komoditas, kemudian difilter berdasarkan pasar dan komoditas yang dipilih. Data diurutkan berdasarkan tanggal secara menurun dan diambil sebanyak sepuluh data terakhir sebelum diurutkan kembali secara kronologis untuk membentuk konteks prediksi.
+
+\begin{code}
+\begin{ignasicblock}
+$validated = $request->validate([
+    'pasar_id' => 'required|exists:pasars,id',
+    'komoditas_id' => 'required|exists:komoditas,id',
+]);
+
+$rows = HargaPasarHarian::query()
+    ->join(
+        'ketersediaan_harians',
+        function ($join) {
+            $join->on(
+                'harga_pasar_harians.tanggal',
+                '=',
+                'ketersediaan_harians.tanggal'
+            )
+                ->on(
+                    'harga_pasar_harians.komoditas_id',
+                    '=',
+                    'ketersediaan_harians.komoditas_id'
+                );
+        }
+    )
+    ->where(
+        'harga_pasar_harians.komoditas_id',
+        $validated['komoditas_id']
+    )
+    ->where(
+        'harga_pasar_harians.pasar_id',
+        $validated['pasar_id']
+    )
+    ->orderBy('harga_pasar_harians.tanggal', 'desc')
+    ->take(10)
+    ->get([
+        'harga_pasar',
+        'ketersediaan_harian',
+        'kebutuhan_harian',
+        'neraca_harian',
+        'harga_pasar_harians.tanggal',
+    ]);
+
+$rows = $rows->reverse()->values();
+
+$data = [];
+foreach ($rows as $row) {
+    $data[] = [
+        (float) $row->harga_pasar,
+        (float) $row->ketersediaan_harian,
+        (float) $row->kebutuhan_harian,
+        (float) $row->neraca_harian,
+    ];
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan proses pengambilan data yang digunakan sebagai konteks prediksi. Validasi dilakukan untuk memastikan bahwa pasar dan komoditas yang dipilih tersedia pada basis data. Data harga pasar digabungkan dengan data ketersediaan berdasarkan tanggal dan komoditas, kemudian sistem mengambil sepuluh data historis terakhir. Setiap data tersebut disusun menjadi empat variabel, yaitu harga pasar, ketersediaan harian, kebutuhan harian, dan neraca harian. Data kemudian dikirimkan ke layanan model prediksi dalam bentuk larik numerik.
+
+Setelah data masukan terbentuk, \textit{backend} mengirimkan data tersebut ke layanan prediksi melalui \textit{HTTP request}. Komunikasi dilakukan menggunakan method \textit{POST} menuju alamat \textit{ml-service:8001/predict}. Hasil dari layanan prediksi kemudian digunakan oleh \textit{backend} untuk membentuk \textit{response} yang berisi informasi tanggal, harga historis, dan tiga nilai prediksi harga.
+
+\begin{code}
+\begin{ignasicblock}
+$response = Http::post(
+    'http://ml-service:8001/predict',
+    [
+        'data' => $data,
+    ]
+);
+
+$result = [
+    'tanggal' => [
+        $rows[9]->tanggal,
+        $rows[8]->tanggal,
+        $rows[7]->tanggal,
+        $rows[6]->tanggal,
+    ],
+    'harga_pasar' => [
+        'harga_pasar_h_min_0' => $rows[9]->harga_pasar,
+        'harga_pasar_h_min_1' => $rows[8]->harga_pasar,
+        'harga_pasar_h_min_2' => $rows[7]->harga_pasar,
+        'harga_pasar_h_min_3' => $rows[6]->harga_pasar,
+    ],
+    'prediksi' => [
+        'hari_1' => $response->json()['prediksi'][0],
+        'hari_2' => $response->json()['prediksi'][1],
+        'hari_3' => $response->json()['prediksi'][2],
+        'today' => $rows[9]->tanggal,
+    ],
+];
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan komunikasi antara \textit{backend} Laravel dan layanan model prediksi. Data konteks dikirimkan melalui \textit{HTTP request} ke layanan \textit{ml-service}, kemudian hasil prediksi diambil dari atribut \textit{prediksi} pada \textit{response}. \textit{Backend} selanjutnya menyusun hasil tersebut menjadi informasi yang mencakup tanggal acuan, beberapa data historis harga pasar, serta prediksi untuk hari pertama hingga hari ketiga. Hasil tersebut kemudian dikembalikan kepada pengguna melalui \textit{response} API. :contentReference[oaicite:2]{index=2}
+
+\vspace{0.5em}
+\noindent\textbf{2. Implementasi Layanan Model Prediksi}
+\vspace{0.5em}
+
+Implementasi layanan model prediksi dilakukan menggunakan FastAPI sebagai layanan yang menerima data dari \textit{backend} dan menjalankan proses prediksi. Layanan menyediakan \textit{endpoint} \textit{/predict} dengan method \textit{POST} yang menerima data dalam atribut \textit{data}. Data yang diterima kemudian dikonversi menjadi larik numerik, ditransposisikan, dan ditambahkan dimensi agar memiliki bentuk masukan yang sesuai dengan proses prediksi. Setelah itu, layanan menjalankan model dengan panjang prediksi sebanyak tiga periode dan mengembalikan hasil prediksi melalui \textit{response} JSON.
+
+\begin{code}
+\begin{ignasicblock}
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+import numpy as np
+
+from app.model import pipeline
+
+app = FastAPI()
+
+class PredictRequest(BaseModel):
+    data: list
+
+@app.post("/predict")
+def predict(req: PredictRequest):
+
+    context = np.array(req.data).astype(float)
+
+    context = context.T
+    context = np.expand_dims(context, axis=0)
+
+    forecast = pipeline.predict(
+        inputs=context,
+        prediction_length=3
+    )
+
+    pred_tensor = forecast[0]
+
+    predictions = pred_tensor.median(dim=1).values
+    predictions = predictions.squeeze().cpu().numpy()
+
+    harga_pred = predictions[0].tolist()
+
+    return {
+        "prediksi": harga_pred
+    }
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan implementasi \textit{endpoint} prediksi pada FastAPI. Data yang diterima dari \textit{backend} dikonversi menjadi tipe numerik menggunakan NumPy, kemudian dilakukan transposisi dan penambahan dimensi sebelum diberikan kepada \textit{pipeline} model. Method \textit{predict()} dijalankan dengan parameter \textit{prediction\_length} sebesar tiga sehingga menghasilkan prediksi untuk tiga periode berikutnya. Hasil keluaran kemudian diambil menggunakan nilai median, dikonversi ke dalam bentuk yang dapat dikirimkan melalui API, dan dikembalikan pada atribut \textit{prediksi}. :contentReference[oaicite:3]{index=3}
+
+Layanan prediksi kemudian dikemas sebagai \textit{container} menggunakan Docker agar dapat dijalankan secara terpisah dari \textit{backend} Laravel. Lingkungan layanan menggunakan Python 3.12 dan memasang seluruh dependensi yang diperlukan untuk menjalankan FastAPI, PyTorch, serta Chronos. Layanan dibuka pada port 8001 dan dijalankan menggunakan Uvicorn sebagai \textit{server} aplikasi.
+
+\begin{code}
+\begin{ignasicblock}
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8001
+
+CMD [ "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan proses pembuatan \textit{container} untuk layanan prediksi. Basis lingkungan menggunakan Python 3.12, kemudian dependensi dipasang dari berkas \textit{requirements.txt}. Port 8001 dibuka sebagai port layanan dan aplikasi dijalankan menggunakan Uvicorn pada alamat \textit{0.0.0.0}. Dengan konfigurasi tersebut, layanan prediksi dapat dijalankan sebagai komponen terpisah yang dapat diakses oleh \textit{backend} melalui jaringan \textit{container}. :contentReference[oaicite:4]{index=4}
+
+\vspace{0.5em}
+\noindent\textbf{3. Implementasi Model Forecasting}
+\vspace{0.5em}
+
+Model \textit{forecasting} diterapkan pada layanan prediksi menggunakan Chronos-2 yang dimuat melalui \textit{Chronos2Pipeline}. Model yang digunakan adalah \textit{autogluon/chronos-2-small}. Konfigurasi \textit{device\_map} digunakan untuk menentukan perangkat pemrosesan berdasarkan ketersediaan CUDA sehingga model dapat dijalankan menggunakan GPU apabila tersedia dan menggunakan CPU apabila GPU tidak tersedia.
+
+\begin{code}
+\begin{ignasicblock}
+from chronos import Chronos2Pipeline
+import torch
+
+pipeline = Chronos2Pipeline.from_pretrained(
+    "autogluon/chronos-2-small",
+    device_map="cuda" if torch.cuda.is_available() else "cpu"
+)
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan konfigurasi \textit{pipeline} Chronos-2 yang digunakan oleh layanan prediksi. Model dimuat menggunakan \textit{Chronos2Pipeline} dari model \textit{autogluon/chronos-2-small}. Perangkat pemrosesan ditentukan berdasarkan hasil pemeriksaan ketersediaan CUDA sehingga pemrosesan dapat menggunakan GPU atau CPU sesuai lingkungan \textit{container}. Model tersebut kemudian digunakan oleh \textit{endpoint} \textit{/predict} untuk menghasilkan tiga periode prediksi harga.
+
+\vspace{0.5em}
+\noindent\textbf{4. Implementasi Hak Akses Prediksi}
+\vspace{0.5em}
+
+Implementasi hak akses terhadap fungsi prediksi dilakukan menggunakan mekanisme \textit{role} dan \textit{permission} yang telah diterapkan pada SIPANTAU. Permission \textit{view\_prediksi} dibuat secara khusus untuk membatasi akses terhadap fungsi melihat hasil prediksi dan diberikan kepada \textit{role tpid}. Konfigurasi tersebut ditempatkan pada \textit{seeder} terpisah agar pengaturan hak akses fungsi prediksi dapat dikelola secara khusus. Penerapan permission tersebut ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+Permission::firstOrCreate([
+    'name' => 'view_prediksi',
+    'guard_name' => 'web'
+]);
+
+Role::firstOrCreate([
+    'name' => 'tpid',
+    'guard_name' => 'web'
+]);
+
+$role = Role::findByName('tpid');
+
+if (!$role->hasPermissionTo('view_prediksi')) {
+    $role->givePermissionTo('view_prediksi');
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan proses pembuatan \textit{permission view\_prediksi} dan \textit{role tpid}. Setelah keduanya tersedia, sistem memeriksa kepemilikan permission tersebut pada \textit{role tpid}. Apabila permission belum diberikan, sistem menetapkannya menggunakan method \textit{givePermissionTo()}. Dengan mekanisme tersebut, hak akses untuk melihat hasil prediksi dapat diberikan secara khusus kepada pengguna yang memiliki \textit{role tpid}.
+
+Permission \textit{view\_prediksi} kemudian diterapkan secara langsung pada \textit{endpoint} prediksi menggunakan \textit{middleware permission}. Endpoint tersebut juga ditempatkan di dalam \textit{middleware auth:sanctum} sehingga pengguna harus terautentikasi sebelum pemeriksaan permission dilakukan. Penerapan kedua \textit{middleware} tersebut ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/predict', [PredictController::class, 'index'])
+        ->middleware('permission:view_prediksi');
+
+});
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa endpoint \textit{/predict} dilindungi oleh dua mekanisme. \textit{Middleware auth:sanctum} digunakan untuk memastikan bahwa pengguna telah terautentikasi, sedangkan \textit{middleware permission:view\_prediksi} digunakan untuk memeriksa hak akses terhadap fungsi prediksi. Dengan penerapan tersebut, pengguna harus memenuhi mekanisme autentikasi dan memiliki permission yang sesuai sebelum dapat mengakses hasil prediksi. :contentReference[oaicite:1]{index=1}
+
+Pada implementasinya, \textit{role tpid} memperoleh \textit{permission view\_prediksi} untuk mengakses fungsi prediksi, sedangkan \textit{role admin} memperoleh akses melalui mekanisme hak akses admin yang telah diterapkan pada aplikasi. Dengan demikian, fungsi prediksi dapat digunakan oleh pengguna yang memiliki kewenangan untuk melihat hasil prediksi tanpa mengubah mekanisme pengelolaan hak akses pada fungsi SIPANTAU lainnya.
+
+\subsubsection{Pengujian}
+
+Pengujian integrasi layanan model prediksi dilakukan untuk memastikan bahwa seluruh komponen yang terlibat dalam proses prediksi dapat berkomunikasi dan menghasilkan keluaran sesuai dengan rancangan. Pengujian dilakukan secara bertahap mulai dari pemeriksaan ketersediaan \textit{AI Service}, pengujian proses prediksi secara langsung pada layanan model, pengujian integrasi melalui \textit{backend}, hingga pengujian melalui \textit{frontend}. Pengujian hak akses terhadap fungsi prediksi juga dilakukan menggunakan pengguna dengan \textit{role} yang memiliki dan tidak memiliki \textit{permission view\_prediksi}.
+
+Hasil pengujian integrasi layanan model prediksi ditunjukkan pada Tabel \ref{tab:pengujian-integrasi-prediksi}.
+
+\begin{longtable}{|c|p{2.3cm}|c|p{2.1cm}|p{2.4cm}|c|c|}
+\caption{Hasil Pengujian Integrasi Layanan Model Prediksi}
+\label{tab:pengujian-integrasi-prediksi} \\
+\hline
+\textbf{No.} & \textbf{Tahap} & \textbf{Method} & \textbf{Endpoint} & \textbf{Skenario} & \textbf{Kode} & \textbf{Hasil} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Tahap} & \textbf{Method} & \textbf{Endpoint} & \textbf{Skenario} & \textbf{Kode} & \textbf{Hasil} \\
+\hline
+\endhead
+
+1 & \textit{AI Service} & GET & /health &
+Memeriksa ketersediaan layanan prediksi dari \textit{container backend}. &
+200 & Berhasil \\ \hline
+
+2 & \textit{AI Service} & POST & /predict &
+Mengirim sepuluh data historis yang terdiri atas empat variabel masukan untuk menghasilkan tiga prediksi. &
+200 & Berhasil \\ \hline
+
+3 & \textit{Backend} & GET & /api/predict &
+Mengirim \textit{pasar\_id} dan \textit{komoditas\_id} menggunakan akun \textit{admin}. &
+200 & Berhasil \\ \hline
+
+4 & \textit{Frontend} & GET & /api/predict &
+Memilih pasar dan komoditas kemudian menampilkan hasil prediksi pada aplikasi. &
+-- & Berhasil \\ \hline
+
+5 & \textit{Authorization} & GET & /api/predict &
+Mengakses fungsi prediksi menggunakan akun \textit{dinas\_pertanian} yang tidak memiliki \textit{permission view\_prediksi}. &
+403 & Ditolak \\ \hline
+
+6 & \textit{Authorization} & GET & /api/predict &
+Mengakses fungsi prediksi menggunakan akun \textit{tpid} yang memiliki \textit{permission view\_prediksi}. &
+200 & Berhasil \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:pengujian-integrasi-prediksi} menunjukkan hasil pengujian pada setiap tahap integrasi layanan model prediksi. Pengujian \textit{AI Service} menunjukkan bahwa layanan dapat diakses dan menghasilkan tiga nilai prediksi, sedangkan pengujian melalui \textit{backend} menunjukkan bahwa proses prediksi dapat dijalankan melalui API SIPANTAU. Hasil prediksi juga berhasil ditampilkan pada \textit{frontend}. Pengujian hak akses menunjukkan bahwa akun \textit{tpid} dapat mengakses fungsi prediksi, sedangkan akun \textit{dinas\_pertanian} yang tidak memiliki \textit{permission view\_prediksi} memperoleh penolakan akses.
+
+Pengujian ketersediaan layanan dilakukan dengan mengirimkan permintaan kepada \textit{AI Service} melalui \textit{container backend}. Perintah dan hasil pengujian ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+root@ff5d8ee3413e:/var/www# curl http://ml-service:8001/health
+{"status":"ok"}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa layanan prediksi dapat diakses melalui alamat \textit{ml-service:8001}. Layanan mengembalikan \textit{response} dengan nilai \textit{status} ``ok'' sehingga menunjukkan bahwa \textit{AI Service} dapat diakses dari \textit{container backend}.
+
+Pengujian selanjutnya dilakukan terhadap proses prediksi secara langsung pada \textit{AI Service}. Data yang dikirim terdiri atas sepuluh data historis dengan empat variabel pada setiap data.
+
+\begin{code}
+\begin{ignasicblock}
+root@ff5d8ee3413e:/var/www# curl -X POST http://ml-service:8001/predict \
+-H "Content-Type: application/json" \
+-d '{
+  "data": [
+    [12000, 100, 90, 10],
+    [12100, 105, 95, 10],
+    [12300, 98, 92, 6],
+    [12500, 110, 100, 10],
+    [12400, 115, 105, 10],
+    [12700, 108, 101, 7],
+    [13000, 120, 110, 10],
+    [12900, 118, 108, 10],
+    [13200, 125, 115, 10],
+    [13500, 130, 120, 10]
+  ]
+}' | jq .
+
+{
+  "prediksi": [
+    13642.552734375,
+    13727.4501953125,
+    13727.05078125
+  ]
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa \textit{AI Service} berhasil menerima data masukan dan mengembalikan tiga nilai prediksi. Hasil tersebut sesuai dengan konfigurasi layanan yang menghasilkan prediksi untuk tiga periode berikutnya. Layanan FastAPI menerima data melalui atribut \textit{data}, kemudian memprosesnya menggunakan model sebelum mengembalikan nilai prediksi pada atribut \textit{prediksi}.
+
+Pengujian integrasi selanjutnya dilakukan melalui \textit{backend} dengan mengakses \textit{endpoint /api/predict}. Permintaan menggunakan parameter \textit{pasar\_id} dan \textit{komoditas\_id} serta token pengguna yang memiliki hak akses terhadap fungsi prediksi.
+
+\begin{code}
+\begin{ignasicblock}
+omar@omar-debian:~/Omar/UB/pkl/template-pkl-latex$ \
+curl "http://localhost/api/predict?pasar_id=1&komoditas_id=1" \
+-H "Accept: application/json" \
+-H "Authorization: Bearer <token-admin>" | jq .
+
+{
+  "success": true,
+  "message": "Prediksi Harga Berhasil",
+  "data": {
+    "tanggal": [
+      "2026-04-15T00:00:00.000000Z",
+      "2026-04-04T00:00:00.000000Z",
+      "2026-04-13T00:00:00.000000Z",
+      "2026-04-12T00:00:00.000000Z"
+    ],
+    "harga_pasar": {
+      "harga_pasar_h_min_0": 75000,
+      "harga_pasar_h_min_1": 60000,
+      "harga_pasar_h_min_2": 60000,
+      "harga_pasar_h_min_3": 60000
+    },
+    "prediksi": {
+      "hari_1": 63458.046875,
+      "hari_2": 61897.07421875,
+      "hari_3": 61546.5,
+      "today": "2026-04-15T00:00:00.000000Z"
+    }
+  }
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa \textit{backend} berhasil memproses permintaan prediksi dan mengembalikan \textit{response} dengan pesan ``Prediksi Harga Berhasil''. \textit{Response} memuat tanggal acuan, data harga pasar historis, serta tiga nilai prediksi untuk hari pertama hingga hari ketiga. Hasil tersebut menunjukkan bahwa \textit{backend} berhasil mengambil data yang diperlukan, mengirimkan data ke \textit{AI Service}, dan mengembalikan hasil prediksi kepada pengguna.
+
+Hasil prediksi kemudian ditampilkan melalui \textit{frontend} SIPANTAU. Bukti hasil prediksi pada \textit{frontend} ditunjukkan pada Gambar \ref{fig:pengujian-prediksi-frontend}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-prediksi-frontend.png}
+    \captionof{figure}{Hasil Prediksi Harga pada Frontend SIPANTAU}
+    \label{fig:pengujian-prediksi-frontend}
+\end{center}
+
+Gambar \ref{fig:pengujian-prediksi-frontend} menunjukkan bahwa hasil prediksi berhasil ditampilkan pada halaman aplikasi. Halaman menampilkan data harga historis hingga tanggal acuan serta tiga nilai prediksi untuk periode berikutnya. Hasil tersebut menunjukkan bahwa keluaran dari \textit{backend} dapat diteruskan dan ditampilkan kepada pengguna melalui \textit{frontend}.
+
+Pengujian hak akses dilakukan menggunakan akun dengan \textit{role tpid} yang telah diberikan \textit{permission view\_prediksi}. Akun tersebut terlebih dahulu melakukan login untuk memperoleh token, kemudian token digunakan untuk mengakses \textit{endpoint /api/predict}. Perintah dan hasil pengujian login ditunjukkan pada kode di bawah.
+
+\begin{code}
+\begin{ignasicblock}
+omar@omar-debian:~/Omar/UB/pkl/template-pkl-latex$ \
+curl -X POST http://localhost/api/login \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-d '{
+  "email": "tes_tpid@sipantau.id",
+  "password": "testpid123"
+}' | jq .
+
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "token": "<token-tpid>"
+  }
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa akun \textit{tpid} berhasil melakukan \textit{login} dan memperoleh token. Token tersebut kemudian digunakan untuk mengakses fungsi prediksi.
+
+\begin{code}
+\begin{ignasicblock}
+omar@omar-debian:~/Omar/UB/pkl/template-pkl-latex$ \
+curl "http://localhost/api/predict?pasar_id=1&komoditas_id=1" \
+-H "Accept: application/json" \
+-H "Authorization: Bearer <token-tpid>" | jq .
+
+{
+  "success": true,
+  "message": "Prediksi Harga Berhasil",
+  "data": {
+    "tanggal": [
+      "2026-04-15T00:00:00.000000Z",
+      "2026-04-14T00:00:00.000000Z",
+      "2026-04-13T00:00:00.000000Z",
+      "2026-04-12T00:00:00.000000Z"
+    ],
+    "harga_pasar": {
+      "harga_pasar_h_min_0": 75000,
+      "harga_pasar_h_min_1": 60000,
+      "harga_pasar_h_min_2": 60000,
+      "harga_pasar_h_min_3": 60000
+    },
+    "prediksi": {
+      "hari_1": 63458.046875,
+      "hari_2": 61897.07421875,
+      "hari_3": 61546.5,
+      "today": "2026-04-15T00:00:00.000000Z"
+    }
+  }
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa akun \textit{tpid} dapat mengakses \textit{endpoint\allowbreak /api\allowbreak /predict} menggunakan token hasil \textit{login}. \textit{Response} menghasilkan kode HTTP 200 dan pesan ``Prediksi Harga Berhasil'' serta menghasilkan tiga nilai prediksi. Hasil tersebut menunjukkan bahwa \textit{permission view\_prediksi} yang diberikan kepada \textit{role tpid} dapat digunakan untuk mengakses fungsi prediksi.
+
+Pengujian penolakan akses dilakukan menggunakan akun dengan \textit{role dinas\_pertanian} yang tidak memiliki \textit{permission view\_prediksi}. Permintaan terhadap \textit{endpoint /api/predict} dikirimkan menggunakan token akun tersebut.
+
+\begin{code}
+\begin{ignasicblock}
+omar@omar-debian:~/Omar/UB/pkl/template-pkl-latex$ \
+curl "http://localhost/api/predict?pasar_id=1&komoditas_id=1" \
+-H "Accept: application/json" \
+-H "Authorization: Bearer <token-dinas-pertanian>" | jq .
+
+{
+  "message": "User does not have the right permissions.",
+  "exception": "Spatie\\Permission\\Exceptions\\UnauthorizedException"
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa permintaan dari akun \textit{dinas\_pertanian} ditolak karena pengguna tidak memiliki \textit{permission view\_prediksi}. Sistem mengembalikan kode HTTP 403 dengan pesan bahwa pengguna tidak memiliki hak akses yang diperlukan. Hasil tersebut menunjukkan bahwa \textit{middleware permission:\allowbreak view\allowbreak \_prediksi} berhasil membatasi akses terhadap fungsi prediksi berdasarkan hak akses pengguna.
+
+Berdasarkan hasil pengujian, integrasi layanan model prediksi pada SIPANTAU telah berjalan dari layanan prediksi hingga \textit{frontend}. \textit{AI Service} dapat diakses, menerima data masukan, dan menghasilkan tiga nilai prediksi. \textit{Backend} berhasil mengambil data historis, meneruskannya kepada layanan model, dan mengembalikan hasil prediksi kepada \textit{frontend}. Pengujian hak akses juga menunjukkan bahwa pengguna dengan \textit{role tpid} dapat mengakses fungsi prediksi, sedangkan pengguna yang tidak memiliki \textit{permission view\_prediksi} memperoleh penolakan akses dengan kode HTTP 403.
+
+\subsection{Perancangan, Implementasi, dan Pengujian Deployment Aplikasi}
+
+\subsubsection{Perancangan}
+
+Perancangan deployment dilakukan dengan menyesuaikan konfigurasi aplikasi terhadap karakteristik lingkungan pengembangan dan lingkungan produksi. Struktur komponen yang digunakan pada kedua lingkungan tetap sama, yaitu \textit{frontend} berbasis Next.js, \textit{backend} berbasis Laravel, layanan model prediksi berbasis FastAPI, Nginx, dan MySQL. Perbedaan perancangan terutama terdapat pada konfigurasi Nginx, mekanisme akses aplikasi, konfigurasi lingkungan \textit{frontend}, serta pengelolaan layanan pada lingkungan produksi.
+
+Pada lingkungan pengembangan, SIPANTAU dirancang untuk dijalankan secara lokal menggunakan Docker Compose. Nginx digunakan sebagai \textit{reverse proxy} pada port 80 dengan \textit{server name} lokal. Permintaan pada jalur utama aplikasi diteruskan menuju \textit{frontend} Next.js, sedangkan permintaan pada jalur \texttt{/api} diproses oleh \textit{backend} Laravel. Layanan \textit{frontend}, \textit{backend}, layanan model prediksi, dan MySQL dijalankan dalam \textit{container} terpisah serta dihubungkan melalui jaringan Docker yang sama.
+
+Pada lingkungan produksi, struktur layanan tetap menggunakan komponen yang sama, tetapi konfigurasi Nginx disesuaikan untuk menyediakan akses melalui HTTPS. Nginx menggunakan nama domain produksi dan dikonfigurasi dengan dua \textit{server block}, yaitu \textit{server block} pada port 80 untuk pengalihan permintaan HTTP ke HTTPS dan \textit{server block} pada port 443 untuk menangani koneksi HTTPS. Konfigurasi HTTPS menggunakan sertifikat dan kunci privat yang disimpan pada direktori \texttt{/etc/letsencrypt}. Selain itu, jalur \texttt{/.well-known/acme-challenge/} disediakan untuk kebutuhan validasi sertifikat.
+
+Pada lingkungan produksi, Nginx meneruskan permintaan aplikasi menuju \textit{frontend} Next.js dan memproses permintaan API melalui \textit{backend} Laravel. Layanan aplikasi dijalankan dalam \textit{container} terpisah dan diberikan kebijakan \textit{restart} agar layanan dapat dijalankan kembali secara otomatis ketika \textit{container} berhenti. \textit{Frontend} produksi juga menggunakan konfigurasi lingkungan melalui berkas \texttt{.env.\allowbreak production}.
+
+Konfigurasi basis data pada lingkungan pengembangan dan produksi menggunakan struktur layanan yang sama dan dipisahkan dari konfigurasi layanan aplikasi. MySQL dijalankan dalam \textit{container} tersendiri dan dihubungkan ke jaringan Docker yang digunakan oleh komponen SIPANTAU. Dengan demikian, pengelolaan layanan basis data dilakukan secara terpisah dari layanan aplikasi pada kedua lingkungan.
+
+Perbedaan konfigurasi antara lingkungan pengembangan dan produksi ditunjukkan pada Tabel \ref{tab:perbandingan-deployment}.
+
+\begin{longtable}{|c|p{5.5cm}|p{5.5cm}|}
+\caption{Perbandingan Konfigurasi Lingkungan Pengembangan dan Produksi}
+\label{tab:perbandingan-deployment} \\
+\hline
+\textbf{No.} & \textbf{Pengembangan} & \textbf{Produksi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Pengembangan} & \textbf{Produksi} \\
+\hline
+\endhead
+
+1 & Nginx hanya menerima akses HTTP melalui port 80. &
+Nginx menerima akses HTTP melalui port 80 dan HTTPS melalui port 443. \\ \hline
+
+2 & Nginx menggunakan \textit{server name} lokal dan konfigurasi untuk lingkungan pengembangan. &
+Nginx menggunakan \textit{server name} domain produksi dan konfigurasi HTTPS. \\ \hline
+
+3 & Permintaan HTTP diproses secara langsung oleh Nginx tanpa pengalihan ke HTTPS. &
+Permintaan HTTP pada port 80 dialihkan ke HTTPS, sedangkan port 443 digunakan untuk melayani aplikasi. \\ \hline
+
+4 & Tidak terdapat konfigurasi sertifikat SSL/TLS. &
+Nginx menggunakan sertifikat dan kunci privat SSL/TLS yang disimpan melalui Let's Encrypt. \\ \hline
+
+5 & Layanan digunakan untuk pengembangan dan pengujian secara lokal. &
+Layanan dijalankan pada VPS dengan kebijakan \textit{restart}. \\ \hline
+
+6 & \textit{Frontend} menggunakan konfigurasi lingkungan pengembangan. &
+\textit{Frontend} menggunakan konfigurasi melalui berkas \texttt{.env.production}. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:perbandingan-deployment} menunjukkan bahwa perbedaan deployment terutama terdapat pada konfigurasi Nginx dan mekanisme akses aplikasi. Lingkungan pengembangan menggunakan HTTP secara lokal, sedangkan lingkungan produksi menyediakan akses HTTPS melalui domain produksi dengan sertifikat SSL/TLS. Selain itu, lingkungan produksi menggunakan kebijakan \textit{restart} pada layanan dan konfigurasi khusus untuk \textit{frontend}. Struktur layanan aplikasi dan basis data tetap menggunakan komponen yang sama pada kedua lingkungan.
+
+Rancangan tersebut kemudian digunakan sebagai dasar dalam implementasi deployment pada VPS. Tahap implementasi mencakup penerapan Docker Compose untuk layanan aplikasi dan basis data, konfigurasi Nginx produksi, konfigurasi HTTPS, serta konfigurasi lingkungan \textit{frontend}.
+
+\subsubsection{Implementasi}
+
+Implementasi deployment dilakukan dengan menerapkan konfigurasi yang telah dirancang pada lingkungan produksi VPS. Proses implementasi mencakup penerapan layanan aplikasi menggunakan Docker Compose, konfigurasi Nginx sebagai \textit{reverse proxy}, penerapan HTTPS, serta menjalankan layanan basis data secara terpisah dari layanan aplikasi. Seluruh layanan dihubungkan melalui jaringan Docker yang sama agar dapat berkomunikasi secara internal.
+
+\vspace{0.5em}
+\noindent\textbf{1. Implementasi Layanan Aplikasi}
+\vspace{0.5em}
+
+Layanan utama SIPANTAU diimplementasikan menggunakan Docker Compose yang terdiri atas \textit{frontend} Next.js, \textit{backend} Laravel, layanan model prediksi berbasis FastAPI, dan Nginx. Setiap layanan dijalankan dalam \textit{container} terpisah dan ditempatkan pada jaringan Docker \texttt{sipantau-network}. \textit{Backend} Laravel menyediakan layanan PHP-FPM pada port 9000, sedangkan \textit{frontend} Next.js dijalankan pada port 3000. Layanan model prediksi dijalankan pada \textit{container} \texttt{ml-\allowbreak service} dan dapat diakses oleh \textit{backend} melalui jaringan internal Docker.
+
+Konfigurasi layanan produksi ditunjukkan pada kode berikut.
+
+\begin{code}
+\begin{ignasicblock}
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www
+      - laravel_vendor:/var/www/vendor
+    expose:
+      - "9000"
+    networks:
+      - sipantau-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www
+      - ./backend/nginx-production.conf:/etc/nginx/conf.d/default.conf
+      - ./certbot/www:/var/www/certbot
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - sipantau-network
+
+  ml:
+    build:
+      context: ./ml-service
+      extra_hosts:
+        - "files.pythonhosted.org:151.101.0.223"
+    container_name: ml-service
+    restart: unless-stopped
+    volumes:
+      - ./ml-service:/app
+    networks:
+      - sipantau-network
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    expose:
+      - "3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+    env_file:
+      - ./frontend/.env.production
+    networks:
+      - sipantau-network
+
+volumes:
+  laravel_vendor
+
+networks:
+  sipantau-network:
+    external: true
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan konfigurasi layanan aplikasi pada lingkungan produksi. Nginx diekspos melalui port 80 dan 443 sebagai titik akses dari luar, sedangkan \textit{frontend}, \textit{backend}, dan layanan model prediksi berkomunikasi melalui jaringan internal Docker. Layanan produksi diberikan kebijakan \textit{restart} agar \textit{container} dapat dijalankan kembali secara otomatis ketika berhenti. Konfigurasi lingkungan \textit{frontend} juga dimuat melalui berkas \texttt{.env.production}.
+
+\vspace{0.5em}
+\noindent\textbf{2. Implementasi Konfigurasi Nginx dan HTTPS}
+\vspace{0.5em}
+
+Nginx diimplementasikan sebagai \textit{reverse proxy} sekaligus titik masuk utama aplikasi SIPANTAU. Konfigurasi Nginx produksi menggunakan domain \texttt{sipantau.\allowbreak simdacloud.id} dan terdiri atas dua \textit{server block}. \textit{Server block} pertama menerima permintaan pada port 80 dan mengalihkan permintaan HTTP ke HTTPS, sedangkan \textit{server block} kedua menangani permintaan HTTPS pada port 443. Selain itu, jalur \texttt{/.well-known/acme-\allowbreak challenge/} disediakan untuk kebutuhan validasi sertifikat.
+
+Konfigurasi Nginx produksi ditunjukkan pada kode berikut.
+
+\begin{code}
+\begin{ignasicblock}
+server {
+    listen 80;
+    server_name sipantau.simdacloud.id;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name sipantau.simdacloud.id;
+
+    ssl_certificate /etc/letsencrypt/live/sipantau.simdacloud.id/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sipantau.simdacloud.id/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    location / {
+        proxy_pass http://frontend:3000;
+        proxy_http_version 1.1;
+
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location /api {
+        root /var/www/public;
+        try_files $uri /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass backend:9000;
+        fastcgi_index index.php;
+
+        include fastcgi_params;
+
+        fastcgi_param SCRIPT_FILENAME /var/www/public$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param HTTP_AUTHORIZATION $http_authorization;
+    }
+}
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan implementasi Nginx pada lingkungan produksi. Permintaan HTTP yang masuk melalui port 80 diarahkan menggunakan kode status 301 menuju alamat HTTPS, kecuali permintaan pada jalur \texttt{/.well-known/acme-\allowbreak challenge/}. Pada port 443, Nginx menangani koneksi HTTPS menggunakan sertifikat dan kunci privat yang tersimpan pada direktori \texttt{/etc/letsencrypt}. Permintaan pada jalur utama diteruskan menuju \textit{frontend} Next.js, sedangkan permintaan pada jalur \texttt{/api} diproses oleh \textit{backend} Laravel melalui PHP-FPM. Header \texttt{HTTP\_\allowbreak AUTHORIZATION} juga diteruskan agar token autentikasi dapat diterima oleh aplikasi Laravel.
+
+\vspace{0.5em}
+\noindent\textbf{3. Implementasi Layanan Basis Data}
+\vspace{0.5em}
+
+Layanan basis data diimplementasikan menggunakan MySQL dalam \textit{container} terpisah dari layanan aplikasi. Konfigurasi basis data disimpan dalam berkas Docker Compose tersendiri dan menggunakan jaringan \texttt{sipantau-network} agar dapat berkomunikasi dengan \textit{backend} Laravel. Data MySQL disimpan menggunakan \textit{volume} Docker sehingga data tetap tersimpan meskipun \textit{container} dihentikan atau dijalankan kembali.
+
+Konfigurasi layanan basis data ditunjukkan pada kode berikut.
+
+\begin{code}
+\begin{ignasicblock}
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sipantau-network
+
+volumes:
+  mysql_data:
+    external: true
+    name: sipantau_mysql_data
+
+networks:
+  sipantau-network:
+    external: true
+\end{ignasicblock}
+\end{code}
+
+Kode di atas menunjukkan bahwa MySQL dijalankan sebagai layanan tersendiri dan menggunakan \textit{volume} untuk mempertahankan data basis data. Jaringan \texttt{sipantau-network} digunakan untuk menghubungkan layanan MySQL dengan komponen aplikasi SIPANTAU. Konfigurasi basis data tersebut digunakan secara terpisah dari konfigurasi layanan aplikasi sehingga pengelolaan basis data dapat dilakukan secara independen.
+
+Setelah seluruh konfigurasi diterapkan, layanan SIPANTAU dijalankan pada VPS menggunakan Docker Compose. Nginx menjadi titik akses dari luar melalui domain produksi, sedangkan komunikasi antara \textit{frontend}, \textit{backend}, layanan model prediksi, dan MySQL berlangsung melalui jaringan internal Docker. Dengan konfigurasi tersebut, aplikasi dapat diakses melalui HTTPS dan seluruh komponen sistem dapat menjalankan fungsi masing-masing pada lingkungan produksi.
+
+\subsubsection{Pengujian}
+
+Pengujian deployment dilakukan untuk memastikan bahwa aplikasi SIPANTAU dapat berjalan pada lingkungan produksi sesuai dengan konfigurasi yang telah diterapkan. Pengujian difokuskan pada akses aplikasi melalui HTTP dan HTTPS serta keberjalanan fungsi utama aplikasi setelah diterapkan pada VPS. Fungsi yang diuji meliputi autentikasi pengguna, penambahan data, proses prediksi harga, akses aplikasi melalui HTTPS, dan pengalihan akses HTTP menuju HTTPS.
+
+Hasil pengujian deployment ditunjukkan pada Tabel \ref{tab:pengujian-deployment}.
+
+\begin{longtable}{|c|p{2.5cm}|p{3.2cm}|p{3.2cm}|c|}
+\caption{Hasil Pengujian Deployment SIPANTAU}
+\label{tab:pengujian-deployment} \\
+\hline
+\textbf{No.} & \textbf{Pengujian} & \textbf{Skenario} & \textbf{Hasil yang Diharapkan} & \textbf{Hasil} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Pengujian} & \textbf{Skenario} & \textbf{Hasil yang Diharapkan} & \textbf{Hasil} \\
+\hline
+\endhead
+
+1 &
+Pengalihan HTTP &
+Mengakses SIPANTAU melalui alamat HTTP pada domain produksi menggunakan \texttt{curl}. &
+Permintaan HTTP dialihkan menuju alamat HTTPS. &
+Berhasil \\ \hline
+
+2 &
+Akses HTTPS &
+Mengakses SIPANTAU melalui alamat HTTPS pada domain produksi menggunakan \textit{browser}. &
+Halaman SIPANTAU dapat ditampilkan melalui koneksi HTTPS. &
+Berhasil \\ \hline
+
+3 &
+Autentikasi &
+Melakukan login menggunakan akun pengguna pada lingkungan produksi. &
+Pengguna berhasil melakukan login dan memperoleh akses ke aplikasi. &
+Berhasil \\ \hline
+
+4 &
+Penambahan Data &
+Menambahkan data harga petani melalui aplikasi pada lingkungan produksi. &
+Data harga petani berhasil ditambahkan dan tersimpan pada sistem. &
+Berhasil \\ \hline
+
+5 &
+Fungsi Prediksi &
+Menjalankan fungsi prediksi harga melalui \textit{frontend} pada lingkungan produksi. &
+Hasil prediksi harga berhasil diproses dan ditampilkan kepada pengguna. &
+Berhasil \\ \hline
+
+\end{longtable}
+
+Berdasarkan Tabel \ref{tab:pengujian-deployment}, seluruh skenario pengujian deployment memperoleh hasil berhasil. Bukti hasil pengujian kemudian ditampilkan melalui dokumentasi setiap skenario yang dilakukan pada lingkungan produksi.
+
+Pengujian pengalihan HTTP dilakukan dengan mengirimkan permintaan \texttt{HEAD} menuju domain SIPANTAU menggunakan perintah \texttt{curl -vIL}. Hasil pengujian ditunjukkan pada Gambar \ref{fig:pengujian-redirect-http}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-redirect-http.png}
+    \captionof{figure}{Hasil pengujian pengalihan HTTP menuju HTTPS}
+    \label{fig:pengujian-redirect-http}
+\end{center}
+
+Pada Gambar \ref{fig:pengujian-redirect-http}, permintaan menuju \texttt{http://sipantau.\allowbreak simdacloud.id} memperoleh respons \texttt{301 Moved Permanently} dengan \texttt{Location} yang mengarah ke \texttt{https://sipantau.simdacloud.id/}. \texttt{curl} kemudian mengikuti pengalihan tersebut dan melakukan koneksi melalui port 443. Proses \textit{TLS handshake} berhasil dilakukan dan sertifikat untuk domain SIPANTAU berhasil diverifikasi. Permintaan HTTPS selanjutnya memperoleh respons \texttt{200 OK}, sehingga konfigurasi pengalihan HTTP menuju HTTPS pada lingkungan produksi dinyatakan berhasil.
+
+Pengujian akses HTTPS dilakukan dengan membuka alamat SIPANTAU melalui \textit{browser} pada lingkungan produksi. Pengujian ini bertujuan untuk memastikan bahwa aplikasi dapat diakses melalui domain produksi menggunakan koneksi HTTPS. Hasil pengujian ditunjukkan pada Gambar \ref{fig:pengujian-akses-https}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-akses-https.png}
+    \captionof{figure}{Akses SIPANTAU melalui HTTPS pada lingkungan produksi}
+    \label{fig:pengujian-akses-https}
+\end{center}
+
+Gambar \ref{fig:pengujian-akses-https} menunjukkan bahwa halaman SIPANTAU berhasil ditampilkan melalui alamat HTTPS pada domain produksi. Hal tersebut menunjukkan bahwa Nginx dapat menerima koneksi HTTPS dan meneruskan permintaan menuju layanan aplikasi sehingga \textit{frontend} dapat diakses oleh pengguna.
+
+Pengujian autentikasi dilakukan dengan melakukan login menggunakan akun pengguna pada lingkungan produksi. Pengujian ini bertujuan untuk memastikan bahwa mekanisme autentikasi yang telah diterapkan pada \textit{backend} tetap dapat digunakan setelah aplikasi dideploy. Hasil pengujian ditunjukkan pada Gambar \ref{fig:pengujian-login-production}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-login-production.png}
+    \captionof{figure}{Hasil pengujian login pada lingkungan produksi}
+    \label{fig:pengujian-login-production}
+\end{center}
+
+Gambar \ref{fig:pengujian-login-production} menunjukkan bahwa pengguna berhasil melakukan login pada aplikasi SIPANTAU di lingkungan produksi. Keberhasilan tersebut menunjukkan bahwa mekanisme autentikasi dapat berjalan dengan baik setelah proses deployment.
+
+Pengujian penambahan data dilakukan dengan memasukkan data harga petani melalui aplikasi SIPANTAU pada lingkungan produksi. Pengujian ini bertujuan untuk memastikan bahwa pengguna dapat mengirimkan data melalui \textit{frontend} dan data tersebut dapat diproses serta disimpan oleh sistem. Hasil pengujian ditunjukkan pada Gambar \ref{fig:pengujian-tambah-harga-petani-production}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-tambah-harga-petani-production.png}
+    \captionof{figure}{Hasil pengujian penambahan data harga petani pada lingkungan produksi}
+    \label{fig:pengujian-tambah-harga-petani-production}
+\end{center}
+
+Gambar \ref{fig:pengujian-tambah-harga-petani-production} menunjukkan bahwa data harga petani berhasil ditambahkan melalui aplikasi SIPANTAU pada lingkungan produksi. Hasil tersebut menunjukkan bahwa proses pengiriman data dari \textit{frontend} menuju \textit{backend} dapat berjalan dengan baik dan data berhasil diproses oleh sistem.
+
+Pengujian fungsi prediksi dilakukan dengan menjalankan proses prediksi harga melalui \textit{frontend} SIPANTAU pada lingkungan produksi. Pengujian ini bertujuan untuk memastikan bahwa fungsi utama aplikasi tetap dapat digunakan setelah deployment. Hasil pengujian ditunjukkan pada Gambar \ref{fig:pengujian-prediksi-production}.
+
+\begin{center}
+    \includegraphics[width=\textwidth]{img/pengujian-prediksi-production.png}
+    \captionof{figure}{Hasil pengujian prediksi harga pada lingkungan produksi}
+    \label{fig:pengujian-prediksi-production}
+\end{center}
+
+Gambar \ref{fig:pengujian-prediksi-production} menunjukkan bahwa proses prediksi harga berhasil dijalankan melalui \textit{frontend} pada lingkungan produksi dan hasil prediksi berhasil ditampilkan kepada pengguna. Hasil tersebut menunjukkan bahwa fungsi prediksi dapat digunakan dengan baik setelah aplikasi diterapkan pada lingkungan produksi.
+
+Berdasarkan seluruh hasil pengujian, deployment SIPANTAU pada lingkungan produksi dinyatakan berhasil. Aplikasi dapat diakses melalui HTTPS, permintaan HTTP berhasil dialihkan menuju HTTPS, mekanisme autentikasi dapat digunakan, data harga petani dapat ditambahkan, dan fungsi prediksi harga dapat dijalankan serta menampilkan hasil kepada pengguna.
+
 \section{Pembahasan}
+
+Berdasarkan hasil analisis, perancangan, implementasi, pengujian, dan deployment yang telah dilakukan, pengembangan SIPANTAU berhasil menghasilkan \textit{backend} yang mendukung kebutuhan utama aplikasi. Pengembangan dilakukan pada proyek yang telah berjalan sehingga \textit{frontend}, rancangan awal basis data, dan kebutuhan utama sistem telah tersedia ketika proses pengembangan dilanjutkan. Berdasarkan kondisi tersebut, pengembangan difokuskan pada penyempurnaan basis data, pembangunan \textit{backend}, penerapan authentication dan authorization, integrasi layanan model prediksi, serta deployment aplikasi pada lingkungan produksi.
+
+Penerapan Laravel sebagai \textit{framework backend} memungkinkan fungsi-fungsi SIPANTAU dikembangkan dalam bentuk API yang dapat digunakan oleh \textit{frontend} berbasis Next.js. Struktur \textit{backend} juga disusun untuk memisahkan pengelolaan data, proses bisnis, dan mekanisme komunikasi dengan layanan lain. Hasil implementasi menunjukkan bahwa \textit{backend} dapat menangani proses pengelolaan data komoditas, pasar, ketersediaan, panen, harga petani, dan harga pasar melalui endpoint yang telah disediakan. Pengujian terhadap endpoint menunjukkan bahwa proses penambahan maupun pengambilan data dapat berjalan sesuai dengan rancangan.
+
+Perancangan dan implementasi basis data menghasilkan struktur yang dapat mendukung kebutuhan pengelolaan data SIPANTAU. Hubungan antarentitas direpresentasikan melalui tabel dan relasi yang digunakan oleh \textit{backend} dalam menjalankan proses bisnis. Implementasi migrasi dan Model pada Laravel juga digunakan untuk menghubungkan struktur basis data dengan aplikasi. Dengan struktur tersebut, proses pengelolaan data dapat dilakukan melalui \textit{backend} tanpa harus melakukan pengelolaan data secara langsung pada basis data.
+
+Mekanisme authentication yang diterapkan memberikan dasar untuk mengidentifikasi pengguna sebelum mengakses fungsi yang dilindungi. Pengguna melakukan login untuk memperoleh token yang digunakan pada permintaan berikutnya terhadap API yang memerlukan autentikasi. Setelah authentication diterapkan, authorization digunakan untuk membatasi fungsi yang dapat diakses berdasarkan peran pengguna. Pembagian hak akses tersebut telah disesuaikan dengan kebutuhan masing-masing instansi, sedangkan admin diberikan akses terhadap fungsi yang lebih luas. Hasil pengujian menunjukkan bahwa pengguna dengan hak akses yang sesuai dapat menjalankan fungsi yang diberikan, sedangkan pengguna yang tidak memiliki hak akses memperoleh penolakan akses. Dengan demikian, mekanisme authentication dan authorization telah dapat diterapkan sebagai bagian dari pengamanan akses pada aplikasi.
+
+Integrasi layanan model prediksi dilakukan dengan memisahkan proses pengelolaan data aplikasi dan proses prediksi ke dalam layanan yang berbeda. \textit{Backend} bertanggung jawab mengambil data historis dari basis data, membentuk data masukan, dan mengirimkannya ke layanan model prediksi. Layanan model prediksi kemudian melakukan proses \textit{forecasting} dan mengembalikan hasil prediksi kepada \textit{backend}. Hasil tersebut selanjutnya dikembalikan kepada \textit{frontend} untuk ditampilkan kepada pengguna. Pendekatan tersebut membuat proses prediksi tidak dilakukan secara langsung di dalam \textit{backend} Laravel, sehingga masing-masing layanan dapat menjalankan fungsi sesuai tanggung jawabnya.
+
+Data yang digunakan pada proses prediksi terdiri atas harga pasar, ketersediaan harian, kebutuhan harian, dan neraca harian. \textit{Backend} mengambil data historis yang diperlukan dari basis data kemudian mengirimkannya ke layanan FastAPI dalam format yang telah ditentukan. Layanan model memproses data tersebut untuk menghasilkan prediksi harga tiga hari ke depan. Hasil pengujian menunjukkan bahwa komunikasi antara \textit{backend} dan layanan model prediksi dapat berjalan dengan baik, sedangkan hasil prediksi dapat dikembalikan melalui endpoint yang tersedia dan ditampilkan pada \textit{frontend}. Pengembangan model prediksi tidak menjadi bagian dari pekerjaan ini sehingga fokus implementasi berada pada proses integrasi model yang telah tersedia ke dalam SIPANTAU.
+
+Tahap deployment menerapkan seluruh komponen aplikasi pada lingkungan produksi menggunakan Docker. \textit{Frontend}, \textit{backend}, layanan model prediksi, Nginx, dan MySQL dijalankan pada \textit{container} yang terpisah dan dihubungkan melalui jaringan Docker yang sama. Pemisahan layanan tersebut memungkinkan setiap komponen menjalankan fungsi masing-masing sekaligus tetap dapat berkomunikasi secara internal. Konfigurasi deployment pada lingkungan produksi juga disesuaikan dengan kebutuhan akses melalui domain dan HTTPS, sedangkan konfigurasi basis data tetap dipisahkan dari layanan aplikasi.
+
+Konfigurasi Nginx pada lingkungan produksi memberikan mekanisme pengalihan dari HTTP menuju HTTPS serta meneruskan permintaan menuju layanan yang sesuai. Hasil pengujian menunjukkan bahwa permintaan HTTP memperoleh respons \texttt{301 Moved Permanently} dan diarahkan menuju alamat HTTPS. Setelah pengalihan dilakukan, koneksi HTTPS berhasil dibangun dan permintaan memperoleh respons \texttt{200 OK}. Aplikasi juga dapat ditampilkan melalui \textit{browser} menggunakan domain produksi, sehingga konfigurasi akses aplikasi pada lingkungan produksi dapat digunakan sebagaimana yang telah dirancang.
+
+Pengujian pada lingkungan produksi juga menunjukkan bahwa fungsi utama SIPANTAU tetap dapat digunakan setelah proses deployment. Pengguna dapat melakukan login, menambahkan data harga petani, dan menjalankan fungsi prediksi harga melalui \textit{frontend}. Keberhasilan ketiga fungsi tersebut menunjukkan bahwa komponen aplikasi yang telah dikembangkan sebelumnya dapat berjalan ketika diterapkan pada lingkungan produksi dan tetap dapat berkomunikasi dengan layanan yang diperlukan.
+
+Secara keseluruhan, hasil yang diperoleh menunjukkan bahwa pengembangan \textit{backend} SIPANTAU telah memenuhi kebutuhan yang telah ditetapkan pada tahap analisis. \textit{Backend} mampu menangani pengelolaan data, authentication, authorization, dan integrasi layanan model prediksi, sedangkan deployment memungkinkan seluruh komponen tersebut digunakan pada lingkungan produksi. Pengujian yang dilakukan pada setiap tahap juga menunjukkan bahwa fungsi-fungsi yang dikembangkan dapat berjalan sesuai dengan rancangan. Dengan demikian, hasil pengembangan telah mendukung penggunaan SIPANTAU sebagai aplikasi web untuk pengelolaan data komoditas dan penyediaan hasil prediksi harga pada lingkungan produksi.

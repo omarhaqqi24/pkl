@@ -1,11 +1,23 @@
-Route::middleware(['auth:sanctum', 'permission:create_ketersediaan_harian'])
-    ->post('/ketersediaan', [KetersediaanHarianController::class, 'store']);
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sipantau-network
 
-Route::middleware(['auth:sanctum', 'permission:create_harga_petani'])
-    ->post('/harga-petani', [HargaPetaniHarianController::class, 'store']);
+volumes:
+  mysql_data:
+    external: true
+    name: sipantau_mysql_data
 
-Route::middleware(['auth:sanctum', 'permission:create_harga_pasar'])
-    ->post('/harga-pasar', [HargaPasarHarianController::class, 'store']);
-
-Route::middleware(['auth:sanctum', 'permission:view_komoditas'])
-    ->get('/komoditas', [KomoditasController::class, 'index']);
+networks:
+  sipantau-network:
+    external: true
