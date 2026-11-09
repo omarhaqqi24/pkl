@@ -123,8 +123,9 @@
 % ------------------------------------------------------------
 % Redefine caption names
 % ------------------------------------------------------------
-\def\captionsbahasa{%
+\def\captionsindonesian{%
   \def\prefacename{KATA PENGANTAR}%
+  \def\originalityname{PERNYATAAN ORISINALITAS}%
   \def\contentsname{DAFTAR ISI}%
   \def\listtablename{DAFTAR TABEL}%
   \def\listfigurename{DAFTAR GAMBAR}%
@@ -143,6 +144,7 @@
 % English
 \def\captionsenglish{%
   \def\prefacename{PREFACE}%
+  \def\originalityname{ORIGINALITY}%
   \def\contentsname{CONTENTS}%
   \def\listfigurename{LIST OF FIGURES}%
   \def\listtablename{LIST OF TABLES}%
@@ -294,7 +296,7 @@
   \begin{center}
     \begin{doublespace}
       \vspace{1.0cm}
-      \MakeUppercase{\normalfont\large\bfseries\expandafter{LEMBAR PENGESAHAN}}\\
+      \MakeUppercase{\normalfont\large\bfseries\expandafter{PENGESAHAN}}\\
       \vspace{0.5cm}
       \MakeUppercase{\normalfont LAPORAN PRAKTIK KERJA LAPANGAN (PKL)}\\
       \MakeUppercase{\normalfont PERUSAHAAAN / INDUSTRI}\\
@@ -307,10 +309,9 @@
       {\normalfont Program Studi \@dept}\\
       % \bigskip
       {\normalfont Bidang \@laboratory}\\
-      \vspace{2.0cm}
+      \vspace{1.0cm}
       Disusun oleh:\\
-      \textbf{\@fullname}\\
-      \textbf{\@idnum}\\
+      \@fullname \hspace{2.0cm} \@idnum\\
       \vspace{1.0cm}
       Praktik Kerja Lapangan ini dilaksanakan pada \\
       \@pklstartdate\ sampai dengan \@pklenddate \\
@@ -322,7 +323,7 @@
       \hbox to \hsize{
         \ttdsatu
         {Mengetahui,}
-        {Ketua Jurusan Teknik Informatika}
+        {Ketua Departemen Teknik Informatika}
         \hfil
         \ttdsatu
         {Menyetujui,}
@@ -331,7 +332,7 @@
       \hbox to \hsize{
         \ttddua
         {\underline{\@firstsupervisor}}
-        {NIP: \@firstsupervisornip}
+        {NIK: \@firstsupervisornip}
         \hfil
         \ttddua
         {\underline{\@secondsupervisor}}
@@ -340,57 +341,7 @@
 
     \end{doublespace}
   \end{center}
-  % \addcontentsline{toc}{chapter}{Halaman Pengesahan}
-}
-
-
-% ------------------------------------------------------------
-% Approval Page Lapangan
-% ------------------------------------------------------------
-
-\def\approvalpagelapangan{%
-  % \newpage\thispagestyle{empty}%
-  \begin{center}
-    \begin{doublespace}
-      \vspace{1.0cm}
-      \MakeUppercase{\normalfont\large\bfseries\expandafter{LEMBAR PENGESAHAN}}\\
-      \vspace{0.5cm}
-      \MakeUppercase{\normalfont LAPORAN PRAKTIK KERJA LAPANGAN (PKL)}\\
-      \MakeUppercase{\normalfont PERUSAHAAAN / INDUSTRI}\\
-      \@pklplacetype\ \@pklplace \\
-      \vspace{1.0cm}
-      \MakeUppercase{\normalfont\@titlepkl}\par\nobreak
-      \vspace{1.0cm}
-      {\normalfont Diajukan untuk memenuhi sebagian persyaratan Kurikulum Sarjana}\\
-      % \bigskip
-      {\normalfont Program Studi \@dept}\\
-      % \bigskip
-      {\normalfont Bidang \@laboratory}\\
-      \vspace{2.0cm}
-      Disusun oleh:\\
-      \textbf{\@fullname}\\
-      \textbf{\@idnum}\\
-      \vspace{1.0cm}
-      Praktik Kerja Lapangan ini dilaksanakan pada \\
-      \@pklstartdate\ sampai dengan \@pklenddate \\
-      Telah diperiksa dan disetujui oleh: \\
-
-      \vspace{-1.8cm}
-
-      \hbox to \hsize{
-        \ttdsatus
-        {Mengetahui,}
-        {Pembimbing PKL}}
-
-      \hbox to \hsize{
-        \ttdduas
-        {\underline{\@thirdsupervisor}}
-        {NIP: \@thirdsupervisornip}}
-
-
-    \end{doublespace}
-  \end{center}
-  % \addcontentsline{toc}{chapter}{Halaman Pengesahan}
+  \addcontentsline{toc}{chapter}{PENGESAHAN}
 }
 
 %------------------------------------------------------------
@@ -398,9 +349,64 @@
 %------------------------------------------------------------
 \def\preface{%
   \chapter*{\prefacename}%
-\addcontentsline{toc}{chapter}{\prefacename}
+\addcontentsline{toc}{chapter}{KATA PENGANTAR}
 }
 
+%------------------------------------------------------------
+%Originality 
+%------------------------------------------------------------
+\def\originalitypage{%
+  \chapter*{\originalityname}%
+\addcontentsline{toc}{chapter}{PERNYATAAN ORISINALITAS}
+}
+
+%------------------------------------------------------------
+%Abstrak - ID
+%------------------------------------------------------------
+\def\abstrak{%
+  \chapter*{ABSTRAK}%
+\addcontentsline{toc}{chapter}{ABSTRAK}
+}
+
+%------------------------------------------------------------
+%Abstract - EN
+%------------------------------------------------------------
+\def\abstraken{%
+  \chapter*{ABSTRACT}%
+\addcontentsline{toc}{chapter}{ABSTRACT}
+}
+
+% ------------------------------------------------------------
+% Lampiran
+% ------------------------------------------------------------
+
+\makeatletter
+
+\newcounter{lampirancounter}
+\renewcommand{\thelampirancounter}{\Alph{lampirancounter}}
+
+\newcommand{\listofappendices}{%
+    \clearpage
+    \chapter*{DAFTAR LAMPIRAN}
+    \addcontentsline{toc}{chapter}{DAFTAR LAMPIRAN}
+    \@starttoc{loa}%
+}
+
+\newcommand{\lampiran}[1]{%
+    \refstepcounter{lampirancounter}%
+    \@makeschapterhead{LAMPIRAN \thelampirancounter\quad #1}%
+    \addcontentsline{loa}{chapter}{%
+        Lampiran \thelampirancounter\quad #1%
+    }%
+}
+
+\newcommand{\lampiranbab}{%
+    \clearpage
+    \chapter*{LAMPIRAN}
+    \addcontentsline{toc}{chapter}{LAMPIRAN}
+}
+
+\makeatother
 
 % ------------------------------------------------------------
 % Detect spacing choice
@@ -419,12 +425,16 @@
 % ------------------------------------------------------------
 % Detect language choice
 % ------------------------------------------------------------
+% \AtBeginDocument{%
+%   \if@langindo%
+%   \selectlanguage{indonesian}%
+%   \else
+%   \selectlanguage{english}%
+%   \fi
+% }
+
 \AtBeginDocument{%
-  \if@langindo%
   \selectlanguage{indonesian}%
-  \else
-  \selectlanguage{english}%
-  \fi
 }
 
 \endinput

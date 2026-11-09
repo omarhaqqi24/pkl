@@ -6,7 +6,7 @@
 
 \section{Tahapan Pelaksanaan}
 
-Pelaksanaan Praktik Kerja Lapang (PKL) pada pengembangan aplikasi web SIPANTAU dilakukan dengan melanjutkan pengembangan sistem yang telah berjalan sebelumnya. Pada awal pelaksanaan PKL, sistem telah memiliki antarmuka \textit{frontend} yang menggunakan data \textit{dummy}, rancangan awal basis data, serta kebutuhan utama sistem yang meliputi pengelolaan data komoditas, prediksi harga komoditas untuk tiga hari ke depan pada pasar tertentu, dan penerapan autentikasi serta otorisasi berdasarkan peran pengguna. Selain itu, Laravel telah ditetapkan sebagai \textit{framework} yang digunakan pada sisi \textit{backend}. Kondisi tersebut menjadi dasar dalam melakukan analisis terhadap sistem yang telah tersedia serta menentukan komponen yang perlu dirancang dan dikembangkan selama pelaksanaan PKL. Dengan demikian, kegiatan pengembangan difokuskan pada basis data dan \textit{backend}, mekanisme autentikasi dan otorisasi, integrasi layanan model prediksi, serta \textit{deployment} aplikasi.
+Pelaksanaan Praktik Kerja Lapang (PKL) pada pengembangan aplikasi web SIPANTAU dilakukan dengan melanjutkan pengembangan sistem yang telah berjalan sebelumnya. Kegiatan pengembangan difokuskan pada basis data dan backend, penerapan mekanisme autentikasi dan otorisasi, integrasi layanan model prediksi, serta deployment aplikasi. Kondisi awal dan kebutuhan sistem yang menjadi dasar pelaksanaan kegiatan dijelaskan pada Subbab 4.3.1.
 
 Tahapan pelaksanaan diawali dengan analisis kondisi dan kebutuhan sistem yang telah ada untuk memahami kebutuhan fungsional serta hubungan antara \textit{frontend}, \textit{backend}, basis data, dan layanan model prediksi. Berdasarkan hasil analisis tersebut, dilakukan perancangan basis data dan arsitektur \textit{backend}, perancangan autentikasi dan otorisasi, perancangan integrasi layanan model prediksi, serta perancangan \textit{deployment} aplikasi. Setiap rancangan kemudian menjadi dasar bagi tahap implementasi masing-masing komponen. Implementasi dilakukan secara bertahap mulai dari basis data dan \textit{backend}, kemudian autentikasi dan otorisasi, integrasi layanan model prediksi, hingga \textit{deployment} aplikasi.
 
@@ -68,9 +68,198 @@ Metode perancangan digunakan sebagai dasar dalam menentukan struktur dan mekanis
 
 \subsection{Analisis Kondisi dan Kebutuhan Sistem}
 
-Analisis kondisi dan kebutuhan sistem dilakukan untuk memahami keadaan awal aplikasi serta menentukan fungsi yang perlu disediakan oleh komponen yang dikembangkan. Pada awal pelaksanaan PKL, aplikasi telah memiliki \textit{frontend} yang menggunakan data \textit{dummy}, rancangan awal basis data, dan kebutuhan utama sistem. Kebutuhan tersebut mencakup pengelolaan data komoditas, prediksi harga komoditas untuk tiga hari ke depan pada pasar tertentu, serta penerapan \textit{authentication} dan \textit{authorization} berdasarkan peran pengguna. Selain kebutuhan tersebut, Laravel telah ditetapkan sebagai \textit{framework} yang digunakan untuk membangun sisi \textit{backend}. Hasil analisis terhadap kondisi dan kebutuhan tersebut kemudian digunakan sebagai dasar untuk menentukan rancangan basis data, arsitektur \textit{backend}, mekanisme pengendalian akses, integrasi layanan model prediksi, dan kebutuhan \textit{deployment}.
+Analisis kondisi dan kebutuhan sistem dilakukan untuk memahami keadaan awal aplikasi SIPANTAU serta menentukan fungsi yang perlu disediakan melalui pengembangan sistem. Analisis ini menjadi dasar dalam menentukan ruang lingkup pekerjaan selama pelaksanaan Praktik Kerja Lapang, khususnya pada pengembangan basis data dan \textit{backend}, penerapan autentikasi dan otorisasi, integrasi layanan model prediksi, serta \textit{deployment} aplikasi.
 
-\subsection{Perancangan Basis Data dan Arsitektur Backend}
+SIPANTAU merupakan aplikasi berbasis web yang dikembangkan untuk mendukung proses pemantauan harga komoditas pangan di Kabupaten Sukabumi. Sistem ini dirancang untuk mengintegrasikan pengelolaan data komoditas dari instansi terkait, meliputi data harga pasar, harga petani, kebutuhan dan ketersediaan harian, serta data panen. Data tersebut digunakan sebagai bagian dari informasi yang mendukung proses prediksi harga komoditas untuk tiga hari ke depan. Hasil prediksi selanjutnya disediakan melalui aplikasi sebagai informasi pendukung bagi Tim Pengendalian Inflasi Daerah (TPID) dalam melakukan pemantauan harga.
+
+Pada awal pelaksanaan PKL, pengembangan aplikasi SIPANTAU telah berjalan dengan beberapa komponen awal yang tersedia. Antarmuka \textit{frontend} telah dikembangkan untuk menampilkan halaman utama, halaman pengelolaan data, dan halaman prediksi, tetapi data yang digunakan masih berupa data \textit{dummy}. Selain itu, telah tersedia rancangan awal basis data yang menggambarkan entitas dan hubungan data yang dibutuhkan oleh aplikasi. \textit{Framework} Laravel juga telah ditetapkan sebagai teknologi yang digunakan untuk mengembangkan sisi \textit{backend}. Kondisi awal tersebut menjadi acuan dalam mengidentifikasi kebutuhan pengembangan dan menentukan komponen yang perlu dilanjutkan selama pelaksanaan PKL.
+
+Gambaran kondisi awal \textit{frontend} SIPANTAU ditunjukkan pada Gambar~\ref{fig:fe-awal-lp}, Gambar~\ref{fig:fe-awal-input}, dan Gambar~\ref{fig:fe-awal-prediksi}. Sementara itu, rancangan awal basis data ditunjukkan pada Gambar~\ref{fig:db-awal}. Kondisi awal \textit{frontend} digunakan untuk mengidentifikasi data dan fungsi yang perlu disediakan oleh \textit{backend} agar antarmuka dapat terhubung dengan data aktual. Rancangan awal basis data digunakan sebagai acuan untuk memahami struktur data yang dibutuhkan dan menentukan penyesuaian yang diperlukan berdasarkan kebutuhan sistem.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/fe-awal-lp.png}
+    \caption{Kondisi awal \textit{frontend} \textit{landing page} SIPANTAU}
+    \label{fig:fe-awal-lp}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/fe-awal-input.png}
+    \caption{Kondisi awal \textit{frontend} halaman input data SIPANTAU}
+    \label{fig:fe-awal-input}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/fe-awal-prediksi.png}
+    \caption{Kondisi awal \textit{frontend} halaman prediksi SIPANTAU}
+    \label{fig:fe-awal-prediksi}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/db-awal.jpeg}
+    \caption{Rancangan awal basis data SIPANTAU}
+    \label{fig:db-awal}
+\end{figure}
+
+\FloatBarrier
+
+Berdasarkan kondisi awal dan tujuan pengembangan SIPANTAU, dilakukan identifikasi kebutuhan fungsional untuk menentukan fungsi yang harus disediakan oleh sistem. Kebutuhan fungsional disusun berdasarkan aktivitas pengguna dalam mengakses dan mengelola data serta memanfaatkan hasil prediksi harga. Pengelompokan fungsi dilakukan dengan memisahkan aktivitas melihat data dari aktivitas memasukkan dan memperbarui data agar setiap fungsi dapat dimodelkan secara lebih terperinci. Rincian kebutuhan fungsional SIPANTAU ditunjukkan pada Tabel~\ref{tab:kebutuhan-fungsional}.
+
+\begin{longtable}{|c|c|p{3.7cm}|p{7.3cm}|}
+    \caption{Kebutuhan Fungsional SIPANTAU}
+    \label{tab:kebutuhan-fungsional} \\
+
+    \hline
+    \textbf{No.} &
+    \textbf{Kode} &
+    \textbf{Kebutuhan Fungsional} &
+    \textbf{Keterangan} \\
+    \hline
+    \endfirsthead
+
+    \hline
+    \textbf{No.} &
+    \textbf{Kode} &
+    \textbf{Kebutuhan Fungsional} &
+    \textbf{Keterangan} \\
+    \hline
+    \endhead
+
+    1 & KF-01 &
+    Sistem dapat melakukan autentikasi pengguna. &
+    Sistem memverifikasi email dan kata sandi pengguna sebelum memberikan akses. Setelah berhasil, sistem menghasilkan token yang digunakan untuk mengakses fungsi yang dilindungi. \\ \hline
+
+    2 & KF-02 &
+    Sistem dapat menerapkan otorisasi berdasarkan peran dan izin pengguna. &
+    Sistem memeriksa hak akses pengguna sebelum menjalankan fungsi yang dibatasi. Pengguna yang tidak memiliki izin tidak dapat mengakses fungsi tersebut. \\ \hline
+
+    3 & KF-03 &
+    Sistem dapat menyediakan pendaftaran akun pengguna. &
+    Admin dapat mendaftarkan akun pengguna dengan memasukkan nama, email, kata sandi, dan peran pengguna. \\ \hline
+
+    4 & KF-04 &
+    Sistem dapat menampilkan data komoditas. &
+    Pengguna yang memiliki izin dapat melihat daftar komoditas yang tersedia sebagai data referensi dalam pengelolaan data. \\ \hline
+
+    5 & KF-05 &
+    Sistem dapat menambahkan data komoditas. &
+    Admin dapat memasukkan data komoditas baru ke dalam basis data SIPANTAU. \\ \hline
+
+    6 & KF-06 &
+    Sistem dapat menampilkan data pasar. &
+    Pengguna yang terautentikasi dapat melihat daftar pasar yang tersedia sebagai data referensi. \\ \hline
+
+    7 & KF-07 &
+    Sistem dapat menambahkan data pasar. &
+    Admin dapat memasukkan data pasar baru ke dalam basis data SIPANTAU. \\ \hline
+
+    8 & KF-08 &
+    Sistem dapat menampilkan data kebutuhan dan ketersediaan harian. &
+    Pengguna dapat melihat data kebutuhan dan ketersediaan komoditas yang telah tersimpan dalam sistem. \\ \hline
+
+    9 & KF-09 &
+    Sistem dapat menerima dan memperbarui data kebutuhan dan ketersediaan harian. &
+    Dinas Ketahanan Pangan dapat memasukkan data kebutuhan dan ketersediaan komoditas. Sistem dapat memperbarui data yang telah tersimpan berdasarkan identitas pencatatannya. \\ \hline
+
+    10 & KF-10 &
+    Sistem dapat menampilkan data panen. &
+    Pengguna dapat melihat data panen komoditas yang telah tersimpan dalam sistem. \\ \hline
+
+    11 & KF-11 &
+    Sistem dapat menerima dan memperbarui data panen. &
+    Dinas Pertanian dapat memasukkan data panen komoditas. Sistem dapat memperbarui data yang telah tersimpan berdasarkan identitas pencatatannya. \\ \hline
+
+    12 & KF-12 &
+    Sistem dapat menampilkan data harga petani. &
+    Pengguna dapat melihat data harga komoditas pada tingkat petani yang telah tersimpan dalam sistem. \\ \hline
+
+    13 & KF-13 &
+    Sistem dapat menerima dan memperbarui data harga petani. &
+    Dinas Pertanian dapat memasukkan data harga petani harian. Sistem dapat memperbarui data yang telah tersimpan berdasarkan identitas pencatatannya. \\ \hline
+
+    14 & KF-14 &
+    Sistem dapat menampilkan data harga pasar. &
+    Pengguna dapat melihat data harga komoditas pada pasar yang telah tersimpan dalam sistem. \\ \hline
+
+    15 & KF-15 &
+    Sistem dapat menerima dan memperbarui data harga pasar. &
+    Dinas Perdagangan dapat memasukkan data harga komoditas berdasarkan pasar dan tanggal pencatatan. Sistem dapat memperbarui data yang telah tersimpan berdasarkan identitas pencatatannya. \\ \hline
+
+    16 & KF-16 &
+    Sistem dapat menyediakan hasil prediksi harga komoditas untuk tiga hari ke depan. &
+    TPID dapat memilih pasar dan komoditas untuk memperoleh hasil prediksi harga tiga hari ke depan melalui layanan model prediksi. \\ \hline
+
+    17 & KF-17 &
+    Sistem dapat menyediakan API untuk komunikasi antarkomponen aplikasi. &
+    Sistem menyediakan endpoint API untuk memungkinkan frontend mengakses fungsi pengelolaan data, autentikasi, dan prediksi melalui backend. \\ \hline
+
+\end{longtable}
+
+Kebutuhan fungsional tersebut menunjukkan bahwa SIPANTAU menyediakan fungsi pengelolaan data yang disesuaikan dengan tanggung jawab masing-masing instansi. Dinas Perdagangan bertanggung jawab terhadap data harga pasar, Dinas Ketahanan Pangan terhadap data kebutuhan dan ketersediaan, sedangkan Dinas Pertanian terhadap data panen dan harga petani. Selain itu, Admin memiliki akses terhadap fungsi administrasi dan pengelolaan data referensi, sedangkan TPID menggunakan sistem untuk memperoleh hasil prediksi harga. Setiap fungsi yang memerlukan akses pengguna dilindungi melalui mekanisme autentikasi dan otorisasi sesuai dengan peran dan izin yang dimiliki.
+
+Selain kebutuhan fungsional, identifikasi juga dilakukan terhadap kebutuhan nonfungsional yang berkaitan dengan keamanan, teknologi, integrasi komponen, dan lingkungan operasional aplikasi. Kebutuhan tersebut mempertimbangkan teknologi \textit{frontend} yang telah menggunakan Next.js, penetapan Laravel sebagai \textit{framework backend}, serta penggunaan VPS yang telah disediakan sebagai lingkungan \textit{deployment}. Sistem juga perlu menjaga konsistensi data yang dikelola melalui aplikasi. Rincian kebutuhan nonfungsional SIPANTAU ditunjukkan pada Tabel~\ref{tab:kebutuhan-nonfungsional}.
+
+\begin{longtable}{|c|c|p{5.0cm}|p{5.0cm}|}
+    \caption{Kebutuhan non-fungsional SIPANTAU}
+    \label{tab:kebutuhan-nonfungsional} \\
+    \hline
+    \textbf{No.} &
+    \textbf{Kode} &
+    \textbf{Kebutuhan Non-Fungsional} &
+    \textbf{Keterangan} \\
+    \hline
+    \endfirsthead
+
+    \hline
+    \textbf{No.} &
+    \textbf{Kode} &
+    \textbf{Kebutuhan Non-Fungsional} &
+    \textbf{Keterangan} \\
+    \hline
+    \endhead
+
+    1 &
+    KNF-01 &
+    Sistem harus menerapkan keamanan pada aplikasi. &
+    Sistem harus menerapkan mekanisme keamanan untuk melindungi akses dan komunikasi pada aplikasi. \\
+    \hline
+
+    2 &
+    KNF-02 &
+    Sistem harus dapat di-\textit{deploy} pada VPS yang telah disediakan. &
+    Aplikasi harus dapat dijalankan pada lingkungan VPS yang disediakan sebagai lingkungan \textit{deployment}. \\
+    \hline
+
+    3 &
+    KNF-03 &
+    Pengembangan backend harus dapat diintegrasikan dengan \textit{frontend} berbasis Next.js. &
+    \textit{Backend} yang dikembangkan harus menyediakan mekanisme komunikasi yang sesuai agar dapat digunakan oleh \textit{frontend} yang telah dikembangkan menggunakan Next.js. \\
+    \hline
+
+    4 &
+    KNF-04 &
+    Backend harus dikembangkan menggunakan Laravel. &
+    Pengembangan backend harus menggunakan \textit{framework} Laravel sesuai dengan teknologi yang telah ditetapkan pada awal proyek. \\
+    \hline
+
+    5 &
+    KNF-05 &
+    Sistem harus menjaga konsistensi data. &
+    Data yang disimpan dan diperbarui melalui aplikasi harus tetap konsisten dengan kondisi data pada basis data. \\
+    \hline
+
+\end{longtable}
+
+Analisis kebutuhan juga mencakup identifikasi aktor yang berinteraksi dengan SIPANTAU berdasarkan tugas dan tanggung jawab masing-masing. Aktor tersebut terdiri atas Dinas Perdagangan, Dinas Ketahanan Pangan, Dinas Pertanian, Tim Pengendalian Inflasi Daerah (TPID), dan Admin. Dinas Perdagangan bertanggung jawab terhadap pengelolaan data harga pasar, Dinas Ketahanan Pangan terhadap data kebutuhan dan ketersediaan komoditas, sedangkan Dinas Pertanian terhadap data panen dan harga petani. TPID menggunakan sistem untuk melihat hasil prediksi harga komoditas, sementara Admin memiliki akses terhadap fungsi sistem dan administrasi akun pengguna.
+
+Pembagian fungsi tersebut menjadi dasar dalam menentukan hubungan antara aktor dan kebutuhan fungsional SIPANTAU. Setiap aktor menjalankan fungsi sesuai dengan tanggung jawab dan hak akses yang dimilikinya. Hasil identifikasi aktor dan kebutuhan fungsional selanjutnya digunakan sebagai dasar dalam menyusun Use Case Diagram dan Activity Diagram untuk menggambarkan interaksi pengguna dengan sistem serta alur aktivitas pada setiap fungsi utama.
+
+Berdasarkan hasil analisis tersebut, pengembangan SIPANTAU difokuskan pada penyediaan \textit{backend} yang dapat mengelola data aktual melalui API, penerapan mekanisme autentikasi dan otorisasi sesuai dengan peran pengguna, integrasi layanan model prediksi, serta penerapan aplikasi pada lingkungan produksi. Hasil analisis kondisi dan kebutuhan ini selanjutnya digunakan sebagai dasar dalam menyusun rancangan fungsional, basis data, arsitektur \textit{backend}, mekanisme pengendalian akses, integrasi layanan prediksi, dan \textit{deployment} aplikasi.
+
+\subsection{Perancangan Basis Data dan Arsitektur \textit{Backend}}
 
 Perancangan basis data dilakukan dengan menyesuaikan struktur penyimpanan data terhadap kebutuhan fungsional aplikasi. Proses perancangan mencakup penentuan entitas yang diperlukan, atribut pada setiap entitas, serta hubungan antarentitas yang digunakan dalam pengelolaan data aplikasi. Hasil perancangan basis data digunakan sebagai acuan dalam menentukan struktur tabel dan relasi yang akan diimplementasikan pada sistem manajemen basis data. Rancangan basis data kemudian diselaraskan dengan kebutuhan \textit{backend} agar data yang diperlukan oleh setiap fungsi aplikasi dapat disediakan secara terstruktur.
 

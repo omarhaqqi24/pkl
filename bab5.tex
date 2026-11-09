@@ -6,220 +6,157 @@
 
 \section{Hasil}
 
-\subsection{Analisis Kondisi dan Kebutuhan Sistem}
+\subsection{Perancangan Fungsional Sistem}
 
-Pada awal pelaksanaan PKL, pengembangan aplikasi SIPANTAU telah berada pada tahap pengembangan dengan beberapa komponen awal yang telah tersedia. Komponen tersebut menjadi kondisi awal yang digunakan sebagai dasar untuk memahami tujuan, mekanisme kerja, serta kebutuhan pengembangan sistem. Pada tahap ini, \textit{frontend} aplikasi telah tersedia dan digunakan untuk menampilkan antarmuka sistem dengan data \textit{dummy}. Selain itu, telah tersedia rancangan awal basis data yang menggambarkan entitas dan hubungan data yang dibutuhkan oleh aplikasi secara umum. Framework Laravel juga telah ditentukan sebagai teknologi yang digunakan untuk mengembangkan sisi \textit{backend} aplikasi.
+Perancangan fungsional sistem dilakukan berdasarkan hasil analisis kondisi dan kebutuhan SIPANTAU pada Subbab 4.3.1. Perancangan ini bertujuan untuk menggambarkan hubungan antara aktor dengan fungsi yang tersedia serta alur aktivitas dalam menjalankan fungsi utama aplikasi. Pemodelan dilakukan menggunakan Use Case Diagram dan Activity Diagram untuk memberikan gambaran mengenai interaksi pengguna dengan sistem serta proses yang berlangsung di dalamnya.
 
-Berdasarkan kondisi awal tersebut, aplikasi SIPANTAU dirancang untuk mendukung pengelolaan data komoditas dan harga pada pasar serta menyediakan fungsi prediksi harga komoditas untuk tiga hari ke depan. Proses penggunaan aplikasi melibatkan pengguna sebagai pihak yang berinteraksi dengan sistem melalui \textit{frontend}, sedangkan pengolahan data dilakukan melalui \textit{backend} yang terhubung dengan basis data. Fungsi prediksi membutuhkan data historis yang tersimpan pada basis data untuk kemudian diproses oleh layanan model prediksi. Selain fungsi pengelolaan data dan prediksi, sistem juga membutuhkan mekanisme \textit{authentication} dan \textit{authorization} untuk mengatur akses pengguna berdasarkan peran yang dimiliki.
+Pemodelan fungsional diawali dengan penyusunan Use Case Diagram untuk menggambarkan aktor yang terlibat dan fungsi yang dapat diakses berdasarkan peran masing-masing. Selanjutnya, Activity Diagram disusun berdasarkan fungsi-fungsi tersebut untuk menggambarkan urutan aktivitas dan interaksi antara pengguna dengan sistem dalam menjalankan setiap fungsi SIPANTAU.
 
-Kondisi awal aplikasi dan tujuan sistem tersebut kemudian dianalisis untuk menentukan kebutuhan yang perlu dipenuhi pada pengembangan \textit{backend}. Analisis dilakukan dengan mengidentifikasi fungsi utama yang diperlukan agar \textit{frontend} yang telah tersedia dapat terhubung dengan data aktual melalui API, pengguna dapat mengakses sistem sesuai dengan hak aksesnya, serta proses prediksi dapat dijalankan melalui layanan model yang telah tersedia. Hasil identifikasi tersebut mencakup kebutuhan pengelolaan data aplikasi, kebutuhan pengelolaan pengguna dan hak akses, kebutuhan penyediaan API, serta kebutuhan integrasi dengan layanan model prediksi.
-
-Kondisi awal \textit{frontend} yang menggunakan data \textit{dummy} digunakan sebagai salah satu acuan untuk mengidentifikasi data dan fungsi yang perlu disediakan oleh \textit{backend}. Sementara itu, rancangan awal basis data digunakan sebagai acuan awal dalam memahami struktur data yang dibutuhkan oleh aplikasi. Kedua komponen tersebut kemudian dianalisis kembali berdasarkan kebutuhan sistem sehingga dapat ditentukan fungsi dan interaksi yang perlu didukung oleh \textit{backend}. Beberapa gambaran kondisi awal \textit{frontend} dapat dilihat pada Gambar \ref{fig:fe-awal-lp}, \ref{fig:fe-awal-input}, dan \ref{fig:fe-awal-prediksi}, sedangkan rancangan awal basis data dapat dilihat pada Gambar \ref{fig:db-awal}.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.75\textwidth]{img/fe-awal-lp.png}
-    \caption{Kondisi awal frontend \textit{landing page} SIPANTAU}
-    \label{fig:fe-awal-lp}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.75\textwidth]{img/fe-awal-input.png}
-    \caption{Kondisi awal frontend halaman input data SIPANTAU}
-    \label{fig:fe-awal-input}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.75\textwidth]{img/fe-awal-prediksi.png}
-    \caption{Kondisi awal frontend halaman prediksi SIPANTAU}
-    \label{fig:fe-awal-prediksi}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.75\textwidth]{img/db-awal.jpeg}
-    \caption{Rancangan awal basis data SIPANTAU}
-    \label{fig:db-awal}
-\end{figure}
-
-\FloatBarrier
-
-Berdasarkan hasil identifikasi terhadap kondisi awal dan tujuan pengembangan SIPANTAU, diperoleh sejumlah kebutuhan fungsional yang harus dipenuhi oleh sistem. Kebutuhan tersebut mencakup mekanisme autentikasi dan otorisasi pengguna, pengelolaan data komoditas, penyediaan data melalui API, serta penyediaan fungsi prediksi harga komoditas. Kebutuhan fungsional yang diperoleh dari hasil analisis disajikan pada Tabel \ref{tab:kebutuhan-fungsional}.
-
-\begin{longtable}{|c|c|p{5.0cm}|p{5.0cm}|}
-    \caption{Kebutuhan fungsional SIPANTAU}
-    \label{tab:kebutuhan-fungsional} \\
-    \hline
-    \textbf{No.} &
-    \textbf{Kode} &
-    \textbf{Kebutuhan Fungsional} &
-    \textbf{Keterangan} \\
-    \hline
-    \endfirsthead
-
-    \hline
-    \textbf{No.} &
-    \textbf{Kode} &
-    \textbf{Kebutuhan Fungsional} &
-    \textbf{Keterangan} \\
-    \hline
-    \endhead
-
-    1 &
-    KF-01 &
-    Sistem dapat melakukan autentikasi pengguna. &
-    Sistem melakukan verifikasi identitas pengguna sebelum pengguna mengakses fungsi yang memerlukan autentikasi. \\
-    \hline
-
-    2 &
-    KF-02 &
-    Sistem dapat melakukan otorisasi pengguna berdasarkan peran. &
-    Sistem mengatur hak akses pengguna terhadap fungsi aplikasi berdasarkan peran yang dimiliki. \\
-    \hline
-
-    3 &
-    KF-03 &
-    Sistem dapat menerima dan mengelola data kebutuhan dan ketersediaan komoditas. &
-    Pengguna yang memiliki hak akses dapat memasukkan dan mengelola data kebutuhan serta ketersediaan komoditas. \\
-    \hline
-
-    4 &
-    KF-04 &
-    Sistem dapat menerima dan mengelola data panen komoditas. &
-    Pengguna yang memiliki hak akses dapat memasukkan dan mengelola data hasil panen komoditas. \\
-    \hline
-
-    5 &
-    KF-05 &
-    Sistem dapat menerima dan mengelola data harga petani. &
-    Pengguna yang memiliki hak akses dapat memasukkan dan mengelola data harga komoditas pada tingkat petani. \\
-    \hline
-
-    6 &
-    KF-06 &
-    Sistem dapat menerima dan mengelola data harga pasar. &
-    Pengguna yang memiliki hak akses dapat memasukkan dan mengelola data harga komoditas pada pasar. \\
-    \hline
-
-    7 &
-    KF-07 &
-    Sistem dapat menyediakan data melalui API. &
-    Sistem menyediakan API yang memungkinkan data digunakan oleh komponen aplikasi yang membutuhkan. \\
-    \hline
-
-    8 &
-    KF-08 &
-    Sistem dapat menampilkan hasil prediksi harga komoditas untuk tiga hari ke depan. &
-    Sistem menggunakan data historis yang diperlukan untuk memperoleh hasil prediksi harga melalui layanan model prediksi. \\
-    \hline
-
-\end{longtable}
-
-Selain kebutuhan fungsional, hasil analisis juga mengidentifikasi beberapa kebutuhan non-fungsional yang berkaitan dengan batasan teknologi, keamanan, dan lingkungan operasional sistem. Pada awal pengembangan, teknologi yang digunakan pada \textit{frontend} telah ditetapkan menggunakan Next.js, sedangkan \textit{backend} ditetapkan untuk dikembangkan menggunakan Laravel. Selain itu, aspek keamanan dan penggunaan VPS yang telah disediakan juga menjadi batasan pengembangan sistem. Berdasarkan proses analisis dan perancangan, kebutuhan non-fungsional tersebut menjadi acuan dalam menentukan teknologi dan mekanisme implementasi aplikasi. Rincian kebutuhan non-fungsional SIPANTAU disajikan pada Tabel \ref{tab:kebutuhan-nonfungsional}.
-
-\begin{longtable}{|c|c|p{5.0cm}|p{5.0cm}|}
-    \caption{Kebutuhan non-fungsional SIPANTAU}
-    \label{tab:kebutuhan-nonfungsional} \\
-    \hline
-    \textbf{No.} &
-    \textbf{Kode} &
-    \textbf{Kebutuhan Non-Fungsional} &
-    \textbf{Keterangan} \\
-    \hline
-    \endfirsthead
-
-    \hline
-    \textbf{No.} &
-    \textbf{Kode} &
-    \textbf{Kebutuhan Non-Fungsional} &
-    \textbf{Keterangan} \\
-    \hline
-    \endhead
-
-    1 &
-    KNF-01 &
-    Sistem harus menerapkan keamanan pada aplikasi. &
-    Sistem harus menerapkan mekanisme keamanan untuk melindungi akses dan komunikasi pada aplikasi. \\
-    \hline
-
-    2 &
-    KNF-02 &
-    Sistem harus dapat dideploy pada VPS yang telah disediakan. &
-    Aplikasi harus dapat dijalankan pada lingkungan VPS yang disediakan sebagai lingkungan \textit{deployment}. \\
-    \hline
-
-    3 &
-    KNF-03 &
-    Pengembangan backend harus dapat diintegrasikan dengan frontend berbasis Next.js. &
-    Backend yang dikembangkan harus menyediakan mekanisme komunikasi yang sesuai agar dapat digunakan oleh frontend yang telah dikembangkan menggunakan Next.js. \\
-    \hline
-
-    4 &
-    KNF-04 &
-    Backend harus dikembangkan menggunakan Laravel. &
-    Pengembangan backend harus menggunakan framework Laravel sesuai dengan teknologi yang telah ditetapkan pada awal proyek. \\
-    \hline
-
-    5 &
-    KNF-05 &
-    Sistem harus menjaga konsistensi data. &
-    Data yang disimpan dan diperbarui melalui aplikasi harus tetap konsisten dengan kondisi data pada basis data. \\
-    \hline
-
-\end{longtable}
-
-Berdasarkan kebutuhan fungsional dan non-fungsional yang telah diidentifikasi, selanjutnya sistem dimodelkan untuk menggambarkan hubungan antara pengguna dengan fungsi yang tersedia pada SIPANTAU. Pemodelan tersebut menggambarkan aktor yang terlibat dalam sistem serta fungsi yang dapat dijalankan oleh masing-masing aktor sesuai dengan tanggung jawabnya. SIPANTAU memiliki lima aktor utama, yaitu Dinas Perdagangan, Dinas Ketahanan Pangan, Dinas Pertanian, Tim Pengendalian Inflasi Daerah (TPID), dan Admin.
-
-Dinas Perdagangan menginput data harga pasar, sedangkan Dinas Ketahanan Pangan menginput data kebutuhan dan ketersediaan komoditas. Dinas Pertanian menginput data panen dan data harga komoditas pada tingkat petani. Ketiga perangkat daerah tersebut memperbarui data secara berkala agar sistem memiliki data yang mutakhir untuk mendukung proses prediksi harga komoditas.TPID menggunakan SIPANTAU untuk melihat hasil prediksi harga komoditas,sedangkan Admin memiliki akses terhadap seluruh fungsi sistem, termasuk melakukan registrasi akun pengguna.
-
-Setiap aktor melakukan autentikasi sebelum mengakses fungsi yang memerlukan akses pengguna. Sistem menerapkan pembatasan hak akses berdasarkan peran pengguna sehingga setiap aktor hanya dapat menjalankan fungsi yang sesuai dengan kewenangannya. Hubungan antara aktor dan fungsi yang tersedia pada SIPANTAU ditunjukkan pada Gambar \ref{fig:use-case-sipantau}.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.75\textwidth]{img/use-case-sipantau.png}
-    \caption{Use Case Diagram SIPANTAU}
-    \label{fig:use-case-sipantau}
-\end{figure}
-
-Gambar \ref{fig:use-case-sipantau} menunjukkan pembagian fungsi SIPANTAU berdasarkan peran masing-masing aktor. Dinas Perdagangan mengelola data harga pasar, Dinas Ketahanan Pangan mengelola data kebutuhan dan ketersediaan, sedangkan Dinas Pertanian mengelola data panen dan harga petani. TPID melihat hasil prediksi harga komoditas, sedangkan Admin mengakses seluruh fungsi yang t   ersedia dan melakukan registrasi akun pengguna. Setiap aktor melakukan autentikasi sebelum mengakses fungsi sistem sesuai dengan hak akses yang dimilikinya.
-
-Setelah hubungan antara aktor dan fungsi sistem ditentukan melalui Use Case Diagram, analisis dilanjutkan dengan menggambarkan alur aktivitas pada fungsi utama SIPANTAU. Activity Diagram menunjukkan urutan aktivitas yang dilakukan oleh pengguna dan komponen sistem dalam menjalankan setiap fungsi. Diagram tersebut mencakup proses autentikasi, registrasi akun, pengelolaan data, dan prediksi harga.
+Berdasarkan pembagian tanggung jawab dan hak akses pengguna, Use Case Diagram SIPANTAU dibagi menjadi tiga diagram, yaitu Use Case Diagram kelompok Dinas, Use Case Diagram TPID, dan Use Case Diagram Admin. Pembagian tersebut dilakukan untuk menggambarkan fungsi yang dapat diakses oleh setiap kelompok pengguna secara lebih terperinci. Diagram kelompok Dinas mencakup Dinas Perdagangan, Dinas Pertanian, dan Dinas Ketahanan Pangan, sedangkan diagram TPID dan Admin masing-masing menggambarkan interaksi satu aktor dengan fungsi yang tersedia pada sistem.
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{img/ad-login.png}
-    \captionof{figure}{Activity Diagram Autentikasi SIPANTAU}
-    \label{fig:activity-login}
+    \includegraphics[width=0.85\textwidth]{img/use-case/dinas.png}
+    \captionof{figure}{Use Case Diagram Kelompok Dinas SIPANTAU}
+    \label{fig:use-case-dinas}
 \end{center}
 
-Activity Diagram autentikasi pada Gambar \ref{fig:activity-login} menggambarkan proses pengguna saat masuk ke SIPANTAU. Pengguna memasukkan username dan password, kemudian SIPANTAU memverifikasi kredensial tersebut. Sistem menampilkan pesan autentikasi gagal apabila kredensial tidak valid dan mengembalikan alur ke proses pengisian kredensial. Apabila kredensial valid, sistem membuat sesi autentikasi dan memeriksa peran pengguna sebelum menampilkan halaman utama. Alur tersebut memastikan bahwa pengguna telah terautentikasi sebelum mengakses fungsi yang tersedia pada sistem.
+Use Case Diagram kelompok Dinas menggambarkan fungsi pengelolaan data operasional yang dapat diakses oleh Dinas Perdagangan, Dinas Pertanian, dan Dinas Ketahanan Pangan. Dinas Perdagangan memiliki fungsi untuk menambahkan dan memperbarui data harga pasar. Dinas Pertanian memiliki fungsi untuk menambahkan dan memperbarui data harga petani serta data panen, sedangkan Dinas Ketahanan Pangan memiliki fungsi untuk menambahkan dan memperbarui data kebutuhan dan ketersediaan komoditas.
+
+Dalam proses penginputan data, pengguna perlu memilih komoditas yang menjadi objek pencatatan. Khusus untuk data harga pasar, pengguna juga perlu memilih pasar sebagai lokasi pencatatan harga. Aktivitas pemilihan tersebut digambarkan sebagai bagian dari fungsi pengelolaan data melalui relasi \textit{include} karena menjadi tahapan yang diperlukan dalam proses penginputan. Hubungan antara ketiga aktor dengan fungsi pengelolaan data ditunjukkan pada Gambar~\ref{fig:use-case-dinas}.
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{img/ad-registrasi.png}
-    \captionof{figure}{Activity Diagram Registrasi Akun SIPANTAU}
-    \label{fig:activity-registrasi}
+    \includegraphics[width=0.75\textwidth]{img/use-case/tpid.png}
+    \captionof{figure}{Use Case Diagram TPID SIPANTAU}
+    \label{fig:use-case-tpid}
 \end{center}
 
-Activity Diagram registrasi akun pada Gambar \ref{fig:activity-registrasi} menggambarkan proses Admin dalam menambahkan akun pengguna ke SIPANTAU. Admin memasukkan data pengguna dan menentukan peran pengguna, kemudian SIPANTAU memvalidasi data tersebut sebelum menyimpannya. Sistem menampilkan pesan kesalahan apabila data tidak memenuhi validasi dan mengembalikan alur ke proses pengisian data. Apabila data valid, SIPANTAU menyimpan akun pengguna pada basis data dan menampilkan pesan bahwa proses registrasi berhasil.
+Use Case Diagram TPID menggambarkan fungsi untuk melihat hasil prediksi harga komoditas melalui SIPANTAU. Sebelum memperoleh hasil prediksi, TPID perlu memilih pasar dan komoditas yang menjadi objek prediksi. Kedua aktivitas pemilihan tersebut merupakan bagian dari proses melihat hasil prediksi dan digambarkan melalui relasi \textit{include}. Pemilihan pasar dan komoditas diperlukan karena backend menggunakan kedua parameter tersebut untuk mengambil data historis yang sesuai sebelum mengirimkannya kepada layanan model prediksi. Hubungan antara aktor TPID dan fungsi prediksi harga ditunjukkan pada Gambar~\ref{fig:use-case-tpid}.
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{img/ad-input.png}
-    \captionof{figure}{Activity Diagram Pengelolaan Data SIPANTAU}
-    \label{fig:activity-pengelolaan-data}
+    \includegraphics[width=0.9\textwidth]{img/use-case/admin.png}
+    \captionof{figure}{Use Case Diagram Admin SIPANTAU}
+    \label{fig:use-case-admin}
 \end{center}
 
-Activity Diagram pengelolaan data pada Gambar \ref{fig:activity-pengelolaan-data} menggambarkan proses Dinas dalam memasukkan dan mengelola data pada SIPANTAU. Dinas memilih menu dan jenis data yang sesuai dengan tanggung jawabnya, kemudian memasukkan data ke dalam sistem. SIPANTAU memeriksa hak akses pengguna sebelum memproses data dan melakukan validasi terhadap data yang dimasukkan. Sistem menampilkan pesan kesalahan apabila data tidak valid dan mengembalikan alur ke proses pengisian data. Apabila data telah memenuhi validasi, sistem menyimpan atau memperbarui data pada basis data dan menampilkan hasil pengelolaan data kepada pengguna.
+Use Case Diagram Admin menggambarkan fungsi pengelolaan data operasional dan data referensi yang dapat diakses oleh Admin. Pada data operasional, Admin memiliki fungsi untuk melihat serta menambahkan dan memperbarui data harga pasar, harga petani, panen, serta kebutuhan dan ketersediaan komoditas. Selain itu, Admin dapat melihat daftar pasar dan komoditas serta menambahkan data referensi tersebut.
+
+Dalam proses pengelolaan data operasional, Admin perlu memilih komoditas sebagai referensi pencatatan. Khusus untuk pengelolaan data harga pasar, Admin juga perlu memilih pasar. Kedua aktivitas tersebut digambarkan menggunakan relasi \textit{include} karena menjadi bagian dari proses pengelolaan data yang bersangkutan. Dengan demikian, Admin memiliki cakupan akses yang lebih luas dibandingkan kelompok Dinas karena dapat mengakses fungsi pengelolaan data operasional dan data referensi. Hubungan antara aktor Admin dan fungsi SIPANTAU ditunjukkan pada Gambar~\ref{fig:use-case-admin}.
+
+Ketiga Use Case Diagram tersebut menunjukkan pembagian fungsi SIPANTAU berdasarkan kelompok pengguna. Kelompok Dinas bertanggung jawab terhadap penambahan dan pembaruan data operasional sesuai dengan bidang masing-masing, TPID menggunakan sistem untuk melihat hasil prediksi harga, sedangkan Admin memiliki akses terhadap fungsi pengelolaan data operasional dan data referensi. Setiap aktor memiliki hak akses yang disesuaikan dengan tanggung jawabnya dalam sistem. Hasil pemodelan tersebut selanjutnya digunakan sebagai dasar dalam menyusun Activity Diagram untuk menggambarkan alur aktivitas pada fungsi utama SIPANTAU.
+
+Activity Diagram disusun berdasarkan setiap fungsi yang telah digambarkan dalam Use Case Diagram. Terdapat 13 Activity Diagram yang menggambarkan fungsi utama SIPANTAU, meliputi penambahan dan pembaruan data, pembacaan data, serta prediksi harga komoditas. Setiap diagram menunjukkan urutan aktivitas aktor dan sistem, mulai dari proses autentikasi hingga fungsi yang dijalankan selesai diproses.
+
+Berdasarkan mekanisme interaksinya, Activity Diagram dibagi menjadi dua kelompok. Kelompok pertama menggambarkan lima fungsi yang dijalankan melalui antarmuka frontend, meliputi penambahan dan pembaruan data operasional serta pemantauan hasil prediksi harga. Kelompok kedua menggambarkan delapan fungsi yang diakses secara langsung melalui API tanpa melalui halaman frontend, meliputi penambahan data referensi serta pembacaan data referensi dan data operasional.
+
+Kelompok pertama mencakup aktivitas yang dilakukan oleh pengguna melalui antarmuka frontend SIPANTAU. Proses pengelolaan data operasional melibatkan Admin dan perangkat daerah sesuai dengan kewenangannya, sedangkan proses prediksi harga dilakukan oleh Admin atau TPID. Setiap aktivitas menggambarkan proses autentikasi, pemeriksaan hak akses apabila diperlukan, pemrosesan data, hingga sistem memberikan hasil kepada pengguna.
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{img/ad-prediksi.png}
-    \captionof{figure}{Activity Diagram Prediksi Harga SIPANTAU}
-    \label{fig:activity-prediksi}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/tambah-h-pasar.png}
+    \captionof{figure}{Activity Diagram Menambah dan Memperbarui Data Harga Pasar SIPANTAU}
+    \label{fig:activity-tambah-harga-pasar}
 \end{center}
 
-Activity Diagram prediksi harga pada Gambar \ref{fig:activity-prediksi} menggambarkan alur permintaan prediksi dari TPID hingga hasil prediksi ditampilkan. TPID memilih pasar dan komoditas, kemudian frontend mengirimkan permintaan prediksi kepada SIPANTAU. SIPANTAU memvalidasi parameter yang dikirimkan dan menampilkan pesan kesalahan pada frontend apabila parameter tidak valid. Setelah parameter valid, sistem mengambil data historis dari basis data dan memeriksa ketersediaan data tersebut.
+Gambar~\ref{fig:activity-tambah-harga-pasar} menunjukkan alur aktivitas Admin atau Dinas Perdagangan dalam menambahkan dan memperbarui data harga komoditas pada pasar tertentu melalui antarmuka SIPANTAU. Proses diawali dengan pengguna membuka aplikasi dan melakukan autentikasi. Setelah berhasil masuk, pengguna memilih fungsi input harga pasar dan sistem memeriksa kesesuaian role pengguna. Pengguna kemudian memilih komoditas, memasukkan data harga pasar, dan mengirimkannya untuk divalidasi oleh sistem. Apabila data valid, sistem memeriksa keberadaan data dengan kombinasi pasar, komoditas, dan tanggal yang sama. Jika data telah tersedia, sistem memperbarui data tersebut, sedangkan jika belum tersedia, sistem menambahkan data baru. Setelah proses penyimpanan selesai, SIPANTAU menampilkan pesan keberhasilan kepada pengguna.
 
-Keempat Activity Diagram tersebut memperlihatkan alur utama yang perlu didukung oleh SIPANTAU berdasarkan kebutuhan yang telah diidentifikasi. Alur autentikasi memastikan pengguna dapat mengakses sistem sesuai dengan identitas dan perannya, sedangkan alur registrasi akun mendukung Admin dalam menyediakan akun bagi pengguna. Alur pengelolaan data mendukung pembaruan data komoditas oleh Dinas, sementara alur prediksi menghubungkan data historis dengan layanan model prediksi untuk menghasilkan prediksi harga. Hasil analisis tersebut menjadi dasar dalam menentukan rancangan basis data, arsitektur backend, mekanisme hak akses, integrasi layanan model prediksi, dan deployment aplikasi.
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/tambah-ketersediaan.png}
+    \captionof{figure}{Activity Diagram Menambah dan Memperbarui Data Kebutuhan dan Ketersediaan SIPANTAU}
+    \label{fig:activity-tambah-ketersediaan}
+\end{center}
+
+Gambar~\ref{fig:activity-tambah-ketersediaan} menunjukkan alur aktivitas Admin atau Dinas Ketahanan Pangan dalam menambahkan dan memperbarui data kebutuhan dan ketersediaan komoditas melalui antarmuka SIPANTAU. Proses diawali dengan autentikasi pengguna, dilanjutkan dengan pemilihan fungsi input data dan pemeriksaan role oleh sistem. Pengguna kemudian memilih komoditas dan memasukkan data kebutuhan serta ketersediaan harian melalui formulir yang disediakan. Sistem melakukan validasi terhadap data yang dikirimkan. Apabila data valid, sistem memeriksa keberadaan data dengan identitas pencatatan yang sama untuk menentukan apakah data perlu ditambahkan atau diperbarui. Setelah proses penyimpanan berhasil, SIPANTAU menampilkan pesan keberhasilan kepada pengguna.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.55\textheight,keepaspectratio]{img/activity/tambah-panen.png}
+    \captionof{figure}{Activity Diagram Menambah dan Memperbarui Data Panen SIPANTAU}
+    \label{fig:activity-tambah-panen}
+\end{center}
+
+Gambar~\ref{fig:activity-tambah-panen} menunjukkan alur aktivitas Admin atau Dinas Pertanian dalam menambahkan dan memperbarui data panen komoditas melalui antarmuka SIPANTAU. Pengguna terlebih dahulu melakukan autentikasi, kemudian memilih fungsi input data panen. Sistem memeriksa role pengguna sebelum menampilkan formulir penginputan. Setelah memilih komoditas dan memasukkan data panen, pengguna mengirimkan data untuk divalidasi oleh sistem. Apabila data valid, sistem memeriksa keberadaan data dengan identitas pencatatan yang sama. Data yang telah tersedia akan diperbarui, sedangkan data yang belum tersedia akan ditambahkan ke basis data. Proses diakhiri dengan penampilan pesan keberhasilan oleh SIPANTAU.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/tambah-h-petani.png}
+    \captionof{figure}{Activity Diagram Menambah dan Memperbarui Data Harga Petani SIPANTAU}
+    \label{fig:activity-tambah-harga-petani}
+\end{center}
+
+Gambar~\ref{fig:activity-tambah-harga-petani} menunjukkan alur aktivitas Admin atau Dinas Pertanian dalam menambahkan dan memperbarui data harga komoditas pada tingkat petani melalui antarmuka SIPANTAU. Proses diawali dengan autentikasi pengguna dan pemilihan fungsi input data harga petani. Sistem kemudian memeriksa role pengguna sebelum menampilkan formulir penginputan. Pengguna memilih komoditas dan memasukkan tanggal serta nilai harga petani. Data yang dikirimkan selanjutnya divalidasi oleh sistem. Apabila data valid, sistem memeriksa keberadaan data berdasarkan identitas pencatatan yang sama untuk menentukan proses penambahan atau pembaruan. Setelah penyimpanan selesai, SIPANTAU menampilkan pesan keberhasilan kepada pengguna.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.68\textheight,keepaspectratio]{img/activity/lihat-prediksi.png}
+    \captionof{figure}{Activity Diagram Melihat Hasil Prediksi Harga SIPANTAU}
+    \label{fig:activity-lihat-prediksi}
+\end{center}
+
+Gambar~\ref{fig:activity-lihat-prediksi} menunjukkan alur aktivitas Admin atau TPID dalam memperoleh hasil prediksi harga komoditas untuk tiga hari ke depan melalui SIPANTAU. Proses diawali dengan pengguna membuka aplikasi, memilih pasar, dan melakukan autentikasi melalui pilihan login TPID. Setelah berhasil masuk, pengguna memilih komoditas yang akan diprediksi. SIPANTAU kemudian mengambil data historis selama sepuluh hari terakhir dan memeriksa ketersediaan data yang diperlukan. Apabila data tersedia, sistem menjalankan proses prediksi melalui layanan model prediksi dan menampilkan hasil prediksi harga untuk tiga hari ke depan. Jika data historis tidak tersedia, sistem menampilkan pesan bahwa data belum tersedia.
+
+Kelompok kedua mencakup fungsi SIPANTAU yang diakses secara langsung melalui API tanpa melalui antarmuka frontend. Aktivitas ini dilakukan oleh Admin dengan mengirimkan permintaan kepada sistem setelah memperoleh token autentikasi. Permintaan yang diterima kemudian diproses oleh sistem untuk menambahkan atau mengambil data dari basis data. Hasil pemrosesan dikembalikan kepada Admin dalam bentuk respons sesuai dengan keberhasilan atau kegagalan proses.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/tambah-komoditas.png}
+    \captionof{figure}{Activity Diagram Menambah Data Komoditas SIPANTAU}
+    \label{fig:activity-tambah-komoditas}
+\end{center}
+
+Gambar~\ref{fig:activity-tambah-komoditas} menunjukkan alur aktivitas Admin dalam menambahkan data komoditas melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan data nama komoditas untuk diproses oleh sistem. SIPANTAU melakukan validasi terhadap kelengkapan, tipe, panjang, dan keunikan nama komoditas. Apabila data memenuhi ketentuan, sistem menyimpan data komoditas ke basis data dan mengembalikan respons keberhasilan. Jika validasi gagal atau terjadi kesalahan penyimpanan, sistem mengembalikan respons kegagalan.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/baca-komoditas.png}
+    \captionof{figure}{Activity Diagram Membaca Data Komoditas SIPANTAU}
+    \label{fig:activity-baca-komoditas}
+\end{center}
+
+Gambar~\ref{fig:activity-baca-komoditas} menunjukkan alur aktivitas Admin dalam mengambil data komoditas melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan permintaan pembacaan data kepada SIPANTAU. Sistem mengambil seluruh data komoditas yang tersedia pada basis data dan mengembalikannya dalam bentuk respons. Apabila proses pengambilan data mengalami kesalahan, sistem mengembalikan respons kegagalan.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/tambah-pasar.png}
+    \captionof{figure}{Activity Diagram Menambah Data Pasar SIPANTAU}
+    \label{fig:activity-tambah-pasar}
+\end{center}
+
+Gambar~\ref{fig:activity-tambah-pasar} menunjukkan alur aktivitas Admin dalam menambahkan data pasar melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan data daerah dan nama pasar kepada SIPANTAU. Sistem melakukan validasi terhadap kelengkapan, tipe, dan panjang kedua atribut tersebut. Apabila data memenuhi ketentuan, sistem menyimpan data pasar ke basis data dan mengembalikan respons keberhasilan. Jika validasi atau proses penyimpanan mengalami kegagalan, sistem mengembalikan respons kesalahan.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/baca-pasar.png}
+    \captionof{figure}{Activity Diagram Membaca Data Pasar SIPANTAU}
+    \label{fig:activity-baca-pasar}
+\end{center}
+
+Gambar~\ref{fig:activity-baca-pasar} menunjukkan alur aktivitas Admin dalam mengambil data pasar melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan permintaan pembacaan data kepada SIPANTAU. Sistem mengambil data pasar yang tersimpan pada basis data, meliputi identitas pasar, daerah, dan nama pasar, kemudian mengembalikannya dalam bentuk respons. Apabila proses pengambilan data mengalami kesalahan, sistem mengembalikan respons kegagalan.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/baca-h-pasar.png}
+    \captionof{figure}{Activity Diagram Membaca Data Harga Pasar SIPANTAU}
+    \label{fig:activity-baca-harga-pasar}
+\end{center}
+
+Gambar~\ref{fig:activity-baca-harga-pasar} menunjukkan alur aktivitas Admin dalam mengambil data harga pasar harian melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan permintaan pembacaan data melalui API. Sistem mengambil data harga pasar beserta informasi komoditas, pasar, dan pengguna yang berkaitan, kemudian mengembalikannya dalam bentuk respons. Apabila proses pengambilan data mengalami kesalahan, sistem mengembalikan respons kegagalan.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/baca-h-petani.png}
+    \captionof{figure}{Activity Diagram Membaca Data Harga Petani SIPANTAU}
+    \label{fig:activity-baca-harga-petani}
+\end{center}
+
+Gambar~\ref{fig:activity-baca-harga-petani} menunjukkan alur aktivitas Admin dalam mengambil data harga petani harian melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan permintaan pembacaan data kepada SIPANTAU. Sistem mengambil data harga petani yang tersimpan pada basis data dan mengembalikannya dalam bentuk respons. Apabila proses pengambilan data mengalami kesalahan, sistem mengembalikan respons kegagalan.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/baca-panen.png}
+    \captionof{figure}{Activity Diagram Membaca Data Panen SIPANTAU}
+    \label{fig:activity-baca-panen}
+\end{center}
+
+Gambar~\ref{fig:activity-baca-panen} menunjukkan alur aktivitas Admin dalam mengambil data panen komoditas melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan permintaan pembacaan data melalui API. Sistem mengambil data panen dari basis data dan mengembalikannya dalam bentuk respons. Apabila proses pengambilan data mengalami kesalahan, sistem mengembalikan respons kegagalan.
+
+\begin{center}
+    \includegraphics[width=0.85\textwidth,height=0.78\textheight,keepaspectratio]{img/activity/baca-ketersediaan.png}
+    \captionof{figure}{Activity Diagram Membaca Data Kebutuhan dan Ketersediaan SIPANTAU}
+    \label{fig:activity-baca-ketersediaan}
+\end{center}
+
+Gambar~\ref{fig:activity-baca-ketersediaan} menunjukkan alur aktivitas Admin dalam mengambil data kebutuhan dan ketersediaan harian komoditas melalui permintaan API yang dikirimkan secara langsung kepada SIPANTAU. Setelah memperoleh token autentikasi, Admin mengirimkan permintaan pembacaan data kepada SIPANTAU. Sistem mengambil data kebutuhan dan ketersediaan yang tersimpan pada basis data dan mengembalikannya dalam bentuk respons. Apabila proses pengambilan data mengalami kesalahan, sistem mengembalikan respons kegagalan.
+
+Ketiga belas Activity Diagram tersebut menggambarkan alur aktivitas pada fungsi-fungsi utama SIPANTAU berdasarkan kelompok pengguna dan mekanisme akses yang diterapkan. Aktivitas melalui frontend memperlihatkan interaksi pengguna dengan halaman aplikasi, termasuk proses autentikasi, pemeriksaan hak akses, pengisian data, dan pemrosesan prediksi. Sementara itu, aktivitas melalui API secara langsung menggambarkan proses pengiriman permintaan oleh Admin, pemrosesan data oleh sistem, serta pengembalian respons. Keseluruhan diagram tersebut menjadi dasar dalam menggambarkan rancangan fungsional yang selanjutnya direalisasikan melalui perancangan basis data, arsitektur backend, dan implementasi komponen aplikasi.
 
 \subsection{Perancangan, Implementasi, dan Pengujian Backend dan Basis Data}
 
@@ -227,9 +164,19 @@ Bagian ini membahas hasil perancangan, implementasi, dan pengujian backend serta
 
 \subsubsection{Perancangan}
 
-Perancangan backend dan basis data dilakukan berdasarkan kebutuhan fungsional dan non-fungsional yang telah diidentifikasi pada tahap analisis. Perancangan tersebut mencakup struktur basis data, arsitektur backend, mekanisme authentication, serta rancangan API yang digunakan untuk menyediakan dan mengelola data SIPANTAU. Perancangan authorization berbasis peran tidak dibahas pada bagian ini karena mekanisme tersebut diterapkan pada tahap pengembangan berikutnya.
+Perancangan backend dan basis data dilakukan berdasarkan kebutuhan fungsional dan non-fungsional yang telah diidentifikasi pada tahap analisis. Perancangan tersebut mencakup struktur basis data, arsitektur backend, struktur kelas inti, serta rancangan API yang digunakan untuk menyediakan dan mengelola data SIPANTAU. Pada tahap ini, perancangan struktur kelas difokuskan pada objek utama yang merepresentasikan data pengguna, data referensi, dan data operasional. Pengembangan struktur kelas untuk mendukung autentikasi dan otorisasi serta integrasi layanan prediksi dibahas secara bertahap pada subbab berikutnya.
 
-Perancangan basis data menentukan struktur data dan hubungan antarentitas yang digunakan oleh SIPANTAU. Rancangan tersebut mencakup entitas pengguna, pasar, komoditas, harga pasar harian, harga petani harian, ketersediaan harian, dan panen. Hasil perancangan basis data SIPANTAU ditunjukkan pada Gambar \ref{fig:erd-sipantau}.
+Class Diagram awal SIPANTAU menggambarkan kelas-kelas utama yang membentuk struktur dasar sistem beserta hubungan antarkelas. Kelas yang direpresentasikan mencakup pengguna, komoditas, pasar, harga pasar harian, harga petani harian, panen, dan ketersediaan harian. Rancangan Class Diagram awal SIPANTAU ditunjukkan pada Gambar \ref{fig:class-diagram-awal}.
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{img/class/backend.png}
+    \captionof{figure}{Class Diagram Awal SIPANTAU}
+    \label{fig:class-diagram-awal}
+\end{center}
+
+Berdasarkan Gambar \ref{fig:class-diagram-awal}, kelas User merepresentasikan pengguna yang melakukan pencatatan data operasional pada sistem. Kelas Komoditas dan Pasar berperan sebagai data referensi yang digunakan dalam pengelolaan data operasional. Kelas HargaPasarHarian memiliki hubungan dengan kedua kelas tersebut karena pencatatan harga pasar berkaitan dengan komoditas dan pasar tertentu. Sementara itu, kelas HargaPetaniHarian, Panen, dan KetersediaanHarian berhubungan dengan kelas Komoditas sebagai dasar pengelompokan data berdasarkan komoditas yang dikelola. Struktur kelas ini menjadi dasar bagi pengembangan rancangan sistem pada tahap berikutnya.
+
+Setelah struktur kelas utama sistem dirancang, perancangan basis data dilakukan untuk menentukan struktur penyimpanan data dan hubungan antarentitas yang digunakan oleh SIPANTAU. Rancangan tersebut mencakup entitas pengguna, pasar, komoditas, harga pasar harian, harga petani harian, ketersediaan harian, dan panen. Hasil perancangan basis data SIPANTAU ditunjukkan pada Gambar \ref{fig:erd-sipantau}.
 
 \begin{center}
     \includegraphics[width=\textwidth]{img/erd-sipantau.png}
@@ -306,75 +253,153 @@ Arsitektur SIPANTAU pada Gambar \ref{fig:arsitektur-sipantau} menunjukkan hubung
 
 Backend Laravel terhubung dengan basis data MySQL untuk menyimpan dan mengambil data yang digunakan oleh sistem. Backend juga terhubung dengan ML Service berbasis FastAPI untuk menjalankan proses prediksi harga. ML Service menggunakan model yang telah dilatih sebelumnya sebagai dasar proses prediksi. Dengan rancangan tersebut, proses pengelolaan data dan proses prediksi ditempatkan pada layanan yang terpisah sehingga masing-masing layanan dapat menjalankan tanggung jawabnya secara khusus.
 
-Perancangan API dilakukan untuk menentukan mekanisme komunikasi antara frontend dan backend dalam pengelolaan data SIPANTAU. Selain menyediakan endpoint untuk pengelolaan data, API juga dirancang untuk mendukung proses \textit{authentication} pengguna. Endpoint \textit{register} dan \textit{login} disediakan sebagai tahap awal untuk memperoleh akses pengguna, sedangkan endpoint yang memerlukan pengguna terautentikasi ditempatkan pada \textit{middleware auth:sanctum}. Pengguna yang berhasil melakukan \textit{login} memperoleh token yang digunakan pada permintaan berikutnya terhadap endpoint yang dilindungi. Endpoint pengelolaan data mencakup data komoditas, pasar, ketersediaan, panen, dan harga pasar harian.
+Perancangan API dilakukan untuk menentukan mekanisme komunikasi antara frontend dan backend dalam pengelolaan data SIPANTAU. Endpoint API dikelompokkan berdasarkan komponen data yang dikelola, meliputi data komoditas, pasar, harga pasar harian, harga petani harian, panen, serta kebutuhan dan ketersediaan. Setiap kelompok endpoint menyediakan fungsi untuk mengambil dan menyimpan data sesuai dengan kebutuhan sistem. Rancangan API untuk autentikasi dan integrasi layanan prediksi dibahas secara terpisah pada subbab masing-masing.
 
-\begin{longtable}{|c|c|p{3.4cm}|p{6cm}|}
-    \caption{Rancangan endpoint API SIPANTAU}
-    \label{tab:rancangan-api} \\
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Komoditas SIPANTAU}
+\label{tab:api-komoditas} \\
 
-    \hline
-    \textbf{No.} &
-    \textbf{Method} &
-    \textbf{Endpoint} &
-    \textbf{Fungsi} \\
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
 
-    \hline
-    \endfirsthead
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
 
-    \hline
-    \textbf{No.} &
-    \textbf{Method} &
-    \textbf{Endpoint} &
-    \textbf{Fungsi} \\
+1 & GET & \texttt{/komoditas} &
+Mengambil daftar komoditas. \\ \hline
 
-    \hline
-    \endhead
-
-    1 & POST & \texttt{/register} &
-    Mendaftarkan akun pengguna baru. \\ \hline
-
-    2 & POST & \texttt{/login} &
-    Melakukan proses \textit{authentication} pengguna dan menghasilkan token. \\ \hline
-
-    3 & POST & \texttt{/logout} &
-    Mengakhiri akses \textit{authentication} pengguna. \\ \hline
-
-    4 & GET & \texttt{/me} &
-    Mengambil informasi pengguna yang sedang terautentikasi. \\ \hline
-
-    5 & GET & \texttt{/komoditas} &
-    Mengambil data komoditas. \\ \hline
-
-    6 & POST & \texttt{/komoditas} &
-    Menambahkan data komoditas baru. \\ \hline
-
-    7 & GET & \texttt{/pasar} &
-    Mengambil data pasar. \\ \hline
-
-    8 & POST & \texttt{/pasar} &
-    Menambahkan data pasar baru. \\ \hline
-
-    9 & GET & \texttt{/ketersediaan} &
-    Mengambil data ketersediaan harian. \\ \hline
-
-    10 & POST & \texttt{/ketersediaan} &
-    Menyimpan data ketersediaan dan kebutuhan harian komoditas. \\ \hline
-
-    11 & GET & \texttt{/panen} &
-    Mengambil data panen. \\ \hline
-
-    12 & POST & \texttt{/panen} &
-    Menyimpan data perkiraan panen komoditas. \\ \hline
-
-    13 & GET & \texttt{/harga-pasar} &
-    Mengambil data harga pasar harian. \\ \hline
-
-    14 & POST & \texttt{/harga-pasar} &
-    Menyimpan data harga pasar harian. \\ \hline
+2 & POST & \texttt{/komoditas} &
+Menambahkan data komoditas baru. \\ \hline
 
 \end{longtable}
 
-Tabel \ref{tab:rancangan-api} menunjukkan endpoint API yang digunakan pada tahap awal implementasi backend SIPANTAU. Endpoint \textit{register} dan \textit{login} digunakan untuk menyediakan mekanisme awal \textit{authentication}, sedangkan endpoint \textit{logout}, \textit{me}, dan pengelolaan data ditempatkan pada \textit{middleware auth:sanctum}. Dengan rancangan tersebut, pengguna memperoleh token setelah berhasil melakukan \textit{authentication} dan menggunakan token tersebut untuk mengakses endpoint yang dilindungi.
+Tabel \ref{tab:api-komoditas} menunjukkan dua endpoint yang digunakan untuk pengelolaan data komoditas. Method GET digunakan untuk mengambil daftar komoditas yang tersedia, sedangkan method POST digunakan untuk menambahkan data komoditas baru ke dalam sistem.
+
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Pasar SIPANTAU}
+\label{tab:api-pasar} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & GET & \texttt{/pasar} &
+Mengambil daftar pasar. \\ \hline
+
+2 & POST & \texttt{/pasar} &
+Menambahkan data pasar baru. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-pasar} menunjukkan endpoint yang digunakan untuk mengelola data pasar. Method GET digunakan untuk memperoleh daftar pasar yang tersimpan pada sistem, sedangkan method POST digunakan untuk menambahkan data pasar sebagai referensi dalam pencatatan harga pasar harian.
+
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Harga Pasar Harian SIPANTAU}
+\label{tab:api-harga-pasar} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & GET & \texttt{/harga-pasar} &
+Mengambil data harga pasar harian. \\ \hline
+
+2 & POST & \texttt{/harga-pasar} &
+Menambahkan atau memperbarui data harga pasar harian berdasarkan komoditas, pasar, dan tanggal pencatatan. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-harga-pasar} menunjukkan endpoint yang digunakan dalam pengelolaan harga pasar harian. Method GET digunakan untuk mengambil data harga pasar yang telah tersimpan, sedangkan method POST digunakan untuk mengirimkan data harga pasar baru. Apabila data dengan kombinasi komoditas, pasar, dan tanggal yang sama telah tersedia, data tersebut diperbarui menggunakan informasi yang dikirimkan.
+
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Harga Petani Harian SIPANTAU}
+\label{tab:api-harga-petani} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & GET & \texttt{/harga-petani} &
+Mengambil data harga petani harian. \\ \hline
+
+2 & POST & \texttt{/harga-petani} &
+Menambahkan atau memperbarui data harga petani harian berdasarkan komoditas dan tanggal pencatatan. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-harga-petani} menunjukkan endpoint yang digunakan untuk mengelola data harga petani harian. Method GET digunakan untuk mengambil data harga petani yang tersedia, sedangkan method POST digunakan untuk mengirimkan data harga petani. Apabila data dengan kombinasi komoditas dan tanggal yang sama telah tersedia, sistem memperbarui data tersebut menggunakan nilai harga yang baru.
+
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Data Panen SIPANTAU}
+\label{tab:api-panen} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & GET & \texttt{/panen} &
+Mengambil data perkiraan panen komoditas. \\ \hline
+
+2 & POST & \texttt{/panen} &
+Menambahkan atau memperbarui data perkiraan panen berdasarkan komoditas dan tanggal prakiraan panen. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-panen} menunjukkan endpoint yang digunakan untuk pengelolaan data panen. Method GET digunakan untuk mengambil data perkiraan panen yang tersimpan, sedangkan method POST digunakan untuk mengirimkan data perkiraan panen. Data yang memiliki kombinasi komoditas dan tanggal prakiraan panen yang sama diperbarui menggunakan informasi yang dikirimkan.
+
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Kebutuhan dan Ketersediaan SIPANTAU}
+\label{tab:api-ketersediaan} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & GET & \texttt{/ketersediaan} &
+Mengambil data kebutuhan dan ketersediaan harian komoditas. \\ \hline
+
+2 & POST & \texttt{/ketersediaan} &
+Menambahkan atau memperbarui data kebutuhan, ketersediaan, dan neraca harian berdasarkan komoditas dan tanggal pencatatan. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-ketersediaan} menunjukkan endpoint yang digunakan untuk mengelola data kebutuhan dan ketersediaan harian. Method GET digunakan untuk mengambil data kebutuhan dan ketersediaan yang telah tersimpan, sedangkan method POST digunakan untuk mengirimkan data kebutuhan, ketersediaan, dan neraca harian. Apabila data dengan kombinasi komoditas dan tanggal yang sama telah tersedia, sistem memperbarui data tersebut.
+
+Secara keseluruhan, Tabel \ref{tab:api-komoditas}, Tabel \ref{tab:api-pasar}, Tabel \ref{tab:api-harga-pasar}, Tabel \ref{tab:api-harga-petani}, Tabel \ref{tab:api-panen}, dan Tabel \ref{tab:api-ketersediaan} menunjukkan pembagian endpoint API berdasarkan komponen data yang dikelola oleh backend SIPANTAU. Method GET digunakan untuk mengambil data, sedangkan method POST digunakan untuk menambahkan atau memperbarui data sesuai dengan karakteristik masing-masing komponen. Endpoint tersebut menjadi acuan dalam implementasi API Route dan Controller pada backend.
 
 \subsubsection{Implementasi}
 
@@ -1105,6 +1130,38 @@ Perancangan autentikasi dan otorisasi dilakukan untuk mengatur mekanisme identif
 
 Perancangan autentikasi menggunakan mekanisme token-based authentication yang disediakan oleh Laravel Sanctum. Proses autentikasi dirancang melalui dua tahap utama, yaitu registrasi akun dan login. Pada proses login, sistem memverifikasi kredensial pengguna dan menghasilkan token yang digunakan sebagai bukti autentikasi pada permintaan berikutnya. Token dikirimkan pada header \textit{Authorization} menggunakan skema \textit{Bearer} untuk mengidentifikasi pengguna pada setiap permintaan terhadap endpoint yang dilindungi. Endpoint yang berkaitan dengan pengelolaan data dan informasi pengguna dirancang untuk hanya dapat diakses setelah pengguna berhasil melalui proses autentikasi.
 
+Endpoint API autentikasi dirancang untuk menangani proses registrasi, login, pengambilan informasi pengguna, dan logout. Endpoint tersebut menjadi bagian awal dalam mekanisme identifikasi pengguna sebelum mengakses fungsi sistem yang dilindungi. Rancangan API autentikasi SIPANTAU ditunjukkan pada Tabel \ref{tab:api-autentikasi}.
+
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Autentikasi SIPANTAU}
+\label{tab:api-autentikasi} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & POST & \texttt{/register} &
+Mendaftarkan akun pengguna baru. \\ \hline
+
+2 & POST & \texttt{/login} &
+Memverifikasi kredensial pengguna dan menghasilkan token autentikasi. \\ \hline
+
+3 & GET & \texttt{/me} &
+Mengambil informasi pengguna yang sedang terautentikasi. \\ \hline
+
+4 & POST & \texttt{/logout} &
+Mengakhiri sesi autentikasi pengguna. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-autentikasi} menunjukkan empat endpoint yang mendukung proses autentikasi pengguna. Endpoint \textit{register} digunakan untuk membuat akun baru, sedangkan endpoint \textit{login} digunakan untuk memverifikasi kredensial dan menghasilkan token autentikasi. Token tersebut digunakan untuk mengakses endpoint yang memerlukan autentikasi, termasuk endpoint \textit{me} untuk mengambil informasi pengguna dan endpoint \textit{logout} untuk mengakhiri sesi pengguna.
+
 Perancangan otorisasi dilakukan dengan menerapkan pendekatan Role-Based Access Control (RBAC), yaitu pengaturan hak akses berdasarkan role yang dimiliki pengguna. Role ditentukan berdasarkan kelompok pengguna yang telah diidentifikasi pada analisis kebutuhan sistem, yaitu Dinas Perdagangan, Dinas Ketahanan Pangan, Dinas Pertanian, TPID, dan Admin. Setiap role dirancang memiliki hak akses yang berbeda sesuai dengan fungsi dan tanggung jawabnya dalam sistem. Pembagian tersebut digunakan untuk membatasi pengguna agar hanya dapat menjalankan fungsi yang sesuai dengan kewenangan role yang dimilikinya.
 
 Pemetaan role terhadap fungsi sistem digunakan sebagai dasar dalam menentukan hak akses pada backend SIPANTAU. Pemetaan tersebut ditunjukkan pada Tabel \ref{tab:pemetaan-role}.
@@ -1123,6 +1180,16 @@ Pemetaan role terhadap fungsi sistem digunakan sebagai dasar dalam menentukan ha
 \end{longtable}
 
 Tabel \ref{tab:pemetaan-role} menunjukkan bahwa setiap role memiliki cakupan akses yang disesuaikan dengan fungsi pengguna dalam SIPANTAU. Pemetaan tersebut menjadi acuan dalam menentukan permission yang diberikan kepada setiap role pada tahap implementasi. Dengan rancangan tersebut, autentikasi digunakan untuk memastikan pengguna telah teridentifikasi, sedangkan otorisasi digunakan untuk menentukan apakah pengguna memiliki hak untuk menjalankan fungsi tertentu. Rancangan autentikasi dan otorisasi tersebut selanjutnya diterapkan pada backend Laravel pada tahap implementasi.
+
+Setelah mekanisme autentikasi dan pembagian hak akses dirancang, struktur kelas SIPANTAU diperluas dengan menambahkan komponen yang mendukung pengelolaan akun dan otorisasi pengguna. Penambahan tersebut mencakup kelas AuthService untuk merepresentasikan layanan autentikasi, serta kelas Role dan Permission untuk menggambarkan pembagian peran dan hak akses pengguna. Hasil pengembangan Class Diagram pada tahap perancangan autentikasi dan otorisasi ditunjukkan pada Gambar \ref{fig:class-diagram-auth}.
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{img/class/auth.png}
+    \captionof{figure}{Class Diagram SIPANTAU dengan Penambahan Autentikasi dan Otorisasi}
+    \label{fig:class-diagram-auth}
+\end{center}
+
+Gambar \ref{fig:class-diagram-auth} menunjukkan pengembangan struktur kelas dari rancangan sebelumnya dengan penambahan kelas AuthService, Role, dan Permission. Kelas AuthService merepresentasikan layanan yang menangani proses registrasi, login, dan logout pengguna. Kelas Role digunakan untuk merepresentasikan peran yang dimiliki pengguna, sedangkan kelas Permission merepresentasikan hak akses yang dapat diberikan kepada suatu peran. Hubungan antara Role dan Permission menunjukkan bahwa setiap peran dapat memperoleh satu atau lebih hak akses. Dengan penambahan tersebut, rancangan sistem tidak hanya mencakup pengelolaan data, tetapi juga mekanisme pengelolaan akun dan pembatasan akses berdasarkan peran pengguna.
 
 \subsubsection{Implementasi}
 
@@ -1444,6 +1511,52 @@ Perancangan integrasi layanan model prediksi dilakukan untuk menentukan alur per
 
 Alur integrasi dirancang dimulai ketika pengguna mengirimkan permintaan prediksi melalui \textit{frontend} dengan menentukan pasar dan komoditas yang akan diprediksi. Permintaan tersebut diteruskan ke \textit{backend} melalui \textit{endpoint} \textit{/predict} dengan membawa parameter \textit{pasar\_id} dan \textit{komoditas\_id}. \textit{Backend} melakukan validasi terhadap kedua parameter tersebut sebelum mengambil data yang diperlukan dari basis data. Rancangan \textit{endpoint} prediksi tersebut menggunakan method \textit{GET} dan memanfaatkan kedua parameter sebagai penentu data yang akan digunakan dalam proses prediksi. Dokumentasi penggunaan \textit{endpoint} prediksi ditunjukkan pada kode di bawah.
 
+Permintaan prediksi dari frontend diterima oleh backend melalui endpoint khusus yang menggunakan parameter pasar dan komoditas sebagai dasar pengambilan data historis. Rancangan endpoint prediksi pada backend SIPANTAU ditunjukkan pada Tabel \ref{tab:api-prediksi-backend}.
+
+\begin{longtable}{|c|c|p{3.2cm}|p{6cm}|}
+\caption{Rancangan API Prediksi pada Backend SIPANTAU}
+\label{tab:api-prediksi-backend} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & GET & \texttt{/api/predict} &
+Menerima permintaan prediksi berdasarkan parameter \textit{pasar\_id} dan \textit{komoditas\_id}, kemudian mengembalikan hasil prediksi harga tiga hari ke depan. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-prediksi-backend} menunjukkan endpoint yang digunakan frontend untuk meminta hasil prediksi kepada backend. Method GET menggunakan parameter \textit{pasar\_id} dan \textit{komoditas\_id} untuk menentukan pasar dan komoditas yang menjadi objek prediksi. Backend kemudian mengambil data historis yang sesuai, menyiapkan masukan prediksi, dan mengembalikan hasil prediksi kepada frontend.
+
+Setelah data historis disiapkan, backend mengirimkan data tersebut kepada layanan model prediksi melalui API internal. Rancangan endpoint pada layanan model prediksi ditunjukkan pada Tabel \ref{tab:api-ml-service}.
+
+\begin{longtable}{|c|c|p{4cm}|p{5.2cm}|}
+\caption{Rancangan API ML Service SIPANTAU}
+\label{tab:api-ml-service} \\
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{No.} & \textbf{Method} & \textbf{Endpoint} & \textbf{Fungsi} \\
+\hline
+\endhead
+
+1 & POST & \texttt{/predict} &
+Menerima data historis melalui atribut \textit{data} dan menghasilkan tiga nilai prediksi harga. \\ \hline
+
+\end{longtable}
+
+Tabel \ref{tab:api-ml-service} menunjukkan endpoint yang digunakan backend untuk berkomunikasi dengan ML Service. Method POST digunakan untuk mengirimkan data historis yang telah disiapkan backend melalui atribut \textit{data}. ML Service kemudian memproses masukan tersebut menggunakan model prediksi dan mengembalikan tiga nilai prediksi harga melalui respons API.
+
 \begin{code}
 \begin{ignasicblock}
 curl "http://sipantau.simdacloud.id/api/predict?pasar_id=<ID Pasar>&komoditas_id=<ID Komoditas>"
@@ -1518,6 +1631,16 @@ Melihat hasil prediksi harga serta fungsi sistem lainnya \\ \hline
 \end{longtable}
 
 Tabel \ref{tab:akses-prediksi} menunjukkan bahwa fungsi prediksi dapat diakses oleh \textit{role tpid} melalui \textit{permission view\_prediksi} serta oleh \textit{role admin} yang memiliki akses penuh terhadap fungsi sistem. Permission \textit{view\_prediksi} digunakan sebagai pembatas akses terhadap \textit{endpoint} \textit{/predict}, sedangkan akses penuh pada \textit{role admin} mengikuti mekanisme otorisasi yang telah diterapkan pada aplikasi.
+
+Pada tahap perancangan integrasi layanan model prediksi, struktur kelas SIPANTAU kembali diperluas dengan menambahkan kelas PredictService. Kelas tersebut merepresentasikan layanan yang bertanggung jawab dalam menyiapkan data historis dan menjalankan proses prediksi harga komoditas. Penambahan ini melengkapi rancangan sebelumnya yang telah mencakup struktur data, autentikasi, dan otorisasi pengguna. Class Diagram akhir SIPANTAU setelah penambahan layanan prediksi ditunjukkan pada Gambar \ref{fig:class-diagram-prediksi}.
+
+\begin{center}
+    \includegraphics[width=0.95\textwidth]{img/class/predict.png}
+    \captionof{figure}{Class Diagram SIPANTAU setelah Penambahan Layanan Prediksi}
+    \label{fig:class-diagram-prediksi}
+\end{center}
+
+Berdasarkan Gambar \ref{fig:class-diagram-prediksi}, kelas PredictService memiliki ketergantungan terhadap kelas HargaPasarHarian dan KetersediaanHarian sebagai sumber data yang digunakan dalam proses prediksi. Data harga pasar serta data kebutuhan dan ketersediaan dibaca untuk membentuk masukan yang diperlukan oleh layanan prediksi. Selanjutnya, operasi predictHargaPasar() merepresentasikan proses menghasilkan prediksi harga berdasarkan data tersebut. Penambahan kelas PredictService melengkapi rancangan konseptual SIPANTAU dengan memasukkan fungsi prediksi sebagai bagian dari layanan sistem.
 
 Secara keseluruhan, perancangan integrasi layanan model prediksi menghasilkan alur yang menghubungkan permintaan pengguna, pengambilan data historis pada \textit{backend}, pengiriman konteks ke layanan prediksi, pemrosesan menggunakan Chronos-2, dan pengembalian tiga hasil prediksi kepada pengguna. Perancangan tersebut juga menetapkan mekanisme pembatasan akses melalui \textit{permission view\_prediksi} untuk \textit{role tpid} serta akses penuh bagi \textit{role admin}. Rancangan ini selanjutnya digunakan sebagai dasar dalam implementasi \textit{PredictController}, layanan FastAPI, konfigurasi model, dan pengaturan akses terhadap \textit{endpoint} prediksi.
 
