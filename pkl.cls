@@ -299,8 +299,7 @@
       \MakeUppercase{\normalfont\large\bfseries\expandafter{PENGESAHAN}}\\
       \vspace{0.5cm}
       \MakeUppercase{\normalfont LAPORAN PRAKTIK KERJA LAPANGAN (PKL)}\\
-      \MakeUppercase{\normalfont PERUSAHAAAN / INDUSTRI}\\
-      \@pklplacetype\ \@pklplace \\
+      \MakeUppercase{\@pklplacetype\ \@pklplace} \\
       \vspace{1.0cm}
       \MakeUppercase{\normalfont\@titlepkl}\par\nobreak
       \vspace{1.0cm}
@@ -318,25 +317,32 @@
       Telah diperiksa dan disetujui oleh: \\
       % \vspace{1.5cm}
 
-      \vspace{-1.8cm}
+      % \vspace{-1.8cm}
 
-      \hbox to \hsize{
-        \ttdsatu
-        {Mengetahui,}
-        {Ketua Departemen Teknik Informatika}
-        \hfil
-        \ttdsatu
-        {Menyetujui,}
-        {Dosen Pembimbing PKL}}
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{img/ttd pengesahan.png}
+        % \caption{Tahapan Pelaksanaan PKL}
+        \label{fig:afhyahh}
+      \end{figure}
 
-      \hbox to \hsize{
-        \ttddua
-        {\underline{\@firstsupervisor}}
-        {NIK: \@firstsupervisornip}
-        \hfil
-        \ttddua
-        {\underline{\@secondsupervisor}}
-        {NIP: \@secondsupervisornip}}
+      % \hbox to \hsize{
+      %   \ttdsatu
+      %   {Mengetahui,}
+      %   {Ketua Departemen Teknik Informatika}
+      %   \hfil
+      %   \ttdsatu
+      %   {Menyetujui,}
+      %   {Dosen Pembimbing PKL}}
+
+      % \hbox to \hsize{
+      %   \ttddua
+      %   {\underline{\@firstsupervisor}}
+      %   {NIK: \@firstsupervisornip}
+      %   \hfil
+      %   \ttddua
+      %   {\underline{\@secondsupervisor}}
+      %   {NIP: \@secondsupervisornip}}
 
 
     \end{doublespace}

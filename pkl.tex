@@ -142,7 +142,7 @@
 % Fill your data here
 % -----------------------------------------------------------------
 % title
-\titlepkl{Implementasi Laravel Sebagai Framework Backend pada Aplikasi Web SIPANTAU: Aplikasi Web Digital Model untuk Prediksi Harga Komoditas Fluktuatif}
+\titlepkl{Implementasi Laravel Sebagai Framework Backend pada Aplikasi Web SIPANTAU: Aplikasi Web untuk Prediksi Harga Komoditas Fluktuatif}
 % personal data
 \fullname{Muhammad Omar Haqqi}
 \idnum{235150219111001}
@@ -198,14 +198,21 @@ Apabila ternyata di dalam laporan PKL ini terbukti terdapat unsur-unsur plagiasi
 
 \vspace{1.5cm}
 
-\begin{flushright}
-    \begin{minipage}{5cm}
-        \raggedright
-        Malang, 8 Oktober 2026\\[2.5cm]
-        \underline{\@fullname}\\
-        NIM. \@idnum
-    \end{minipage}
-\end{flushright}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{img/ttd_orisinalitas.png}
+  % \caption{Tahapan Pelaksanaan PKL}
+  \label{fig:afhyahh2}
+\end{figure}
+
+% \begin{flushright}
+%     \begin{minipage}{5cm}
+%         \raggedright
+%         Malang, 18 November 2026\\[2.5cm]
+%         \underline{\@fullname}\\
+%         NIM. \@idnum
+%     \end{minipage}
+% \end{flushright}
 
 \makeatother
 
@@ -228,17 +235,17 @@ rahmat, taufik dan hidayah-Nya sehingga laporan PKL yang berjudul
 \item{Bapak Nurudin Santoso, S.T., M.T. selaku dosen pembimbing PKL
     yang telah dengan sabar membimbing dan mengarahkan penulis
     sehingga dapat menyelesaikan laporan ini.}
-\item{Bapak Bayu Priyambadha, S.Kom., M.Kom., Ph.D. selaku ketua Program
-    Studi Teknik Informatika.}
-\item{Bapak Nama Rekyan Regasari Mardi Putri, S.T., M.T., Ph.D. selaku selaku ketua Departemen Teknik Informatika.}
 \item{Bapak Yana Chefiana, S.P., M.Si. sebagai pimpinan instansi sekaligus pembimbing lapangan yang telah dengan sabar membimbing dan mengarahkan penulis selama kegiatan PKL sehingga penulis bisa menyelesaikan kegiatan PKL ini dengan baik}
-\item{Bu Ir. Nurussa’adah, M.T. sebagai dosen pembimbing projek SIPANTAU yang telah membimbing dan mengarahkan penulis selama pengerjaan projek SIPANTAU sehingga penulis bisa menjalankan projek SIPANTAU ini dengan baik.}
+\item{Ibu Ir. Nurussa’adah, M.T. sebagai dosen pembimbing projek SIPANTAU yang telah membimbing dan mengarahkan penulis selama pengerjaan projek SIPANTAU sehingga penulis bisa menjalankan projek SIPANTAU ini dengan baik.}
 \item{Mas Sei, Tyo, Benny, Fajar, dan Bahrain sebagai rekan tim WatuGate yang telah memberikan kesempatan dan membantu penulis untuk ikut dalam projek SIPANTAU sehingga penulis bisa menyelasaikan kegiatan PKL ini.}
 \item{Ayah, Bunda, dan seluruh keluarga besar atas segala
     nasehat, kasih sayang, perhatian dan kesabarannya di dalam
     membesarkan dan mendidik penulis, serta yang senantiasa tiada
     henti-hentinya memberikan doa dan semangat demi terselesaikannya
     laporan ini.}
+\item{Bapak Bayu Priyambadha, S.Kom., M.Kom., Ph.D. selaku ketua Program
+    Studi Teknik Informatika.}
+\item{Ibu Rekyan Regasari Mardi Putri, S.T., M.T., Ph.D. selaku selaku ketua Departemen Teknik Informatika.}
 \item{Seluruh civitas akademika Teknik Informatika Universitas
     Brawijaya yang telah banyak memberi bantuan dan dukungan selama
     penyelesaian laporan PKL ini.}
@@ -251,12 +258,9 @@ berharap PKL ini dapat membawa manfaat bagi semua pihak yang menggunakannya.
 \vspace{1.5cm}
 
 \begin{tabular}{p{7.5cm}c}
-&Malang, 1 Juli 2017\\
+&Malang, 18 November 2026\\
 &Penulis\\
-&\\
-&\\
-&\\
-&\\
+&\includegraphics[width=0.2\textwidth]{img/ttd.png} \\
 &{Muhammad Omar Haqqi}
 \end{tabular}
 
@@ -272,7 +276,7 @@ Pengembangan SIPANTAU pada kegiatan Praktik Kerja Lapang difokuskan pada pembang
 
 \vspace{1cm}
 
-\noindent\textbf{Kata kunci:} SIPANTAU, website, \textit{backend}, Laravel, MySQL, Sukabumi, komoditas
+\noindent Kata kunci: Pemerintah Kabupaten Sukabumi, Kabupaten Sukabumi, \textit{backend}, aplikasi web, komoditas pangan
 
 % -----------------------------------------------------------------
 % ABSTRACT
@@ -280,13 +284,13 @@ Pengembangan SIPANTAU pada kegiatan Praktik Kerja Lapang difokuskan pada pembang
 
 \abstraken
 
-Sukabumi Regency has substantial agricultural activities and food commodity distribution, making food price monitoring an important aspect of supporting price stability in the region. Food commodities are characterized by dynamic and fluctuating prices, making actual price information alone insufficient to support monitoring and decision-making processes. Based on these conditions, a system is needed to integrate the collection of commodity price data and supporting data from relevant agencies while providing price prediction information based on historical data. The proposed solution is the development of the Commodity Price Monitoring Information System (SIPANTAU), a web-based application that provides commodity data management and presents commodity price predictions for the next three days as supporting information for the Regional Inflation Control Team (TPID).
+\textit{Sukabumi Regency has substantial agricultural activities and food commodity distribution, making food price monitoring an important aspect of supporting price stability in the region. Food commodities are characterized by dynamic and fluctuating prices, making actual price information alone insufficient to support monitoring and decision-making processes. Based on these conditions, a system is needed to integrate the collection of commodity price data and supporting data from relevant agencies while providing price prediction information based on historical data. The proposed solution is the development of the Commodity Price Monitoring Information System (SIPANTAU), a web-based application that provides commodity data management and presents commodity price predictions for the next three days as supporting information for the Regional Inflation Control Team (TPID).}
 
-The development of SIPANTAU during the Practical Work focused on developing the \textit{backend} using the Laravel \textit{framework}, managing the MySQL database, implementing role-based \textit{authentication} and \textit{authorization}, integrating the prediction model service, and \textit{deploying} the application in a production environment. The implementation method consisted of analyzing system conditions and requirements, designing the database and application architecture, implementation, testing, and \textit{deployment} and testing in the production environment. The Laravel \textit{backend} was used to manage commodity, market, availability, harvest, farmer price, and market price data through an API, while the prediction process was performed through a FastAPI service that receives historical data on market prices, daily availability, daily demand, and daily balance to generate price predictions for the next three days. The test results showed that the data management, \textit{authentication}, \textit{authorization}, and prediction functions operated according to the design, and all application components were successfully deployed in the production environment and accessed through HTTPS. The discussion results showed that the development fulfilled the main system requirements for data management and the provision of price prediction results. Further development is directed toward improving data management, account and access-right management, completing prediction input data, and integrating external data sources such as SILINDA.
+\textit{The development of SIPANTAU during the Practical Work focused on developing the backend using the Laravel framework, managing the MySQL database, implementing role-based authentication and authorization, integrating the prediction model service, and deploying the application in a production environment. The implementation method consisted of analyzing system conditions and requirements, designing the database and application architecture, implementation, testing, and deployment and testing in the production environment. The Laravel backend was used to manage commodity, market, availability, harvest, farmer price, and market price data through an API, while the prediction process was performed through a FastAPI service that receives historical data on market prices, daily availability, daily demand, and daily balance to generate price predictions for the next three days. The test results showed that the data management, authentication, authorization, and prediction functions operated according to the design, and all application components were successfully deployed in the production environment and accessed through HTTPS. The discussion results showed that the development fulfilled the main system requirements for data management and the provision of price prediction results. Further development is directed toward improving data management, account and access-right management, completing prediction input data, and integrating external data sources such as SILINDA.}
 
 \vspace{1cm}
 
-\noindent\textbf{Keywords:} SIPANTAU, web application, \textit{backend}, Laravel, MySQL, Sukabumi, commodities
+\noindent\textit{Keywords: Sukabumi Regency Government, Sukabumi Regency, backend, web application, food commodities}
 
 % -----------------------------------------------------------------
 % TOCS
